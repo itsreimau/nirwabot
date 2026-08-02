@@ -22,6 +22,9 @@ module.exports = {
 
         try {
             const targetDb = ctx.getDb("users", target.jid);
+            if (!targetDb) return await ctx.reply(ctx.format.info("Akun target tidak ditemukan!"));
+            if (ctx.checkOwner(target.jid)) return await ctx.reply(ctx.format.info("Tidak dapat mentransfer koin ke akun owner!"));
+            if (!Number.isFinite(targetDb.coin)) targetDb.coin = 0;
             targetDb.coin += coinAmount;
             senderDb.coin -= coinAmount;
             targetDb.save();
