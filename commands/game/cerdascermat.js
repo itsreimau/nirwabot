@@ -4,7 +4,7 @@ module.exports = {
     name: "cerdascermat",
     category: "game",
     permissions: {
-        coin: 5
+        xp: 5
     },
     code: async (ctx) => {
         if (session.has(ctx.id)) return await ctx.reply(ctx.format.info("Sesi permainan sedang berjalan!"));
@@ -22,7 +22,7 @@ module.exports = {
                 ips: "Ilmu Pengetahuan Sosial",
                 ipa: "Ilmu Pengetahuan Alam"
             };
-            const input = ctx.args?.[0] && mapel[ctx.args[0]] ? ctx.args[0] : "tik";
+            const input = ctx.args?.[0] && mapel[ctx.args[0]] ? ctx.args[0] : mapel[Math.floor(Math.random() * 10) + 1];
             const apiUrl = ctx.api.createUrl("siputzx", "/api/games/cc-sd", {
                 matapelajaran: input
             });
@@ -32,7 +32,8 @@ module.exports = {
                 coin: 5,
                 timeout: 60000,
                 answerKey: result.jawaban_benar,
-                answer: result.semua_jawaban.find(ans => Object.keys(ans)[0] === result.jawaban_benar)[result.jawaban_benar].toLowerCase()
+                answer: result.semua_jawaban.find(ans => Object.keys(ans)[0] === result.jawaban_benar)[result.jawaban_benar].toLowerCase(),
+                wrongAnswered: []
             };
 
             session.set(ctx.id, true);
@@ -47,7 +48,7 @@ module.exports = {
                     `❖ ${ctx.format.bold("Mata Pelajaran")}: ${mapel[input]}\n` +
                     `❖ ${ctx.format.bold("Bonus")}: ${game.coin} koin\n` +
                     `❖ ${ctx.format.bold("Batas waktu")}: ${ctx.format.convertMsToDuration(game.timeout)}\n` +
-                    `❖ ${ctx.format.bold("Cara menjawab")}: Ketik A, B, C, atau D`,
+                    `❖ ${ctx.format.bold("Cara menjawab")}: Ketik hanya pilihan jawabannya saja tanpa mengetik jawaban lengkap, misalnya: A, B, dan seterusnya.`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`
@@ -55,7 +56,12 @@ module.exports = {
             });
 
             const collector = ctx.MessageCollector({
-                time: game.timeout
+                time: game.timeout,
+                filter: (collCtx) => {
+                    if (collCtx.msg.body?.startsWith(`surrender_`)) return true;
+                    const body = collCtx.msg.body?.toLowerCase() || "";
+                    return body.length === 1 && result.semua_jawaban.map(ans => Object.keys(ans)[0].toLowerCase()).includes(body);
+                }
             });
             const playAgain = [{
                 text: "Main Lagi",
@@ -78,6 +84,7 @@ module.exports = {
                 const participantDb = collCtx.db.user;
                 const isUnlimited = collCtx.sender.isOwner() || participantDb?.premium;
 
+                if (game.wrongAnswered.includes(collCtx.sender.jid)) return;
                 if (participantAnswer === game.answerKey) {
                     session.delete(ctx.id);
                     collector.stop();
@@ -95,6 +102,9 @@ module.exports = {
                         text: ctx.format.info(`Anda menyerah! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
                         buttons: playAgain
                     });
+                } else {
+                    game.wrongAnswered.push(collCtx.sender.jid);
+                    await collCtx.reply(ctx.format.info(`Salah!`));
                 }
             });
 

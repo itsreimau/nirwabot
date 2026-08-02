@@ -22,9 +22,11 @@ module.exports = (bot) => {
         if (botDb?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
         if (botDb?.mode === "self" && !isOwner) return;
 
-        if (groupDb?.mutebot && !(isOwner || isAdmin) && !(ctx.used.command === "unmute" && ctx.args[0]?.toLowerCase() === "bot")) return;
-        const muteList = groupDb?.mute || [];
-        if (muteList.some(mute => mute.jid === ctx.sender.lid)) return;
+        if (isGroup) {
+            if (groupDb?.mutebot && !(isOwner || isAdmin) && !(ctx.used.command === "unmute" && ctx.args[0]?.toLowerCase() === "bot")) return;
+            const muteList = groupDb?.mute || [];
+            if (muteList.some(mute => mute.jid === ctx.sender.lid)) return;
+        }
 
         if (isGroup && !ctx.msg.key.fromMe && ctx.prefix !== "force") {
             console.log(util.styleText("magenta", "[~]"), `Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);

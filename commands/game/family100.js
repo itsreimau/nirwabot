@@ -4,7 +4,7 @@ module.exports = {
     name: "family100",
     category: "game",
     permissions: {
-        coin: 10,
+        xp: 5,
         group: true
     },
     code: async (ctx) => {

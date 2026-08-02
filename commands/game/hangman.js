@@ -6,7 +6,7 @@ module.exports = {
     name: "hangman",
     category: "game",
     permissions: {
-        coin: 5
+        xp: 5
     },
     code: async (ctx) => {
         const sessionKey = `${ctx.id}_${ctx.sender.jid}`;
@@ -17,7 +17,7 @@ module.exports = {
             const word = ctx.helper.getRandomElement(words);
             const game = {
                 coin: 10,
-                timeout: 60000,
+                timeout: Math.min(30000 + (new Set(word.split("")).size * 5000), 120000),
                 guessed: new Set(),
                 lives: 6
             };

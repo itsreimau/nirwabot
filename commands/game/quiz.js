@@ -442,7 +442,7 @@ module.exports = Object.entries(options).map(([name, option]) => {
         aliases: option.aliases || [],
         category: "game",
         permissions: {
-            coin: 5
+            xp: 5
         },
         code: async (ctx) => await game.handle(ctx)
     };

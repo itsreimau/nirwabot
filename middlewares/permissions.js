@@ -81,7 +81,56 @@ module.exports = (bot) => {
             condition: config.system.restrict,
             msg: config.msg.restrict,
             reaction: "🚫"
-        }];
+        }, {
+            key: "xp",
+            condition: (() => {
+                if (!config.system.useCoin || isOwner || senderDb?.premium) return false;
+                if (senderDb?.xp >= permissions.xp) {
+                    senderDb.xp -= permissions.xp;
+                    senderDb.save();
+                    return false;
+                }
+                if (senderDb?.level > 0) {
+                    let remainingXp = permissions.xp - (senderDb.xp || 0);
+                    let currentLevel = senderDb.level || 0;
+                    let currentXp = senderDb.xp || 0;
+                    const xpPerLevel = 100;
+                    currentXp = 0;
+                    currentLevel -= 1;
+                    while (remainingXp > 0 && currentLevel >= 0) {
+                        if (remainingXp <= xpPerLevel) {
+                            currentXp = xpPerLevel - remainingXp;
+                            if (currentXp === xpPerLevel) currentXp = 0;
+                            remainingXp = 0;
+                        } else {
+                            remainingXp -= xpPerLevel;
+                            currentLevel -= 1;
+                            if (currentLevel < 0) {
+                                currentLevel = 0;
+                                currentXp = 0;
+                                break;
+                            }
+                        }
+                    }
+                    if (remainingXp > 0 && currentLevel === 0) {
+                        currentXp = Math.max(0, xpPerLevel - remainingXp);
+                        if (currentXp < 0) currentXp = 0;
+                        if (currentXp === xpPerLevel) currentXp = 0;
+                    }
+                    senderDb.level = Math.max(0, currentLevel);
+                    senderDb.xp = Math.max(0, Math.min(currentXp, xpPerLevel - 1));
+                    senderDb.save();
+                    return false;
+                }
+                return true;
+            })(),
+            msg: config.msg.xp,
+            buttons: [{
+                text: "Cek XP",
+                id: `${ctx.used.prefix}xp`
+    }],
+            reaction: "🌟"
+}];
 
         for (const {
                 key,

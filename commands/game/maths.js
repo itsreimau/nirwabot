@@ -29,7 +29,7 @@ module.exports = {
     name: "maths",
     category: "game",
     permissions: {
-        coin: 25
+        xp: 5
     },
     code: async (ctx) => {
         if (session.has(ctx.id)) return await ctx.reply(ctx.format.info("Sesi permainan sedang berjalan!"));
