@@ -75,12 +75,6 @@ module.exports = (bot) => {
             if (botDb?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
             if (botDb?.mode === "self" && !isOwner) return;
 
-            if (groupDb?.mutebot) return;
-            const muteList = groupDb?.mute || [];
-            groupDb.mute = muteList.filter(mute => !mute.expiration || Date.now() >= mute.expiration);
-            if (groupDb.mute.length !== muteList.length) groupDb.save();
-            if (groupDb.mute.some(mute => mute.jid === ctx.sender.lid)) await ctx.deleteMessage(ctx.id, msg.key);
-
             const now = moment().tz(config.system.timeZone);
             const hour = now.hour();
             if (config.system.unavailableAtNight && !isOwner && !senderDb?.premium && hour >= 0 && hour < 6) return;
@@ -147,14 +141,36 @@ module.exports = (bot) => {
             if (isGroup) {
                 if (!isCmd || isCmd?.didyoumean) console.log(util.styleText("magenta", "[~]"), `Incoming message from group: ${groupId}, by: ${senderId}`);
 
-                const messageType = ctx.getMessageType();
-                const groupAutokick = groupDb?.option?.autokick;
-
                 if (groupDb?.sewa && Date.now() >= senderDb?.sewaExpiration) {
                     senderDb.sewa = false;
                     senderDb.sewaExpiration = null;
                     groupDb.save();
                 }
+
+                if (groupDb?.mutebot) return;
+                const muteList = groupDb?.mute || [];
+                groupDb.mute = muteList.filter(mute => !mute.expiration || Date.now() >= mute.expiration);
+                if (groupDb.mute.length !== muteList.length) groupDb.save();
+                if (groupDb.mute.some(mute => mute.jid === ctx.sender.lid)) await ctx.deleteMessage(ctx.id, msg.key);
+
+                let members = groupDb?.members || [];
+                const existingMember = members.find(member => ctx.helper.areJidsSameUser(member.id, senderLid));
+                if (existingMember) {
+                    existingMember.sent = (existingMember.sent || 0) + 1;
+                    if (ctx.sender.pushName) existingMember.pushName = ctx.sender.pushName;
+                } else {
+                    const groupMembers = await ctx.group().members();
+                    const memberData = groupMembers.find(member => ctx.helper.areJidsSameUser(member.id, senderLid));
+                    members.push({
+                        id: senderLid,
+                        sent: 1,
+                        pushName: ctx.sender.pushName
+                    });
+                }
+                groupDb.members = members;
+                groupDb.save();
+
+                const groupAutokick = groupDb?.option?.autokick;
 
                 const afkMentions = ctx.quoted ? [ctx.quoted.sender] : await ctx.getMentioned();
                 if (afkMentions.length > 0) {
