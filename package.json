@@ -1,0 +1,39 @@
+{
+  "name": "nirwabot",
+  "version": "1.0.0",
+  "description": "Useless WhatsApp Bot",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "cp config.example.json config.json && npm install",
+    "start": "node index.js",
+    "start:pm2": "pm2 start index.js --name $(basename $(pwd))"
+  },
+  "keywords": [
+    "whatsapp-bot"
+  ],
+  "author": "ItsReimau",
+  "license": "MIT",
+  "dependencies": {
+    "@cacheable/node-cache": "^3.1.1",
+    "@ginkohub/speedtest-js": "^0.0.2",
+    "@neoxr/helper": "^2.3.15",
+    "axios": "^1.19.0",
+    "axios-retry": "^4.5.0",
+    "baileys": "github:itsliaaa/baileys",
+    "cfonts": "^3.3.1",
+    "didyoumean": "^1.2.2",
+    "glob": "^13.0.6",
+    "jimp": "^1.6.1",
+    "link-preview-js": "^3.2.0",
+    "moment-timezone": "^0.6.3",
+    "pino": "^10.3.1",
+    "qrcode-terminal": "^0.12.0",
+    "simpl.db": "^2.13.0",
+    "vcard-parser": "^1.0.0",
+    "wa-sticker-formatter": "^4.4.4"
+  }
+}
