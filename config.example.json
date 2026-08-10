@@ -1,0 +1,76 @@
+{
+  "bot": {
+    "name": "NIRWABOT",
+    "phoneNumber": "",
+    "thumbnail": "https://picsum.photos/1280/720",
+    "groupJid": ""
+  },
+  "msg": {
+    "admin": "Perintah hanya dapat digunakan oleh admin grup!",
+    "banned": "Anda telah dibanned!",
+    "botAdmin": "Bot harus menjadi admin grup!",
+    "botGroupMembership": "Anda tidak bergabung dengan grup bot!",
+    "coin": "Koin Anda tidak cukup!",
+    "cooldown": "Perintah sedang dalam cooldown, tunggu...",
+    "gamerestrict": "Admin grup membatasi perintah game!",
+    "group": "Perintah hanya dapat digunakan dalam grup!",
+    "groupSewa": "Admin grup belum melakukan sewa!",
+    "owner": "Perintah hanya dapat digunakan oleh owner!",
+    "premium": "Anda harus menjadi pengguna premium!",
+    "private": "Perintah hanya dapat digunakan dalam obrolan pribadi!",
+    "privatePremiumOnly": "Anda harus menjadi pengguna premium untuk menggunakannya dalam obrolan pribadi.",
+    "restrict": "Perintah dibatasi untuk menghindari pemblokiran WhatsApp!",
+    "unavailableAtNight": "Bot tidak tersedia dari jam 12 malam sampai 6 pagi! Silakan kembali nanti.",
+    "footer": "Developed by ItsReimau with ♡",
+    "wait": "Tunggu sebentar...",
+    "notFound": "Tidak ada yang ditemukan! Coba lagi nanti.",
+    "error": "Terjadi kesalahan saat memproses permintaan! Coba lagi nanti atau hubungi owner jika masalah terus berlanjut.",
+    "invalidUrl": "URL tidak valid!"
+  },
+  "owner": {
+    "name": "Budi",
+    "organization": "PT. Pencari Cinta Sejati",
+    "id": "62123456789",
+    "report": true,
+    "co": [
+      {
+        "name": "Budi Jr.",
+        "organization": "PT. Pencari Cinta Sejati II",
+        "id": "62987654321",
+        "report": false
+      },
+      {
+        "name": "Rudi",
+        "organization": "PT. Maju Mundur Cantik",
+        "id": "6292837465",
+        "report": false,
+        "invisible": true
+      }
+    ]
+  },
+  "sticker": {
+    "packname": "",
+    "author": "nirwabot <github.com/itsreimau/nirwabot>"
+  },
+  "system": {
+    "alwaysOnline": true,
+    "antiCall": true,
+    "autoRead": true,
+    "autoTypingOnCmd": true,
+    "cooldown": 10000,
+    "maxListeners": 50,
+    "port": 3000,
+    "privatePremiumOnly": false,
+    "restrict": false,
+    "requireBotGroupMembership": false,
+    "requireGroupSewa": false,
+    "selfReply": true,
+    "timeZone": "Asia/Jakarta",
+    "unavailableAtNight": false,
+    "useCoin": true,
+    "usePairingCode": false,
+    "customPairingCode": "1L0V3Y0U",
+    "useStore": false,
+    "useServer": false
+  }
+}
