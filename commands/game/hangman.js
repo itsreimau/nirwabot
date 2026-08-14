@@ -1,4 +1,4 @@
-const session = new Map();
+const sessions = new Map();
 
 const render = (word, guessed) => word.split("").map(c => guessed.has(c) ? c : "_").join(" ");
 
@@ -6,8 +6,8 @@ module.exports = {
     name: "hangman",
     category: "game",
     code: async (ctx) => {
-        const sessionKey = `${ctx.id}_${ctx.sender.jid}`;
-        if (session.has(sessionKey)) return await ctx.reply(ctx.format.info("Sesi permainan sedang berjalan!"));
+        const sessionsKey = `${ctx.id}_${ctx.sender.jid}`;
+        if (sessions.has(sessionsKey)) return await ctx.reply(ctx.format.info("Sesi permainan sedang berjalan!"));
 
         try {
             const words = (await ctx.request.get("https://raw.githubusercontent.com/siuspsrb/database/main/game/kbbi.json")).data.filter(w => w.length > 1);
@@ -19,7 +19,7 @@ module.exports = {
                 lives: 6
             };
 
-            session.set(sessionKey, true);
+            sessions.set(sessionsKey, true);
 
             await ctx.reply({
                 text: `✦ — ${render(word, new Set())}\n` +
@@ -54,7 +54,7 @@ module.exports = {
                 const isUnlimited = collCtx.sender.isOwner() || collCtx.db.user?.premium;
 
                 if (answer === `surrender_${ctx.used.command}`) {
-                    session.delete(sessionKey);
+                    sessions.delete(sessionsKey);
                     collector.stop();
                     return await collCtx.reply({
                         text: ctx.format.info(`Anda menyerah! Jawaban: ${word}`),
@@ -68,7 +68,7 @@ module.exports = {
                 if (!word.includes(answer)) {
                     game.lives--;
                     if (game.lives <= 0) {
-                        session.delete(sessionKey);
+                        sessions.delete(sessionsKey);
                         collector.stop();
                         return await collCtx.reply({
                             text: ctx.format.info(`Permainan berakhir! Jawaban: ${word}`),
@@ -79,7 +79,7 @@ module.exports = {
 
                 const display = render(word, game.guessed);
                 if (!display.includes("_")) {
-                    session.delete(sessionKey);
+                    sessions.delete(sessionsKey);
                     collector.stop();
                     const senderDb = collCtx.db.user;
                     if (!isUnlimited) senderDb.coin += game.coin;
@@ -101,8 +101,8 @@ module.exports = {
             });
 
             collector.on("end", async (reason) => {
-                if (reason === "timeout" && session.has(ctx.id)) {
-                    session.delete(sessionKey);
+                if (reason === "timeout" && sessions.has(ctx.id)) {
+                    sessions.delete(sessionsKey);
                     await ctx.reply({
                         text: ctx.format.info(`Waktu habis! Jawaban: ${word}`),
                         buttons: playAgain
@@ -110,7 +110,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            sessions.delete(sessionKey);
+            sessions.delete(sessionsKey);
             await ctx.helper.handleError(ctx, error, true);
         }
     }

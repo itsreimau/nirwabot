@@ -1,4 +1,4 @@
-const session = new Map();
+const sessions = new Map();
 
 module.exports = {
     name: "family100",
@@ -7,7 +7,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(ctx.format.info("Sesi permainan sedang berjalan!"));
+        if (sessions.has(ctx.id)) return await ctx.reply(ctx.format.info("Sesi permainan sedang berjalan!"));
 
         try {
             const apiUrl = ctx.api.createUrl("siputzx", "/api/games/family100");
@@ -22,7 +22,7 @@ module.exports = {
                 participants: new Set()
             };
 
-            session.set(ctx.id, true);
+            sessions.set(ctx.id, true);
 
             await ctx.reply({
                 text: `✦ — ${result.soal}\n` +
@@ -59,7 +59,7 @@ module.exports = {
                     await collCtx.reply(ctx.format.info(`${ctx.format.ucwords(participantAnswer)} benar! Jawaban tersisa: ${game.answers.size}`));
 
                     if (game.answers.size === 0) {
-                        session.delete(ctx.id);
+                        sessions.delete(ctx.id);
                         collector.stop();
                         for (const participant of game.participants) {
                             const allParticipantDb = ctx.getDb("users", participant);
@@ -75,7 +75,7 @@ module.exports = {
                     }
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     const remaining = [...game.answers].map(ctx.format.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
-                    session.delete(ctx.id);
+                    sessions.delete(ctx.id);
                     collector.stop();
                     await collCtx.reply({
                         text: ctx.format.info(`Anda menyerah! Jawaban yang belum terjawab: ${remaining}`),
@@ -86,8 +86,8 @@ module.exports = {
 
             collector.on("end", async (reason) => {
                 const remaining = [...game.answers].map(ctx.format.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
-                if (reason === "timeout" && session.has(ctx.id)) {
-                    session.delete(ctx.id);
+                if (reason === "timeout" && sessions.has(ctx.id)) {
+                    sessions.delete(ctx.id);
                     await ctx.reply({
                         text: ctx.format.info(`Waktu habis! Jawaban yang belum terjawab: ${remaining}`),
                         buttons: playAgain

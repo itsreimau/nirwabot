@@ -128,11 +128,18 @@ module.exports = (bot) => {
             }
 
             const senderAfk = senderDb?.afk || {};
-            if (senderAfk?.reason || senderAfk?.timestamp) {
+            if (msg.body || senderAfk?.reason || senderAfk?.timestamp) {
                 const timeElapsed = Date.now() - senderAfk.timestamp;
                 if (timeElapsed > 3000) {
+                    const hours = Math.floor(timeElapsed / (1000 * 60 * 60));
+                    const coins = hours * 5;
+                    if (coins > 0) {
+                        senderDb.coin += coins;
+                        senderDb.save();
+                    }
                     const timeago = ctx.format.convertMsToDuration(timeElapsed);
-                    await ctx.reply(ctx.format.info(`Anda telah keluar dari AFK ${senderAfk.reason ? `dengan alasan ${ctx.format.inlineCode(senderAfk.reason)}` : "tanpa alasan"} selama ${timeago}.`));
+                    const rewardMsg = coins > 0 ? `+${coins} koin` : "";
+                    await ctx.reply(ctx.format.info(`Anda keluar AFK ${senderAfk.reason ? `dengan alasan ${ctx.format.inlineCode(senderAfk.reason)}` : "tanpa alasan"} selama ${timeago}. ${rewardMsg}`.trim()));
                     senderDb.afk = {};
                     senderDb.save();
                 }

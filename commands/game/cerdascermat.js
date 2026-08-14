@@ -1,10 +1,10 @@
-const session = new Map();
+const sessions = new Map();
 
 module.exports = {
     name: "cerdascermat",
     category: "game",
     code: async (ctx) => {
-        if (session.has(ctx.id)) return await ctx.reply(ctx.format.info("Sesi permainan sedang berjalan!"));
+        if (sessions.has(ctx.id)) return await ctx.reply(ctx.format.info("Sesi permainan sedang berjalan!"));
 
         try {
             const mapel = {
@@ -33,7 +33,7 @@ module.exports = {
                 wrongAnswered: []
             };
 
-            session.set(ctx.id, true);
+            sessions.set(ctx.id, true);
 
             await ctx.reply({
                 text: `✦ — ${result.pertanyaan}\n` +
@@ -83,7 +83,7 @@ module.exports = {
 
                 if (game.wrongAnswered.includes(collCtx.sender.jid)) return;
                 if (participantAnswer === game.answerKey) {
-                    session.delete(ctx.id);
+                    sessions.delete(ctx.id);
                     collector.stop();
                     if (!isUnlimited) participantDb.coin += game.coin;
                     participantDb.winGame += 1;
@@ -93,7 +93,7 @@ module.exports = {
                         buttons: playAgain
                     });
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
-                    session.delete(ctx.id);
+                    sessions.delete(ctx.id);
                     collector.stop();
                     await collCtx.reply({
                         text: ctx.format.info(`Anda menyerah! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
@@ -106,8 +106,8 @@ module.exports = {
             });
 
             collector.on("end", async (reason) => {
-                if (reason === "timeout" && session.has(ctx.id)) {
-                    session.delete(ctx.id);
+                if (reason === "timeout" && sessions.has(ctx.id)) {
+                    sessions.delete(ctx.id);
                     await ctx.reply({
                         text: ctx.format.info(`Waktu habis! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
                         buttons: playAgain

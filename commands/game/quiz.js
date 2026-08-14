@@ -125,7 +125,7 @@ class QuizGame {
             });
 
             collector.on("end", async (reason) => {
-                if (reason === "timeout" && session.has(ctx.id)) {
+                if (reason === "timeout" && sessions.has(ctx.id)) {
                     sessions.delete(sessionKey);
                     const formattedAnswer = this.formatAnswer(ctx, game.answer);
                     await ctx.reply({
