@@ -8,8 +8,8 @@ module.exports = [{
     },
     code: async (ctx) => {
         const muteList = ctx.db.group?.mute || [];
-        let resultText = "",
-            userMentions = [];
+        let resultText = "";
+        let userMentions = [];
         for (const mutedUser of muteList) {
             const userId = ctx.getId(mutedUser.jid);
             userMentions.push(mutedUser.jid);
@@ -51,8 +51,8 @@ module.exports = [{
     },
     code: async (ctx) => {
         const warnings = ctx.db.group?.warnings || [];
-        let resultText = "",
-            userMentions = [];
+        let resultText = "";
+        let userMentions = [];
         for (const warning of warnings) {
             const userId = ctx.getId(warning.jid);
             userMentions.push(warning.jid);

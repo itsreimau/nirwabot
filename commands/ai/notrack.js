@@ -28,8 +28,8 @@ module.exports = {
                 senderDb.save();
             }
             const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/notrack", {
-                teks: input,
-                session: senderDb.sessionId.notrack
+                text: input,
+                session_id: senderDb.sessionId.notrack
             });
             const result = (await ctx.request.get(apiUrl)).data.result.answer;
             await ctx.reply(result);

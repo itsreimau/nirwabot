@@ -39,7 +39,7 @@ class QuizGame {
         try {
             const apiUrl = ctx.api.createUrl("siputzx", this.apiEndpoint);
             const response = await ctx.request.get(apiUrl);
-            const data = response.data.data || response.data;
+            const data = response.data?.data?.data || response.data?.data || response.data;
             const game = {
                 coin: this.coinReward,
                 timeout: this.timeout,
@@ -119,7 +119,7 @@ class QuizGame {
                         buttons: playAgain
                     });
                     return;
-                } else if (this._isCloseMatch(ctx, participantAnswer, game.answer)) {
+                } else if (ctx.helper.didYouMean(participantAnswer, [game.answer]) === game.answer) {
                     await collCtx.reply(ctx.format.info("Sedikit lagi!"));
                 }
             });
@@ -138,11 +138,6 @@ class QuizGame {
             sessions.delete(sessionKey);
             await ctx.helper.handleError(ctx, error, true);
         }
-    }
-
-    _isCloseMatch(ctx, input, answer) {
-        if (!input || !answer) return false;
-        return ctx.helper.didYouMean(input, [answer]) === answer;
     }
 }
 
@@ -263,7 +258,7 @@ const options = {
         answerKey: "name",
         questionKey: null,
         audioKey: "audio",
-        coinReward: 7,
+        coinReward: 5,
         hintCost: 3,
         timeout: 60000,
         formatQuestion(ctx, data) {
@@ -273,13 +268,14 @@ const options = {
                 `❖ ${ctx.format.bold("Batas waktu")}: ${ctx.format.convertMsToDuration(this.timeout)}`;
         }
     },
-    tebakjkt: {
-        name: "tebakjkt",
+    tebakjkt48: {
+        name: "tebakjkt48",
+        aliases: ["tebakjkt"],
         apiEndpoint: "/api/games/tebakjkt",
         answerKey: "jawaban",
         questionKey: null,
         imageKey: "gambar",
-        coinReward: 7,
+        coinReward: 5,
         hintCost: 3,
         timeout: 60000,
         formatQuestion(ctx, data) {
@@ -361,7 +357,7 @@ const options = {
         answerKey: "judul",
         questionKey: null,
         audioKey: "lagu",
-        coinReward: 7,
+        coinReward: 5,
         hintCost: 3,
         timeout: 60000,
         formatQuestion(ctx, data) {

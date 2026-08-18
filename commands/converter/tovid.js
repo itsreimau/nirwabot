@@ -8,7 +8,7 @@ module.exports = {
     code: async (ctx) => {
         if (!ctx.isMedia(["sticker"], ["quoted"])) return await ctx.reply(ctx.format.generateInstruction(["reply"], ["sticker"]));
         try {
-            const buffer = await ctx.quoted.download();
+            const buffer = await ctx.quoted.media.download();
             const result = (await ctx.request.post("https://nekochii-converter.hf.space/webp2mp4", {
                 file: buffer.toString("base64"),
                 json: true

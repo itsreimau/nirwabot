@@ -31,14 +31,15 @@ module.exports = {
             }
 
             const params = {
-                teks: input,
-                session: senderDb.sessionId.chatgpt
+                text: input,
+                model: `gpt-5.4-${senderDb?.premium ? "mini" : "nano"}`,
+                session_id: senderDb.sessionId.chatgpt
             };
             if (!!ctx.isMedia(["image"])) {
-                const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
+                const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.media.upload();
                 params.image = uploadUrl;
             }
-            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/gpt4o-mini", params);
+            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/duckai", params);
             const result = (await ctx.request.get(apiUrl)).data.result;
             await ctx.reply(result);
         } catch (error) {

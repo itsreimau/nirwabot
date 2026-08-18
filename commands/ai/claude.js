@@ -11,7 +11,8 @@ module.exports = {
                 `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
                 `${ctx.format.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
                 ctx.format.generateNotes([
-                    `Ketik ${ctx.format.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`
+                    `Ketik ${ctx.format.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`,
+                    "AI ini dapat melihat gambar."
                 ])
             );
 
@@ -27,11 +28,17 @@ module.exports = {
                 (senderDb.sessionId ||= {}).claude = ctx.helper.randomUUID();
                 senderDb.save();
             }
-            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/chatgpt-org", {
-                teks: input,
-                model: "anthropic/claude-haiku-4-5",
-                session: senderDb.sessionId.claude
-            });
+
+            const params = {
+                text: input,
+                model: "claude-haiku-4-5",
+                session_id: senderDb.sessionId.claude
+            };
+            if (!!ctx.isMedia(["image"])) {
+                const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.media.upload();
+                params.image = uploadUrl;
+            }
+            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/duckai", params);
             const result = (await ctx.request.get(apiUrl)).data.result;
             await ctx.reply(result);
         } catch (error) {

@@ -14,7 +14,7 @@ module.exports = {
         if (!ctx.isMedia(["image"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
 
         try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
+            const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.media.upload();
             const result = ctx.api.createUrl("faaa", "/faa/nano-banana", {
                 url: uploadUrl,
                 prompt: input

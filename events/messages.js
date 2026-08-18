@@ -128,7 +128,7 @@ module.exports = (bot) => {
             }
 
             const senderAfk = senderDb?.afk || {};
-            if (msg.body || senderAfk?.reason || senderAfk?.timestamp) {
+            if (msg.body && (senderAfk?.reason || senderAfk?.timestamp)) {
                 const timeElapsed = Date.now() - senderAfk.timestamp;
                 if (timeElapsed > 3000) {
                     const hours = Math.floor(timeElapsed / (1000 * 60 * 60));

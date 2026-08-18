@@ -7,8 +7,8 @@ module.exports = [{
     },
     code: async (ctx) => {
         const users = ctx.db.users.getMany(user => user.banned);
-        let resultText = "",
-            userMentions = [];
+        let resultText = "";
+        let userMentions = [];
         for (const user of users) {
             const userId = ctx.getId(user.jid);
             resultText += `❖ @${userId}\n`;
@@ -28,8 +28,8 @@ module.exports = [{
     },
     code: async (ctx) => {
         const users = ctx.db.users.getMany(user => user.premium);
-        let resultText = "",
-            userMentions = [];
+        let resultText = "";
+        let userMentions = [];
         for (const user of users) {
             const userId = ctx.getId(user.jid);
             userMentions.push(user.jid);
@@ -54,8 +54,8 @@ module.exports = [{
     },
     code: async (ctx) => {
         const groups = ctx.db.groups.getMany(group => group.sewa);
-        let resultText = "",
-            groupMentions = [];
+        let resultText = "";
+        let groupMentions = [];
         for (const group of groups) {
             const groupSubject = await ctx.group(group.jid).name();
             groupMentions.push({

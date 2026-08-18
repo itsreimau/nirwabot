@@ -19,7 +19,7 @@ module.exports = {
                 ips: "Ilmu Pengetahuan Sosial",
                 ipa: "Ilmu Pengetahuan Alam"
             };
-            const input = ctx.args?.[0] && mapel[ctx.args[0]] ? ctx.args[0] : mapel[Math.floor(Math.random() * 10) + 1];
+            const input = ctx.args?.[0] && mapel[ctx.args[0]] ? ctx.args[0] : Object.keys(mapel)[Math.floor(Math.random() * Object.keys(mapel).length)];
             const apiUrl = ctx.api.createUrl("siputzx", "/api/games/cc-sd", {
                 matapelajaran: input
             });

@@ -23,10 +23,12 @@ module.exports = (bot) => {
             if (muteList.some(mute => mute.jid === ctx.sender.lid)) return;
         }
 
-        if (isGroup && !ctx.msg.key.fromMe && ctx.prefix !== "force") {
-            console.log(util.styleText("magenta", "[~]"), `Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);
-        } else if (isPrivate && !ctx.msg.key.fromMe) {
-            console.log(util.styleText("magenta", "[~]"), `Incoming command: ${ctx.used.command}, from: ${senderId}`);
+        if (ctx.prefix !== "force") {
+            if (isGroup && !ctx.msg.key.fromMe) {
+                console.log(util.styleText("magenta", "[~]"), `Incoming command: ${ctx.used.command}, from group: ${groupId}, by: ${senderId}`);
+            } else if (isPrivate && !ctx.msg.key.fromMe) {
+                console.log(util.styleText("magenta", "[~]"), `Incoming command: ${ctx.used.command}, from: ${senderId}`);
+            }
         }
 
         await next();

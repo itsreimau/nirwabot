@@ -27,9 +27,9 @@ module.exports = {
                 (senderDb.sessionId ||= {}).qwen = ctx.helper.randomUUID();
                 senderDb.save();
             }
-            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/chatgpt-org", {
+            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/chatai", {
                 teks: input,
-                model: "qwen/qwen-2.5-72b-instruct",
+                model: "qwen",
                 session: senderDb.sessionId.qwen
             });
             const result = (await ctx.request.get(apiUrl)).data.result;

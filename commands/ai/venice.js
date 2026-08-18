@@ -12,8 +12,8 @@ module.exports = {
                 ctx.format.generateCmdExample(ctx.used, "apa itu evangelion?")
             );
         try {
-            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/venice", {
-                teks: input
+            const apiUrl = ctx.api.createUrl("faaa", "/faa/venice-ai", {
+                text: input
             });
             const result = (await ctx.request.get(apiUrl)).data.result;
             await ctx.reply(result);

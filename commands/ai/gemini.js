@@ -9,13 +9,29 @@ module.exports = {
         if (!input)
             return await ctx.reply(
                 `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
-                ctx.format.generateCmdExample(ctx.used, "apa itu evangelion?")
+                `${ctx.format.generateCmdExample(ctx.used, "apa itu evangelion?")}\n` +
+                ctx.format.generateNotes([
+                    `Ketik ${ctx.format.inlineCode(`${ctx.used.prefix + ctx.used.command} reset`)} untuk mereset riwayat percakapan.`
+                ])
             );
+
+        const senderDb = ctx.db.user;
+        if (input.toLowerCase() === "reset") {
+            (senderDb.sessionId ||= {}).gemini = ctx.helper.randomUUID();
+            senderDb.save();
+            return await ctx.reply(ctx.format.info("Riwayat percakapan berhasil direset!"));
+        }
+
         try {
-            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/gemini-pro", {
-                teks: input
+            if (!senderDb.sessionId?.gemini) {
+                (senderDb.sessionId ||= {}).gemini = ctx.helper.randomUUID();
+                senderDb.save();
+            }
+            const apiUrl = ctx.api.createUrl("alwayscodex", "/api/ai/gemini", {
+                text: input,
+                session: senderDb.sessionId.gemini
             });
-            const result = (await ctx.request.get(apiUrl)).data.result;
+            const result = (await ctx.request.get(apiUrl)).data.result.answer;
             await ctx.reply(result);
         } catch (error) {
             await ctx.helper.handleError(ctx, error, true);

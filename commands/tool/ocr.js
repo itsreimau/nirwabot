@@ -7,7 +7,7 @@ module.exports = {
     code: async (ctx) => {
         if (!ctx.isMedia(["image"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
         try {
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
+            const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.media.upload();
             const apiUrl = ctx.api.createUrl("nexray", "/tools/ocr", {
                 url: uploadUrl
             });

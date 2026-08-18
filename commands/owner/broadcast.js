@@ -109,7 +109,7 @@ module.exports = [{
             let content;
             const type = ctx.isMedia(["image", "video"]);
             if (["image", "video"].includes(type)) {
-                const buffer = await ctx.msg.download() || await ctx.quoted.download();
+                const buffer = await ctx.msg.media.download() || await ctx.quoted.media.download();
                 content = {
                     [type]: buffer,
                     caption: input

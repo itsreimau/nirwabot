@@ -16,7 +16,7 @@ module.exports = {
         try {
             let [top, bottom] = input.split("|").map(inp => inp);
             [top, bottom] = bottom ? [top || " ", bottom] : [" ", top || " "];
-            const uploadUrl = await ctx.msg.upload() || await ctx.quoted.upload();
+            const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.media.upload();
             const result = ctx.api.createUrl("nexray", "/maker/smeme", {
                 text_atas: top,
                 text_bawah: bottom,

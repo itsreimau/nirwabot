@@ -8,7 +8,7 @@ module.exports = {
     code: async (ctx) => {
         if (!ctx.isMedia(["audio", "document", "image", "sticker", "video"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["audio", "document", "image", "sticker", "video"]));
         try {
-            const result = await ctx.msg.upload() || await ctx.quoted.upload();
+            const result = await ctx.msg.media.upload() || await ctx.quoted.media.upload();
             await ctx.reply({
                 text: `❖ ${ctx.format.bold("URL")}: ${result}`,
                 footer: ctx.format.info("File akan kedaluwarsa setelah 3 jam."),

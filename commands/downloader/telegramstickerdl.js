@@ -4,13 +4,31 @@ const chunkArray = (array, chunkSize) => {
     return chunks;
 };
 
-const prepareStickerPack = (stickers, title, name, packId) => {
-    const maxPerPack = 50;
-    const stickerChunks = chunkArray(stickers, maxPerPack);
-    return stickerChunks.map((chunk, index) => ({
-        name: `${title}${stickerChunks.length > 1 ? ` (${index + 1}/${stickerChunks.length})` : ""}`,
+const getFileSize = async (ctx, url) => {
+    try {
+        const result = (await ctx.request.head(url)).headers;
+        const content = result["content-length"];
+        return content ? parseInt(content) : null;
+    } catch {
+        return null;
+    }
+};
+
+const prepareStickerPacks = async (ctx, stickers, title, name, packId) => {
+    const maxPerPack = 60;
+    const maxSize = 50 * 1024 * 1024;
+    const valid = [];
+    for (const sticker of stickers) {
+        if (sticker.is_animated) continue;
+        const size = await getFileSize(ctx, sticker.url);
+        if (size !== null && size <= maxSize) valid.push(sticker);
+    }
+    if (valid.length === 0) return [];
+    const chunks = chunkArray(valid, maxPerPack);
+    return chunks.map((chunk, index) => ({
+        name: title,
         publisher: config.bot.name,
-        description: name,
+        description: `${name}${chunks.length > 1 ? ` (${index + 1}/${chunks.length})` : ""}`,
         cover: chunk[0]?.url,
         stickers: chunk.map(sticker => ({
             data: sticker.url,
@@ -41,7 +59,8 @@ module.exports = {
                 url
             });
             const result = (await ctx.request.get(apiUrl)).data.result;
-            const stickerPacks = prepareStickerPack(result.sticker, result.title, result.name, ctx.msg.key.id);
+            const stickerPacks = prepareStickerPacks(ctx, result.sticker, result.title, result.name, ctx.msg.key.id);
+            if (stickerPacks.length === 0) return await ctx.reply(config.msg.notFound);
             for (let i = 0; i < stickerPacks.length; i++) {
                 const stickerPack = stickerPacks[i];
                 await ctx.reply({
