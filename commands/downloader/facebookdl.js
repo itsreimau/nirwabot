@@ -15,13 +15,13 @@ module.exports = {
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
         try {
-            const apiUrl = ctx.api.createUrl("nexray", "/downloader/facebook", {
+            const apiUrl = ctx.api.createUrl("mikako", "/api/fb", {
                 url
             });
-            const result = (await ctx.request.get(apiUrl)).data.result;
+            const result = (await ctx.request.get(apiUrl)).data.data;
             await ctx.reply({
                 video: {
-                    url: result.video_hd || result.video_sd
+                    url: result.videoUrl[0].url
                 },
                 caption: `❖ ${ctx.format.bold("URL")}: ${url}`
             });
