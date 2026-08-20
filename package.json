@@ -23,7 +23,7 @@
     "@neoxr/helper": "^2.3.15",
     "axios": "^1.19.0",
     "axios-retry": "^4.5.0",
-    "baileys": "github:itsliaaa/baileys",
+    "@itsliaaa/baileys": "0.3.18-final",
     "cfonts": "^3.3.1",
     "didyoumean": "^1.2.2",
     "glob": "^13.0.6",
