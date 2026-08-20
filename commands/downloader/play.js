@@ -35,34 +35,36 @@ module.exports = {
             let downloadResult = "";
 
             if (source === "spotify") {
-                const searchApiUrl = ctx.api.createUrl("nexray", "/search/spotify", {
+                const searchApiUrl = ctx.api.createUrl("sanka", "/search/spotify", {
                     q: input
-                });
+                }, "apikey");
                 searchResult = (await ctx.request.get(searchApiUrl)).data.result[searchIndex];
                 await ctx.reply(
                     `❖ ${ctx.format.bold("Judul")}: ${searchResult.title}\n` +
                     `❖ ${ctx.format.bold("Artis")}: ${searchResult.artist}\n` +
-                    `❖ ${ctx.format.bold("URL")}: ${searchResult.url}`
+                    `❖ ${ctx.format.bold("URL")}: ${searchResult.track_url}`
                 );
-                const downloadApiUrl = ctx.api.createUrl("alwayscodex", "/api/downloader/spotify", {
-                    url: searchResult.url
+                const downloadApiUrl = ctx.api.createUrl("mikako", "/api/spotify", {
+                    url: searchResult.track_url
                 });
-                downloadResult = (await ctx.request.get(downloadApiUrl)).data.result.download_url;
+                downloadResult = (await ctx.request.get(downloadApiUrl)).data.data.download;
             } else {
-                const searchApiUrl = ctx.api.createUrl("nexray", "/search/youtube", {
+                const searchApiUrl = ctx.api.createUrl("sanka", "/search/youtube", {
                     q: input
-                });
-                searchResult = (await ctx.request.get(searchApiUrl)).data.result[searchIndex];
+                }, "apikey");
+                searchResult = (await ctx.request.get(searchApiUrl)).data.result;
+                const filterResult = searchResult.filter(vid => vid.type === "video")
+                const result = filterResult[searchIndex]
                 await ctx.reply(
-                    `❖ ${ctx.format.bold("Judul")}: ${searchResult.title}\n` +
-                    `❖ ${ctx.format.bold("Artis")}: ${searchResult.channel}\n` +
-                    `❖ ${ctx.format.bold("URL")}: ${searchResult.url}`
+                    `❖ ${ctx.format.bold("Judul")}: ${result.title}\n` +
+                    `❖ ${ctx.format.bold("Artis")}: ${result.author.name}\n` +
+                    `❖ ${ctx.format.bold("URL")}: ${result.url}`
                 );
-                const downloadApiUrl = ctx.api.createUrl("alwayscodex", "/api/downloader/savetube", {
-                    url: searchResult.url,
-                    quality: "mp3"
+                const downloadApiUrl = ctx.api.createUrl("mikako", "/api/ytmp3", {
+                    url: result.url,
+                    type: "MP3"
                 });
-                downloadResult = (await ctx.request.get(downloadApiUrl)).data.result.download;
+                downloadResult = (await ctx.request.get(downloadApiUrl)).data.data.download_url;
             }
 
             if (config.system.autoTypingOnCmd) await ctx.simulateTyping()
