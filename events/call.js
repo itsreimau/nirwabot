@@ -1,4 +1,4 @@
-const Baileys = require("baileys");
+const Baileys = require("@itsliaaa/baileys");
 const util = require("node:util");
 
 module.exports = (bot) => {
