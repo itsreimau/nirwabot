@@ -13,7 +13,7 @@ module.exports = {
                 ctx.format.generateCmdExample(ctx.used, "rei ayanami")
             );
         try {
-            const result = ctx.api.createUrl("kangwifi", "/tools/qrcode", {
+            const apiUrl = ctx.api.createUrl("kangwifi", "/tools/qrcode", {
                 text: input
             });
             const result = (await ctx.request.get(apiUrl)).data.result.url;

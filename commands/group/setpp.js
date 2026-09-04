@@ -9,7 +9,6 @@ module.exports = {
     code: async (ctx) => {
         const type = ctx.isMedia(["image"]);
         if (!type) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
-
         try {
             const buffer = await ctx.msg.media.download() || await ctx.quoted.media.download();
             const image = ctx.msg.message.imageMessage || ctx.quoted.message.imageMessage;

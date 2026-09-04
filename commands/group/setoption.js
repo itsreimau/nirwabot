@@ -1,3 +1,19 @@
+const validOptions = [
+    "antiaudio",
+    "antidocument",
+    "antiimage",
+    "antisticker",
+    "antivideo",
+    "antigcsw",
+    "antilink",
+    "antispam",
+    "antitagsw",
+    "antitoxic",
+    "autokick",
+    "gamerestrict",
+    "welcome"
+];
+
 module.exports = {
     name: "setoption",
     aliases: ["setopt"],
@@ -26,41 +42,11 @@ module.exports = {
 
         if (input.toLowerCase() === "status") {
             const groupOption = ctx.db.group.option || {};
-            const statuses = [
-                "antiaudio",
-                "antidocument",
-                "antiimage",
-                "antisticker",
-                "antivideo",
-                "antigcsw",
-                "antilink",
-                "antispam",
-                "antitagsw",
-                "antitoxic",
-                "autokick",
-                "gamerestrict",
-                "welcome"
-            ];
-            const text = statuses.map(key => `❖ ${ctx.format.ucwords(key)}: ${groupOption[key] ? "Aktif" : "Nonaktif"}`).join("\n");
+            const text = validOptions.map(opt => `❖ ${ctx.format.ucwords(opt)}: ${groupOption[opt] ? "Aktif" : "Nonaktif"}`).join("\n");
             return await ctx.reply(text);
         }
 
         try {
-            const validOptions = [
-                "antiaudio",
-                "antidocument",
-                "antiimage",
-                "antisticker",
-                "antivideo",
-                "antigcsw",
-                "antilink",
-                "antispam",
-                "antitagsw",
-                "antitoxic",
-                "autokick",
-                "gamerestrict",
-                "welcome"
-            ];
             const setKey = input.toLowerCase();
             if (!validOptions.includes(setKey)) return await ctx.reply(ctx.format.info(`Opsi ${ctx.format.inlineCode(input)} tidak valid!`));
 

@@ -100,8 +100,8 @@ class QuizGame {
                 time: game.timeout
             });
             setTimeout(() => {
-                if (sessions.has(ctx.id)) {
-                    sessions.delete(ctx.id);
+                if (sessions.has(sessionKey)) {
+                    sessions.delete(sessionKey);
                     collector.stop();
                 }
             }, game.timeout + 5000);
@@ -147,7 +147,7 @@ class QuizGame {
             });
 
             collector.on("end", async () => {
-                if (sessions.has(ctx.id)) {
+                if (sessions.has(sessionKey)) {
                     sessions.delete(sessionKey);
                     const formattedAnswer = this.formatAnswer(ctx, game.answer);
                     await ctx.reply({

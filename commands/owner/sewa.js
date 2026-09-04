@@ -42,6 +42,7 @@ module.exports = [{
                 }];
             }
             const targetDb = ctx.getDb("groups", target.id);
+            targetDb.sewa = true;
             if (daysAmount && daysAmount > 0) {
                 targetDb.sewaExpiration = Date.now() + (daysAmount * 24 * 60 * 60 * 1000);
                 targetDb.save();

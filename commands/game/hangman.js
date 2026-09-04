@@ -44,8 +44,8 @@ module.exports = {
                 }
             });
             setTimeout(() => {
-                if (sessions.has(ctx.id)) {
-                    sessions.delete(ctx.id);
+                if (sessions.has(sessionsKey)) {
+                    sessions.delete(sessionsKey);
                     collector.stop();
                 }
             }, game.timeout + 5000);
