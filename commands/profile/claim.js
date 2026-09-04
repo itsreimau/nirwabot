@@ -43,20 +43,20 @@ module.exports = {
 
         const senderDb = ctx.db.user;
         const claim = claimRewards[input];
-        const level = senderDb?.level || 0;
+        const level = senderDb.level || 0;
 
         if (!claim) return await ctx.reply(ctx.format.info("Hadiah tidak valid!"));
-        if (ctx.sender.isOwner() || senderDb?.premium) return await ctx.reply(ctx.format.info("Anda sudah memiliki koin tak terbatas!"));
+        if (ctx.sender.isOwner() || senderDb.premium) return await ctx.reply(ctx.format.info("Anda sudah memiliki koin tak terbatas!"));
         if (level < claim.level) return await ctx.reply(ctx.format.info(`Anda perlu mencapai level ${claim.level} untuk mengklaim hadiah ini. Level Anda saat ini adalah ${level}.`));
 
         const currentTime = Date.now();
-        const lastClaim = (senderDb?.lastClaim ?? {})[input] || 0;
+        const lastClaim = senderDb.lastClaim?.[input] || 0;
         const remainingTime = claim.cooldown - (currentTime - lastClaim);
         if (remainingTime > 0) return await ctx.reply(ctx.format.info(`Anda telah mengklaim hadiah ${input}! Tunggu ${ctx.format.convertMsToDuration(remainingTime)} untuk mengklaim lagi.`));
 
         try {
-            senderDb.coin = (senderDb?.coin || 0) + claim.reward;
-            (senderDb.lastClaim ||= {})[input] = currentTime;
+            senderDb.coin += claim.reward;
+            senderDb.lastClaim[input] = currentTime;
             senderDb.save();
             await ctx.reply(ctx.format.info(`Anda berhasil mengklaim hadiah ${input} sebesar ${claim.reward} koin! Koin Anda saat ini: ${senderDb.coin}`));
         } catch (error) {

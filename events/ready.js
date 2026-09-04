@@ -5,7 +5,7 @@ module.exports = (bot) => {
         console.log(util.styleText("blue", "[>]"), `${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`);
 
         const botDb = bot.getDb("bot");
-        const botRestart = botDb?.restart || {};
+        const botRestart = botDb.restart || {};
         if (botRestart?.id && botRestart?.timestamp && botRestart?.readyAt) {
             bot.readyAt = botRestart.readyAt;
             const timeago = bot.format.convertMsToDuration(Date.now() - botRestart.timestamp);

@@ -3,7 +3,8 @@ module.exports = {
     aliases: ["koin"],
     category: "profile",
     code: async (ctx) => {
-        if (ctx.sender.isOwner() || ctx.db.user?.premium) return await ctx.reply(ctx.format.info("Anda memiliki koin tak terbatas."));
-        await ctx.reply(ctx.format.info(`Anda memiliki ${ctx.db.user.coin || 0} koin tersisa.`));
+        const userDb = ctx.db.user;
+        if (ctx.sender.isOwner() || userDb.premium) return await ctx.reply(ctx.format.info("Anda memiliki koin tak terbatas."));
+        await ctx.reply(ctx.format.info(`Anda memiliki ${userDb.coin} koin tersisa.`));
     }
 };

@@ -61,6 +61,12 @@ module.exports = {
                     return body.length === 1 && result.semua_jawaban.map(ans => Object.keys(ans)[0].toLowerCase()).includes(body);
                 }
             });
+            setTimeout(() => {
+                if (sessions.has(ctx.id)) {
+                    sessions.delete(ctx.id);
+                    collector.stop();
+                }
+            }, game.timeout + 5000);
             const playAgain = [{
                 text: "Main Lagi",
                 id: `${ctx.used.prefix + ctx.used.command} ${input}`

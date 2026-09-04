@@ -18,7 +18,7 @@ module.exports = [{
             );
 
         const botDb = ctx.db.bot;
-        let blacklist = botDb?.blacklistBroadcast || [];
+        let blacklist = botDb.blacklistBroadcast || [];
 
         if (ctx.args[0]?.toLowerCase() === "blacklist" && ctx.isGroup()) {
             const groupIndex = blacklist.indexOf(ctx.id);
@@ -88,7 +88,7 @@ module.exports = [{
             );
 
         const botDb = ctx.db.bot;
-        let blacklist = botDb?.blacklistBroadcast || [];
+        let blacklist = botDb.blacklistBroadcast || [];
 
         if (ctx.args[0]?.toLowerCase() === "blacklist" && ctx.isGroup()) {
             const groupIndex = blacklist.indexOf(ctx.id);

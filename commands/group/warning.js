@@ -25,8 +25,8 @@ module.exports = [{
 
         try {
             const groupDb = ctx.db.group;
-            const warnings = groupDb?.warnings || [];
-            const maxWarnings = groupDb?.maxwarnings || 3;
+            const warnings = groupDb.warnings || [];
+            const maxWarnings = groupDb.maxwarnings || 3;
             const targetIndex = warnings.findIndex(warning => ctx.helper.areJidsSameUser(warning.id, target.id));
 
             let newWarningCount;
@@ -82,8 +82,8 @@ module.exports = [{
 
         try {
             const groupDb = ctx.db.group;
-            const warnings = groupDb?.warnings || [];
-            const maxWarnings = groupDb?.maxwarnings || 3;
+            const warnings = groupDb.warnings || [];
+            const maxWarnings = groupDb.maxwarnings || 3;
             const targetIndex = warnings.findIndex(warning => ctx.helper.areJidsSameUser(warning.id, target.id));
 
             if (targetIndex === -1) return await ctx.reply(ctx.format.info("Pengguna tidak memiliki warning."));

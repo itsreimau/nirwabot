@@ -13,7 +13,6 @@ module.exports = {
                 ctx.format.generateCmdExample(ctx.used, "bot wangsaf")
             );
         if (input.length > 30) return await ctx.reply(ctx.format.info("Maksimal 30 karakter!"));
-
         try {
             const waitMsg = await ctx.reply(ctx.format.info(config.msg.wait));
             const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !g.announce && !g.isCommunity && !g.isCommunityAnnounce).map(g => g.id);

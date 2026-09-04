@@ -23,7 +23,7 @@ module.exports = {
             });
 
         try {
-            const apiUrl = ctx.api.createUrl("nexray", "/search/spotify", {
+            const apiUrl = ctx.api.createUrl("zellrayy", "/search/spotify", {
                 q: input
             });
             const result = (await ctx.request.get(apiUrl)).data.result;

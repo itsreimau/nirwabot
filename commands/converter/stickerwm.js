@@ -13,7 +13,6 @@ module.exports = {
                 ctx.format.generateCmdExample(ctx.used, "stiker saya|itsreimau")
             );
         if (!ctx.isMedia(["sticker"], ["quoted"])) return await ctx.reply(ctx.format.generateInstruction(["reply"], ["sticker"]));
-
         try {
             const buffer = await ctx.msg.media.download() || await ctx.quoted.media.download();
             const [packname, author] = input.split("|");

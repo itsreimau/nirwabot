@@ -18,7 +18,6 @@ module.exports = {
                     `Gunakan ${ctx.format.inlineCode("leave")} untuk mensimulasikan keluar dari grup.`
                 ])
             );
-
         try {
             const welcome = {
                 id: ctx.id,

@@ -61,7 +61,7 @@ class QuizGame {
             const game = {
                 coin: this.coinReward,
                 timeout: this.timeout,
-                answer: data[this.answerKey]?.toLowerCase() || ""
+                answer: data[this.answerKey].toLowerCase()
             };
 
             sessions.set(sessionKey, true);
@@ -99,6 +99,12 @@ class QuizGame {
             const collector = ctx.MessageCollector({
                 time: game.timeout
             });
+            setTimeout(() => {
+                if (sessions.has(ctx.id)) {
+                    sessions.delete(ctx.id);
+                    collector.stop();
+                }
+            }, game.timeout + 5000);
             const playAgain = [{
                 text: "Main Lagi",
                 id: ctx.used.prefix + ctx.used.command

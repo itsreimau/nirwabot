@@ -13,7 +13,6 @@ module.exports = {
                 ctx.format.generateCmdExample(ctx.used, "https://id.pinterest.com/pin/843580573994363210")
             );
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
-
         try {
             const apiUrl = ctx.api.createUrl("nexray", "/downloader/pinterest", {
                 url

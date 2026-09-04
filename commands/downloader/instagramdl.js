@@ -13,7 +13,6 @@ module.exports = {
                 ctx.format.generateCmdExample(ctx.used, "https://www.instagram.com/p/DVKVfnVjyep")
             );
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
-
         try {
             const apiUrl = ctx.api.createUrl("nexray", "/downloader/instagram", {
                 url

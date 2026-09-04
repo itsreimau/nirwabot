@@ -20,12 +20,10 @@ module.exports = {
                     }),
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
-
         try {
             const targetDb = ctx.getDb("users", target.id);
             targetDb.coin += coinAmount;
             targetDb.save();
-
             const flag = ctx.flag({
                 silent: {
                     type: "boolean",

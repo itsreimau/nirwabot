@@ -11,15 +11,15 @@ module.exports = (bot) => {
         const botDb = ctx.db.bot;
         const senderDb = ctx.db.user;
 
-        if (botDb?.mode === "premium" && !isOwner && !senderDb?.premium) return;
-        if (botDb?.mode === "group" && isPrivate && !isOwner && !senderDb?.premium) return;
-        if (botDb?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
-        if (botDb?.mode === "self" && !isOwner) return;
+        if (botDb.mode === "premium" && !isOwner && !senderDb.premium) return;
+        if (botDb.mode === "group" && isPrivate && !isOwner && !senderDb.premium) return;
+        if (botDb.mode === "private" && isGroup && !isOwner && !senderDb.premium) return;
+        if (botDb.mode === "self" && !isOwner) return;
 
         if (isGroup) {
             const groupDb = ctx.db.group;
-            if (groupDb?.mutebot && !isOwner && !await ctx.group().isSenderAdmin() && !(ctx.used.command === "unmute" && ctx.args[0]?.toLowerCase() === "bot")) return;
-            const muteList = groupDb?.mute || [];
+            if (groupDb.mutebot && !isOwner && !await ctx.group().isSenderAdmin() && !(ctx.used.command === "unmute" && ctx.args[0]?.toLowerCase() === "bot")) return;
+            const muteList = groupDb.mute || [];
             if (muteList.some(mute => mute.id === ctx.sender.lid)) return;
         }
 

@@ -43,7 +43,12 @@ module.exports = {
                     return body.length === 1 && /[a-z]/.test(body);
                 }
             });
-
+            setTimeout(() => {
+                if (sessions.has(ctx.id)) {
+                    sessions.delete(ctx.id);
+                    collector.stop();
+                }
+            }, game.timeout + 5000);
             const playAgain = [{
                 text: "Main Lagi",
                 id: ctx.used.prefix + ctx.used.command

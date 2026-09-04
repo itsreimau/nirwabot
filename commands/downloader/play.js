@@ -35,27 +35,27 @@ module.exports = {
             let downloadResult = "";
 
             if (source === "spotify") {
-                const searchApiUrl = ctx.api.createUrl("nexray", "/search/spotify", {
+                const searchApiUrl = ctx.api.createUrl("zellrayy", "/search/spotify", {
                     q: input
                 });
                 searchResult = (await ctx.request.get(searchApiUrl)).data.result[searchIndex];
                 await ctx.reply(
                     `❖ ${ctx.format.bold("Judul")}: ${searchResult.title}\n` +
                     `❖ ${ctx.format.bold("Artis")}: ${searchResult.artist}\n` +
-                    `❖ ${ctx.format.bold("URL")}: ${searchResult.url}`
+                    `❖ ${ctx.format.bold("URL")}: ${searchResult.spotifyUrl}`
                 );
                 const downloadApiUrl = ctx.api.createUrl("nexray", "/downloader/spotify", {
-                    url: searchResult.url
+                    url: searchResult.spotifyUrl
                 });
                 downloadResult = (await ctx.request.get(downloadApiUrl)).data.result.url;
             } else {
-                const searchApiUrl = ctx.api.createUrl("nexray", "/search/youtube", {
+                const searchApiUrl = ctx.api.createUrl("zellrayy", "/search/youtube", {
                     q: input
                 });
                 searchResult = (await ctx.request.get(searchApiUrl)).data.result[searchIndex];
                 await ctx.reply(
                     `❖ ${ctx.format.bold("Judul")}: ${searchResult.title}\n` +
-                    `❖ ${ctx.format.bold("Artis")}: ${searchResult.channel}\n` +
+                    `❖ ${ctx.format.bold("Artis")}: ${searchResult.channel.name}\n` +
                     `❖ ${ctx.format.bold("URL")}: ${searchResult.url}`
                 );
                 const downloadApiUrl = ctx.api.createUrl("nexray", "/downloader/savetube", {

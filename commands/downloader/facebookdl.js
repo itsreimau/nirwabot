@@ -13,15 +13,14 @@ module.exports = {
                 ctx.format.generateCmdExample(ctx.used, "https://www.facebook.com/reel/2796711250580249")
             );
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
-
         try {
             const apiUrl = ctx.api.createUrl("nexray", "/downloader/facebook", {
                 url
             });
-            const result = (await ctx.request.get(apiUrl)).data.data;
+            const result = (await ctx.request.get(apiUrl)).data.result;
             await ctx.reply({
                 video: {
-                    url: result.videoUrl[0].url
+                    url: result.video_hd || result.video_sd
                 },
                 caption: `❖ ${ctx.format.bold("URL")}: ${url}`
             });

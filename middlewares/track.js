@@ -3,9 +3,9 @@ module.exports = (bot) => {
         const senderDb = ctx.db.user;
         const xpGain = 10;
         const xpToLevelUp = 100;
-        let newSenderXp = (senderDb?.xp || 0) + xpGain;
+        let newSenderXp = senderDb.xp + xpGain;
         if (newSenderXp >= xpToLevelUp) {
-            const senderLevel = senderDb?.level || 0;
+            const senderLevel = senderDb.level || 0;
             senderDb.level = senderLevel + 1;
             newSenderXp -= xpToLevelUp;
         }

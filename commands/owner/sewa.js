@@ -41,7 +41,6 @@ module.exports = [{
                     groupSubject: await group.name()
                 }];
             }
-
             const targetDb = ctx.getDb("groups", target.id);
             if (daysAmount && daysAmount > 0) {
                 targetDb.sewaExpiration = Date.now() + (daysAmount * 24 * 60 * 60 * 1000);
@@ -100,7 +99,6 @@ module.exports = [{
             targetDb.sewa = false;
             targetDb.sewaExpiration = null;
             targetDb.save();
-
             const flag = ctx.flag({
                 silent: {
                     type: "boolean",

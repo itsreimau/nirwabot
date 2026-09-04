@@ -15,21 +15,16 @@ module.exports = {
                 ctx.format.generateCmdExample(ctx.used, "get in the fucking robot, shinji!")
             );
         if (input.length > 1000) return await ctx.reply(ctx.format.info("Maksimal 1000 karakter!"));
-
         try {
             const isQuoted = !ctx.text && ctx.quoted;
             const profilePictureUrl = await ctx.core.profilePictureUrl(isQuoted ? ctx.quoted?.sender : ctx.sender.lid).catch(() => "https://placehold.net/avatar.png");
-            const apiUrl = ctx.api.createUrl("azbry", "/api/maker/qwa", {
+            const result = (await ctx.request.post("https://qwa.eeq.my.id/api/generate", {
                 sender_name: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
+                sender_number: ctx.getId(ctx.sender.jid),
                 sender_avatar: profilePictureUrl,
                 message: input,
-                time: moment.tz(config.system.timeZone).format("HH:mm"),
-                ...(!isQuoted && ctx.quoted && {
-                    "quoted.name": ctx.quoted.pushName,
-                    "quoted.message": ctx.quoted.body
-                })
-            });
-            const result = (await ctx.request.post(apiUrl, null, {
+                time: moment.tz(config.system.timeZone).format("HH:mm")
+            }, {
                 responseType: "arraybuffer"
             })).data;
             await ctx.reply({

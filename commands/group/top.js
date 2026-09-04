@@ -11,7 +11,7 @@ class TopHandler {
     async handle(ctx) {
         const currentMembers = await ctx.group().members();
         const currentMemberIds = currentMembers.map(m => m.id);
-        let members = ctx.db.group?.members || [];
+        let members = ctx.db.group.members || [];
         const dirtyCount = members.length;
         members = members.filter(m => currentMemberIds.some(id => ctx.helper.areJidsSameUser(id, m.id)));
         if (members.length !== dirtyCount) {

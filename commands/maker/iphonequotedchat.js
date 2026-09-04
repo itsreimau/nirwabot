@@ -14,7 +14,7 @@ module.exports = {
             );
         if (input.length > 1000) return await ctx.reply(ctx.format.info("Maksimal 1000 karakter!"));
         try {
-            const result = ctx.api.createUrl("azbry", "/api/maker/iqc", {
+            const result = ctx.api.createUrl("nexray", "/maker/iqc", {
                 text: input
             });
             await ctx.reply({

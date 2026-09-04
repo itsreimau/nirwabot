@@ -20,7 +20,7 @@ module.exports = {
 
         const senderDb = ctx.db.user;
         if (input.toLowerCase() === "reset") {
-            (senderDb.sessionId ||= {}).chatgpt = [];
+            senderDb.sessionId.chatgpt = [];
             senderDb.save();
             return await ctx.reply(ctx.format.info("Riwayat percakapan berhasil direset!"));
         }
@@ -34,11 +34,13 @@ module.exports = {
             });
             const result = (await ctx.request.get(apiUrl)).data.data;
             if (!senderDb.sessionId?.chatgpt) {
-                (senderDb.sessionId ||= {}).chatgpt = [result.chatId, result.sessionId];
+                senderDb.sessionId.chatgpt = [result.chatId, result.sessionId];
                 senderDb.save();
             }
             await new AIRich(ctx.core).addText(result.reply).send(ctx.id);
         } catch (error) {
+            senderDb.sessionId.chatgpt = [];
+            senderDb.save();
             await ctx.helper.handleError(ctx, error, true);
         }
     }

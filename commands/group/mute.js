@@ -34,7 +34,7 @@ module.exports = [{
 
         try {
             const groupDb = ctx.db.group;
-            const muteList = groupDb?.mute || [];
+            const muteList = groupDb.mute || [];
             if (muteList.find(m => m.id === target.id)) return await ctx.reply(ctx.format.info("Pengguna sudah di-mute sebelumnya!"));
 
             if (daysAmount && daysAmount > 0) {
@@ -91,7 +91,7 @@ module.exports = [{
 
         try {
             const groupDb = ctx.db.group;
-            const muteList = groupDb?.mute || [];
+            const muteList = groupDb.mute || [];
             const index = muteList.findIndex(m => m.id === target.id);
             if (index === -1) return await ctx.reply(ctx.format.info("Pengguna tidak ditemukan dalam daftar mute!"));
             muteList.splice(index, 1);

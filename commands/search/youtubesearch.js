@@ -26,13 +26,13 @@ module.exports = {
             });
 
         try {
-            const apiUrl = ctx.api.createUrl("nexray", "/search/youtube", {
+            const apiUrl = ctx.api.createUrl("zellrayy", "/search/youtube", {
                 q: input
             });
             const result = (await ctx.request.get(apiUrl)).data.result;
             const resultText = result.map(res =>
                 `❖ ${ctx.format.bold("Judul")}: ${res.title}\n` +
-                `❖ ${ctx.format.bold("Channel")}: ${res.channel}\n` +
+                `❖ ${ctx.format.bold("Channel")}: ${res.channel.name}\n` +
                 `❖ ${ctx.format.bold("URL")}: ${res.url}`
             ).join("\n\n");
             await ctx.reply(resultText.trim() || ctx.format.info(config.msg.notFound));

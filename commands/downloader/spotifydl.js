@@ -23,7 +23,6 @@ module.exports = {
                 })
             );
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
-
         try {
             const apiUrl = ctx.api.createUrl("nexray", "/downloader/spotify", {
                 url

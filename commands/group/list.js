@@ -7,7 +7,7 @@ module.exports = [{
         group: true
     },
     code: async (ctx) => {
-        const muteList = ctx.db.group?.mute || [];
+        const muteList = ctx.db.group.mute || [];
         let resultText = "";
         let userMentions = [];
         for (const mutedUser of muteList) {
@@ -50,13 +50,13 @@ module.exports = [{
         group: true
     },
     code: async (ctx) => {
-        const warnings = ctx.db.group?.warnings || [];
+        const warnings = ctx.db.group.warnings || [];
         let resultText = "";
         let userMentions = [];
         for (const warning of warnings) {
             const userId = ctx.getId(warning.id);
             userMentions.push(warning.id);
-            resultText += `❖ @${userId} (${warning.count}/${ctx.db.group?.maxwarnings || 3})\n`;
+            resultText += `❖ @${userId} (${warning.count}/${ctx.db.group.maxwarnings || 3})\n`;
         }
         await ctx.reply({
             text: resultText.trim() || ctx.format.info(config.msg.notFound),

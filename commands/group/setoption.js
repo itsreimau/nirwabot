@@ -65,9 +65,9 @@ module.exports = {
             if (!validOptions.includes(setKey)) return await ctx.reply(ctx.format.info(`Opsi ${ctx.format.inlineCode(input)} tidak valid!`));
 
             const groupDb = ctx.db.group;
-            const currentStatus = groupDb?.option?.[setKey] || false;
+            const currentStatus = groupDb.option?.[setKey] || false;
             const newStatus = !currentStatus;
-            (groupDb.option ||= {})[setKey] = newStatus;
+            groupDb.option[setKey] = newStatus;
             groupDb.save();
             await ctx.reply(ctx.format.info(`Opsi ${ctx.format.inlineCode(input)} berhasil ${newStatus ? "diaktifkan" : "dinonaktifkan"}!`));
         } catch (error) {

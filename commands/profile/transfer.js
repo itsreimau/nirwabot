@@ -16,9 +16,9 @@ module.exports = {
             });
 
         const senderDb = ctx.db.user;
-        if (ctx.sender.isOwner() || senderDb?.premium) return await ctx.reply(ctx.format.info("Koin tak terbatas tidak dapat ditransfer!"));
+        if (ctx.sender.isOwner() || senderDb.premium) return await ctx.reply(ctx.format.info("Koin tak terbatas tidak dapat ditransfer!"));
         if (coinAmount <= 0) return await ctx.reply(ctx.format.info("Jumlah koin tidak boleh kurang dari atau sama dengan 0!"));
-        if (senderDb?.coin < coinAmount) return await ctx.reply(ctx.format.info("Koin Anda tidak mencukupi untuk transfer ini!"));
+        if (senderDb.coin < coinAmount) return await ctx.reply(ctx.format.info("Koin Anda tidak mencukupi untuk transfer ini!"));
         if (ctx.checkOwner(target.id)) return await ctx.reply(ctx.format.info("Tidak dapat mentransfer koin ke akun owner!"));
 
         try {

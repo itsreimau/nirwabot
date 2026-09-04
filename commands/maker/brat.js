@@ -14,8 +14,8 @@ module.exports = [{
             );
         if (input.length > 1000) return await ctx.reply(ctx.format.info("Maksimal 1000 karakter!"));
         try {
-            const result = ctx.api.createUrl("azbry", "/api/maker/brat", {
-                text: input
+            const result = ctx.api.createUrl("zellrayy", "/maker/brat", {
+                q: input
             });
             await ctx.reply({
                 sticker: {
@@ -45,8 +45,8 @@ module.exports = [{
             );
         if (input.length > 1000) return await ctx.reply(ctx.format.info("Maksimal 1000 karakter!"));
         try {
-            const result = ctx.api.createUrl("azbry", "/api/maker/bratvid", {
-                text: input
+            const result = ctx.api.createUrl("zellrayy", "/maker/bratvid", {
+                q: input
             });
             await ctx.reply({
                 sticker: {

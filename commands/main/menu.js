@@ -62,7 +62,6 @@ module.exports = {
                 }
                 text += `ⓒ = coin | Ⓖ = grup | Ⓞ = owner | Ⓟ = premium | ⓟ = private\n`;
 
-                const thumbnailText = input === "all" || ctx.used.command === "allmenu" ? "All Menu" : (input && tag[input] ? tag[input] : "Menu");
                 const thumbnail = await ctx.helper.getJpegThumbnail(config.bot.thumbnail);
                 await ctx.reply({
                     caption: text,
@@ -86,11 +85,11 @@ module.exports = {
                 const groups = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !g.announce && !g.isCommunity && !g.isCommunityAnnounce);
                 const text = `✦ — Halo, @${ctx.getId(ctx.sender.lid)}! Saya adalah bot WhatsApp bernama ${config.bot.name}, dimiliki oleh ${config.owner.name}.\n` +
                     "\n" +
-                    `❖ ${ctx.format.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb?.premium ? `Premium (${userDb?.premiumExpiration ? `${ctx.format.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
-                    `❖ ${ctx.format.bold("Level")}: ${userDb?.level || 0} (${userDb?.xp || 0}/100)\n` +
-                    `❖ ${ctx.format.bold("Koin")}: ${ctx.sender.isOwner() || userDb?.premium ? "Unlimited" : (userDb?.coin || 0)}\n` +
+                    `❖ ${ctx.format.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb.premium ? `Premium (${userDb.premiumExpiration ? `${ctx.format.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
+                    `❖ ${ctx.format.bold("Level")}: ${userDb.level} (${userDb.xp}/100)\n` +
+                    `❖ ${ctx.format.bold("Koin")}: ${ctx.sender.isOwner() || userDb.premium ? "Unlimited" : (userDb.coin || 0)}\n` +
                     "\n" +
-                    `❖ ${ctx.format.bold("Mode")}: ${ctx.format.ucwords(ctx.db.bot?.mode || "public")}\n` +
+                    `❖ ${ctx.format.bold("Mode")}: ${ctx.format.ucwords(ctx.db.bot.mode || "public")}\n` +
                     `❖ ${ctx.format.bold("Uptime")}: ${ctx.format.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
                     `❖ ${ctx.format.bold("Database")}: ${ctx.db.users.totalEntries} users, ${ctx.db.groups.totalEntries}/${groups.length} groups\n` +
                     `❖ ${ctx.format.bold("Library")}: Baileys (${ctx.helper.getBaileysVersion()})\n` +

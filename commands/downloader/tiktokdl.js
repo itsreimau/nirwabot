@@ -13,7 +13,6 @@ module.exports = {
                 ctx.format.generateCmdExample(ctx.used, "https://www.tiktok.com/@netflixanime/video/7596931111805078805")
             );
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
-
         try {
             const apiUrl = ctx.api.createUrl("nexray", "/downloader/tiktok", {
                 url

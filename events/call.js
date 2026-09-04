@@ -11,7 +11,7 @@ module.exports = (bot) => {
         const fromDb = bot.getDb("users", fromJid);
         const botDb = bot.getDb("bot");
 
-        if (call?.isGroup || isOwner || fromDb?.banned) return;
+        if (call.isGroup || isOwner || fromDb?.banned) return;
 
         const fromPnJid = call.callerPn;
         const fromPnId = bot.getId(fromPnJid);

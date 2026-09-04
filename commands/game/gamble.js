@@ -11,9 +11,9 @@ module.exports = {
             );
 
         const senderDb = ctx.db.user;
-        const isUnlimited = ctx.sender.isOwner() || senderDb?.premium;
+        const isUnlimited = ctx.sender.isOwner() || senderDb.premium;
         if (input < 10) return await ctx.reply(ctx.format.info("Jumlah taruhan tidak boleh kurang dari 10!"));
-        if (!isUnlimited && senderDb?.coin < input) return await ctx.reply(ctx.format.info("Koin Anda tidak mencukupi!"));
+        if (!isUnlimited && senderDb.coin < input) return await ctx.reply(ctx.format.info("Koin Anda tidak mencukupi!"));
 
         try {
             const jackpotPrize = Math.ceil(input * 5);

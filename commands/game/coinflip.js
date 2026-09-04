@@ -14,8 +14,8 @@ module.exports = {
             );
 
         const senderDb = ctx.db.user;
-        const isUnlimited = ctx.sender.isOwner() || senderDb?.premium;
-        if (!isUnlimited && senderDb?.coin < 500) return await ctx.reply(ctx.format.info("Koin Anda tidak cukup! Minimal memiliki 500 koin untuk bermain."));
+        const isUnlimited = ctx.sender.isOwner() || senderDb.premium;
+        if (!isUnlimited && senderDb.coin < 500) return await ctx.reply(ctx.format.info("Koin Anda tidak cukup! Minimal memiliki 500 koin untuk bermain."));
 
         try {
             const winRate = 0.40;

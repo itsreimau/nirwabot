@@ -2,8 +2,8 @@ const util = require("node:util");
 const moment = require("moment-timezone");
 
 async function handleWarning(ctx, senderLid, senderLidId, groupJid, groupDb) {
-    const maxWarnings = groupDb?.maxwarnings || 3;
-    const warnings = groupDb?.warnings || [];
+    const maxWarnings = groupDb.maxwarnings || 3;
+    const warnings = groupDb.warnings || [];
     const senderWarning = warnings.find(warning => ctx.helper.areJidsSameUser(warning.id, senderLid));
     let currentWarnings = senderWarning ? senderWarning.count : 0;
     currentWarnings += 1;
@@ -39,7 +39,7 @@ async function handleWarning(ctx, senderLid, senderLidId, groupJid, groupDb) {
 async function handleAntiViolation(ctx, type, text, senderLid, senderLidId, groupJid, groupDb) {
     await ctx.reply(ctx.format.info(text));
     await ctx.delete(ctx.msg.key);
-    if (groupDb?.option?.autokick) {
+    if (groupDb.option?.autokick) {
         await ctx.group().kick(senderLid);
     } else {
         await handleWarning(ctx, senderLid, senderLidId, groupJid, groupDb);
@@ -72,20 +72,20 @@ module.exports = (bot) => {
         const groupDb = ctx.db.group;
         if (!senderDb || !groupDb) return;
 
-        if (senderDb?.premium && senderDb?.premiumExpiration && Date.now() >= senderDb.premiumExpiration) {
+        if (senderDb.premium && senderDb.premiumExpiration && Date.now() >= senderDb.premiumExpiration) {
             senderDb.premium = false;
             senderDb.premiumExpiration = null;
             senderDb.coin = 100;
             senderDb.save();
         }
 
-        if (botDb?.mode === "premium" && !isOwner && !senderDb?.premium) return;
-        if (botDb?.mode === "group" && isPrivate && !isOwner && !senderDb?.premium) return;
-        if (botDb?.mode === "private" && isGroup && !isOwner && !senderDb?.premium) return;
-        if (botDb?.mode === "self" && !isOwner) return;
+        if (botDb.mode === "premium" && !isOwner && !senderDb.premium) return;
+        if (botDb.mode === "group" && isPrivate && !isOwner && !senderDb.premium) return;
+        if (botDb.mode === "private" && isGroup && !isOwner && !senderDb.premium) return;
+        if (botDb.mode === "self" && !isOwner) return;
 
         const now = moment().tz(config.system.timeZone);
-        if (config.system.unavailableAtNight && !isOwner && !senderDb?.premium && now.hour() >= 0 && now.hour() < 6) return;
+        if (config.system.unavailableAtNight && !isOwner && !senderDb.premium && now.hour() >= 0 && now.hour() < 6) return;
 
         if (isCmd?.prefix && botDb?.lastPrefix !== isCmd.prefix) {
             botDb.lastPrefix = isCmd.prefix;
@@ -101,7 +101,7 @@ module.exports = (bot) => {
                 }]
             });
 
-        const autodownloadEnabled = senderDb?.autodownload || false;
+        const autodownloadEnabled = senderDb.autodownload || false;
         if (autodownloadEnabled && !isCmd) {
             const urlPatterns = {
                 facebook: /(facebook\.com|fb\.watch|fb\.com)/i,
@@ -135,7 +135,7 @@ module.exports = (bot) => {
             }
         }
 
-        const senderAfk = senderDb?.afk || {};
+        const senderAfk = senderDb.afk || {};
         if (msg.body && (senderAfk?.reason || senderAfk?.timestamp)) {
             const timeElapsed = Date.now() - senderAfk.timestamp;
             if (timeElapsed > 3000) {
@@ -156,19 +156,19 @@ module.exports = (bot) => {
         if (isGroup) {
             if (!isCmd || isCmd?.didyoumean) console.log(util.styleText("magenta", "[~]"), `Incoming message from group: ${groupId}, by: ${senderId}`);
 
-            if (groupDb?.sewa && Date.now() >= groupDb?.sewaExpiration) {
+            if (groupDb.sewa && Date.now() >= groupDb.sewaExpiration) {
                 groupDb.sewa = false;
                 groupDb.sewaExpiration = null;
                 groupDb.save();
             }
 
-            if (groupDb?.mutebot) return;
-            const muteList = groupDb?.mute || [];
+            if (groupDb.mutebot) return;
+            const muteList = groupDb.mute || [];
             groupDb.mute = muteList.filter(mute => !mute.expiration || Date.now() >= mute.expiration);
             if (groupDb.mute.length !== muteList.length) groupDb.save();
             if (groupDb.mute.some(mute => mute.id === senderLid)) await ctx.delete(msg.key);
 
-            let members = groupDb?.members || [];
+            let members = groupDb.members || [];
             const existing = members.find(m => ctx.helper.areJidsSameUser(m.id, senderLid));
             if (existing) {
                 existing.sent = (existing.sent || 0) + 1;
@@ -205,14 +205,14 @@ module.exports = (bot) => {
                         media
                     }
                     of antiActions) {
-                    if (groupDb?.option?.[type] && ctx.isMedia([media], ["primary"])) await handleAntiViolation(ctx, type, `Jangan kirim ${media}!`, senderLid, senderLidId, groupJid, groupDb);
+                    if (groupDb.option?.[type] && ctx.isMedia([media], ["primary"])) await handleAntiViolation(ctx, type, `Jangan kirim ${media}!`, senderLid, senderLidId, groupJid, groupDb);
                 }
 
-                if (groupDb?.option?.antigcsw && msg.message?.groupStatusMessageV2?.contextInfo?.isGroupStatus) await handleAntiViolation(ctx, "antigcsw", "Jangan kirim SW!", senderLid, senderLidId, groupJid, groupDb);
-                if (groupDb?.option?.antilink && msg.body && ctx.helper.isUrl(msg.body)) await handleAntiViolation(ctx, "antilink", "Jangan kirim link!", senderLid, senderLidId, groupJid, groupDb);
-                if (groupDb?.option?.antispam) {
+                if (groupDb.option?.antigcsw && msg.message?.groupStatusMessageV2?.contextInfo?.isGroupStatus) await handleAntiViolation(ctx, "antigcsw", "Jangan kirim SW!", senderLid, senderLidId, groupJid, groupDb);
+                if (groupDb.option?.antilink && msg.body && ctx.helper.isUrl(msg.body)) await handleAntiViolation(ctx, "antilink", "Jangan kirim link!", senderLid, senderLidId, groupJid, groupDb);
+                if (groupDb.option?.antispam) {
                     const now = Date.now();
-                    const spamData = groupDb?.spam || [];
+                    const spamData = groupDb.spam || [];
                     const senderSpam = spamData.find(spam => ctx.helper.areJidsSameUser(spam.id, senderLid)) || {
                         id: senderLid,
                         count: 0,
@@ -231,8 +231,8 @@ module.exports = (bot) => {
                     }
                     groupDb.save();
                 }
-                if (groupDb?.option?.antitagsw && msg.message?.protocolMessage?.type === 25) await handleAntiViolation(ctx, "antitagsw", "Jangan kirim tag SW!", senderLid, senderLidId, groupJid, groupDb);
-                if (groupDb?.option?.antitoxic && msg.body && /(anj(k|g)|ajn?|a?njin|bajingan|b(a?n)?gsa?t|ko?nto?l|me?me?k|pe?pe?k|meki|titi(t|d)|pe?ler|tetek|toket|ngewe|go?blo?k|to?lo?l|idiot|(k|ng)e?nto?(t|d)|jembut|bego|dajj?al|janc(u|o)k|pantek|puki|kimak|kampang|lonte|col(i|mek?)|pelacur|henceu?t|nigga|fuck|dick|bitch|tits|bastard|asshole|dontol|kontoi|ontol)/i.test(msg.body)) await handleAntiViolation(ctx, "antitoxic", "Jangan kirim toxic!", senderLid, senderLidId, groupJid, groupDb);
+                if (groupDb.option?.antitagsw && msg.message?.protocolMessage?.type === 25) await handleAntiViolation(ctx, "antitagsw", "Jangan kirim tag SW!", senderLid, senderLidId, groupJid, groupDb);
+                if (groupDb.option?.antitoxic && msg.body && /(anj(k|g)|ajn?|a?njin|bajingan|b(a?n)?gsa?t|ko?nto?l|me?me?k|pe?pe?k|meki|titi(t|d)|pe?ler|tetek|toket|ngewe|go?blo?k|to?lo?l|idiot|(k|ng)e?nto?(t|d)|jembut|bego|dajj?al|janc(u|o)k|pantek|puki|kimak|kampang|lonte|col(i|mek?)|pelacur|henceu?t|nigga|fuck|dick|bitch|tits|bastard|asshole|dontol|kontoi|ontol)/i.test(msg.body)) await handleAntiViolation(ctx, "antitoxic", "Jangan kirim toxic!", senderLid, senderLidId, groupJid, groupDb);
             }
 
             const afkMentions = ctx.quoted ? [ctx.quoted.sender] : await ctx.getMentioned();

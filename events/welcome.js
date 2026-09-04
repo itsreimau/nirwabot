@@ -6,9 +6,9 @@ async function WelcomeHandler(bot, welcome, type, isSimulate = false) {
     const botDb = bot.getDb("bot");
     const participantJid = welcome.participant;
 
-    if (!isSimulate && groupDb?.mutebot) return;
-    if (!isSimulate && !groupDb?.option?.welcome) return;
-    if (!isSimulate && !["group", "public"].includes(botDb?.mode || "public")) return;
+    if (!isSimulate && groupDb.mutebot) return;
+    if (!isSimulate && !groupDb.optionswelcome) return;
+    if (!isSimulate && !["group", "public"].includes(botDb.mode || "public")) return;
 
     const now = moment().tz(config.system.timeZone);
     const hour = now.hour();
@@ -16,7 +16,7 @@ async function WelcomeHandler(bot, welcome, type, isSimulate = false) {
 
     const isWelcome = type === "UserJoin";
     const tag = `@${bot.getId(participantJid)}`;
-    const customText = isWelcome ? groupDb?.text?.welcome : groupDb?.text?.goodbye;
+    const customText = isWelcome ? groupDb.text?.welcome : groupDb.text?.goodbye;
     const metadata = await bot.core.groupMetadata(groupJid);
     const text = customText ? customText.replace(/%tag%/g, tag).replace(/%subject%/g, metadata.subject).replace(/%description%/g, metadata.description) : (isWelcome ?
         `>ᴗ< ${bot.format.italic(`Selamat datang ${tag} di grup ${metadata.subject}!`)}` :
@@ -27,7 +27,7 @@ async function WelcomeHandler(bot, welcome, type, isSimulate = false) {
         mentions: [participantJid]
     });
 
-    if (isWelcome && groupDb?.text?.intro)
+    if (isWelcome && groupDb.text?.intro)
         await bot.sendMessage(groupJid, {
             text: groupDb.text.intro,
             mentions: [participantJid],

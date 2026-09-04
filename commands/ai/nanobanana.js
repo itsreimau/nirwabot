@@ -13,13 +13,13 @@ module.exports = {
                 ctx.format.generateCmdExample(ctx.used, "make it evangelion art style")
             );
         if (!ctx.isMedia(["image"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
-
         try {
             const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.media.upload();
-            const result = ctx.api.createUrl("faaa", "/faa/nano-banana", {
-                url: uploadUrl,
+            const apiUrl = ctx.api.createUrl("lea", "/aitools/img2prompt", {
+                img: uploadUrl,
                 prompt: input
             });
+            const result = (await ctx.request.get(apiUrl)).data.data.image_url;
             await ctx.reply({
                 image: {
                     url: result

@@ -32,14 +32,13 @@ module.exports = {
             ];
             const setKey = key.toLowerCase();
             if (!validKeys.includes(setKey)) return await ctx.reply(ctx.format.info(`Teks ${ctx.format.inlineCode(key)} tidak valid!`));
-
             const botDb = ctx.db.bot;
             if (text.toLowerCase() === "delete") {
-                delete botDb?.text?.[setKey];
+                delete botDb.text[setKey];
                 botDb.save();
                 return await ctx.reply(ctx.format.info(`Pesan untuk teks ${ctx.format.inlineCode(key)} berhasil dihapus!`));
             }
-            (botDb.text ||= {})[setKey] = text;
+            botDb.text[setKey] = text;
             botDb.save();
             await ctx.reply(ctx.format.info(`Pesan untuk teks ${ctx.format.inlineCode(key)} berhasil disimpan!`));
         } catch (error) {

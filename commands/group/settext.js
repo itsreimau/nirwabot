@@ -37,11 +37,11 @@ module.exports = {
 
             const groupDb = ctx.db.group;
             if (text.toLowerCase() === "delete") {
-                delete groupDb?.text?.[setKey];
+                delete groupDb.text[setKey];
                 groupDb.save();
                 return await ctx.reply(ctx.format.info(`Pesan untuk teks ${ctx.format.inlineCode(key)} berhasil dihapus!`));
             }
-            (groupDb.text ||= {})[setKey] = text;
+            groupDb.text[setKey] = text;
             groupDb.save();
             await ctx.reply(ctx.format.info(`Pesan untuk teks ${ctx.format.inlineCode(key)} berhasil disimpan!`));
         } catch (error) {
