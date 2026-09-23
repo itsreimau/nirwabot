@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["iqc"],
     category: "maker",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.body;

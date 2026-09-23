@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["toaud", "tomp3"],
     category: "converter",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         if (!ctx.isMedia(["video"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["video"]));

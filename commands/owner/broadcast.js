@@ -34,7 +34,7 @@ module.exports = [{
         }
 
         try {
-            const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !blacklist.includes(g.id) && !g.announce && !g.isCommunity && !g.isCommunityAnnounce).map(g => g.id);
+            const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !blacklist.includes(g.id) && !g.announce && !g.isCommunity && !g.isCommunityAnnounce && !g.restrict).map(g => g.id);
             const {
                 delays,
                 duration
@@ -60,7 +60,7 @@ module.exports = [{
                     await ctx.helper.delay(delays[i]);
                 } catch {}
             }
-            await ctx.edit(waitMsg.key, ctx.format.info(`Terkirim ke ${groupJids.length} grup.`));
+            await ctx.edit(ctx.format.info(`Terkirim ke ${groupJids.length} grup.`), waitMsg.key);
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }
@@ -102,7 +102,7 @@ module.exports = [{
         }
 
         try {
-            const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !blacklist.includes(g.id) && !g.announce && !g.isCommunity && !g.isCommunityAnnounce).map(g => g.id);
+            const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !blacklist.includes(g.id) && !g.announce && !g.isCommunity && !g.isCommunityAnnounce && !g.restrict).map(g => g.id);
             let content;
             if (type) {
                 const buffer = await ctx.msg.media.download() || await ctx.quoted.media.download();
@@ -133,7 +133,7 @@ module.exports = [{
                     await ctx.helper.delay(delays[i]);
                 } catch {}
             }
-            await ctx.edit(waitMsg.key, ctx.format.info(`Terkirim ke ${groupJids.length} grup.`));
+            await ctx.edit(ctx.format.info(`Terkirim ke ${groupJids.length} grup.`), waitMsg.key);
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

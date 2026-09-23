@@ -37,9 +37,9 @@ module.exports = {
 
             const formatPerms = (perms) => {
                 let format = "";
-                if (perms.coin) format += `ⓒ`;
                 if (perms.group) format += "Ⓖ";
                 if (perms.owner) format += "Ⓞ";
+                if (perms.ticket) format += `Ⓣ`;
                 if (perms.premium) format += "Ⓟ";
                 if (perms.private) format += "ⓟ";
                 return format;
@@ -60,7 +60,7 @@ module.exports = {
                     });
                     text += "╰┈┈┈┈┈┈\n\n";
                 }
-                text += `ⓒ = coin | Ⓖ = grup | Ⓞ = owner | Ⓟ = premium | ⓟ = private\n`;
+                text += `Ⓖ = grup | Ⓞ = owner | Ⓣ = tiket | Ⓟ = premium | ⓟ = private\n`;
 
                 const thumbnail = await ctx.helper.getJpegThumbnail(config.bot.thumbnail);
                 await ctx.reply({
@@ -82,11 +82,13 @@ module.exports = {
                 });
             } else {
                 const userDb = ctx.db.user;
-                const groups = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !g.announce && !g.isCommunity && !g.isCommunityAnnounce);
+                const maxTicket = (ctx.sender.isOwner() || senderDb.premium) ? config.system.maxTicketPremium : config.system.maxTicket;
+                const groups = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !g.announce && !g.isCommunity && !g.isCommunityAnnounce && !g.restrict);
                 const text = `✦ — Halo, @${ctx.getId(ctx.sender.jid)}! Saya ${config.bot.name} milik ${config.owner.name}.\n` +
                     "\n" +
                     `❖ ${ctx.format.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb.premium ? `Premium (${userDb.premiumExpiration ? `${ctx.format.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} lagi` : "Selamanya"})` : "Freemium")}\n` +
-                    `❖ ${ctx.format.bold("Koin")}: ${userDb.coin}\n` +
+                    `❖ ${ctx.format.bold("Ticket")}: ${userDb.ticket}/${maxTicket}\n` +
+                    `❖ ${ctx.format.bold("Skor")}: ${userDb.score}\n` +
                     "\n" +
                     `❖ ${ctx.format.bold("Mode")}: ${ctx.format.ucwords(ctx.db.bot.mode || "public")}\n` +
                     `❖ ${ctx.format.bold("Uptime")}: ${ctx.format.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +

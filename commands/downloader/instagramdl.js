@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["ig", "igdl", "instagram"],
     category: "downloader",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const url = ctx.args[0] || ctx.helper.extractUrlFromText(ctx.quoted?.body);

@@ -104,12 +104,12 @@ module.exports = {
     permissions: { // Izin (opsional)
         admin: false, // Hanya admin grup?
         botAdmin: false, // Bot harus admin?
-        coin: 0, // Biaya koin
         group: false, // Hanya di grup?
         owner: false, // Hanya owner?
         premium: false, // Hanya premium?
         private: false, // Hanya private chat?
-        restrict: false // Mode restriktif?
+        restrict: false, // Mode restriktif?
+        ticket: true // Biaya tiket
     },
     code: async (ctx) => {
         await ctx.reply("Hello, World! 👋"); // Kirim pesan

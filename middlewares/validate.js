@@ -46,14 +46,17 @@ module.exports = (bot) => {
             if (perms.botAdmin && isGroup && !await ctx.group(ctx.id, !config.system.selfReply).isBotAdmin()) return restrict("botAdmin", config.msg.botAdmin, "🤖");
             if (perms.group && isPrivate) return restrict("group", config.msg.group, "👥");
             if (perms.private && isGroup) return restrict("private", config.msg.private, "📩");
-            if (perms.coin && config.system.useCoin) {
-                if (senderDb.coin >= perms.coin) {
-                    senderDb.coin -= perms.coin;
+            if (perms.ticket && config.system.useTicket && !isOwner) {
+                if (senderDb.ticket >= 1) {
+                    senderDb.ticket -= 1;
                     senderDb.save();
                 } else {
-                    return restrict("coin", config.msg.coin, "💰", [{
-                        text: "Cek Koin",
-                        id: `${ctx.used.prefix}coin`
+                    return restrict("ticket", config.msg.ticket, "🎟️", [{
+                        text: "Tukar Skor",
+                        id: `${ctx.used.prefix}exchange`
+                    }, {
+                        text: "Cek Profile",
+                        id: `${ctx.used.prefix}profile`
                     }]);
                 }
             }

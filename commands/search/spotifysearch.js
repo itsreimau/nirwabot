@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["spotify", "spotifys"],
     category: "search",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const input = ctx.text;

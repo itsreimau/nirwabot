@@ -4,8 +4,6 @@ class QuizGame {
     constructor(option) {
         this.name = option.name;
         this.apiEndpoint = option.apiEndpoint;
-        this.coinReward = option.coinReward || 5;
-        this.hintCost = option.hintCost || 3;
         this.timeout = option.timeout || 60000;
         this.answerKey = option.answerKey || "jawaban";
         this.questionKey = option.questionKey || "soal";
@@ -20,7 +18,6 @@ class QuizGame {
     defaultFormatQuestion(ctx, data) {
         let text = `✦ — ${data[this.questionKey]}\n` +
             "\n" +
-            `❖ ${ctx.format.bold("Bonus")}: ${this.coinReward} koin\n` +
             `❖ ${ctx.format.bold("Waktu")}: ${ctx.format.convertMsToDuration(this.timeout)}\n`;
         for (const field of this.extraFields) {
             if (data[field.key]) text += `❖ ${ctx.format.bold(field.label)}: ${data[field.key]}\n`;
@@ -59,7 +56,6 @@ class QuizGame {
                 }
             }
             const game = {
-                coin: this.coinReward,
                 timeout: this.timeout,
                 answer: data[this.answerKey].toLowerCase(),
                 data
@@ -68,7 +64,7 @@ class QuizGame {
             const messageContent = {
                 text: this.formatQuestion(ctx, game.data),
                 buttons: [{
-                    text: `Petunjuk (-${this.hintCost} koin)`,
+                    text: "Petunjuk (-1 skor)",
                     id: `hint_${ctx.used.command}`
                 }, {
                     text: "Menyerah",
@@ -116,25 +112,21 @@ class QuizGame {
                 if (participantAnswer === game.answer) {
                     sessions.delete(sessionKey);
                     collector.stop();
-                    participantDb.coin += game.coin;
-                    participantDb.winGame += 1;
+                    participantDb.score += 1;
                     participantDb.save();
                     await collCtx.reply({
-                        text: ctx.format.info(`Benar! +${game.coin} koin`),
+                        text: ctx.format.info("Benar! 1 skor"),
                         buttons: playAgain
                     });
                 } else if (participantAnswer === `hint_${ctx.used.command}`) {
-                    if (participantDb.coin < this.hintCost) return await collCtx.reply(ctx.format.info(config.msg.coin));
-                    participantDb.coin -= this.hintCost;
+                    if (participantDb.score < 1) return await collCtx.reply(ctx.format.info(config.msg.ticket));
+                    participantDb.score -= 1;
                     participantDb.save();
                     const clue = game.answer.replace(/\S/g, (c) => /[aiueo]/.test(c) ? "_" : c);
                     await collCtx.reply(ctx.format.monospace(clue.toUpperCase()));
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     sessions.delete(sessionKey);
                     collector.stop();
-                    participantDb.coin -= game.coin;
-                    participantDb.winGame -= 1;
-                    participantDb.save();
                     const formattedAnswer = this.formatAnswer(ctx, game.answer, game.data);
                     await collCtx.reply({
                         text: ctx.format.info(`Menyerah! Jawaban: ${formattedAnswer}`),
@@ -148,10 +140,6 @@ class QuizGame {
             collector.on("end", async () => {
                 if (sessions.has(sessionKey)) {
                     sessions.delete(sessionKey);
-                    const userDb = ctx.db.user;
-                    userDb.coin -= game.coin;
-                    userDb.winGame -= 1;
-                    userDb.save();
                     const formattedAnswer = this.formatAnswer(ctx, game.answer, game.data);
                     await ctx.reply({
                         text: ctx.format.info(`Waktu habis! Jawaban: ${formattedAnswer}`),
@@ -172,8 +160,6 @@ const options = {
         apiEndpoint: "/api/games/asahotak",
         answerKey: "jawaban",
         questionKey: "soal",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000
     },
     caklontong: {
@@ -181,8 +167,6 @@ const options = {
         apiEndpoint: "/api/games/caklontong",
         answerKey: "jawaban",
         questionKey: "soal",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000,
         formatAnswer(ctx, answer, data) {
             return `${ctx.format.ucwords(answer)} (${data.deskripsi})`;
@@ -193,8 +177,6 @@ const options = {
         apiEndpoint: "/api/games/lengkapikalimat",
         answerKey: "jawaban",
         questionKey: "pertanyaan",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000
     },
     siapakahaku: {
@@ -202,8 +184,6 @@ const options = {
         apiEndpoint: "/api/games/siapakahaku",
         answerKey: "jawaban",
         questionKey: "soal",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000
     },
     susunkata: {
@@ -211,8 +191,6 @@ const options = {
         apiEndpoint: "/api/games/susunkata",
         answerKey: "jawaban",
         questionKey: "soal",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000,
         extraFields: [{
             key: "tipe",
@@ -225,13 +203,10 @@ const options = {
         answerKey: "name",
         questionKey: null,
         imageKey: "img",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000,
         formatQuestion(ctx) {
             return `✦ — Bendera negara apa ini?\n` +
                 "\n" +
-                `❖ ${ctx.format.bold("Bonus")}: ${this.coinReward} koin\n` +
                 `❖ ${ctx.format.bold("Batas waktu")}: ${ctx.format.convertMsToDuration(this.timeout)}`;
         }
     },
@@ -241,13 +216,10 @@ const options = {
         answerKey: "jawaban",
         questionKey: null,
         imageKey: "img",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000,
         formatQuestion(ctx) {
             return `✦ — Game apa ini?\n` +
                 "\n" +
-                `❖ ${ctx.format.bold("Bonus")}: ${this.coinReward} koin\n` +
                 `❖ ${ctx.format.bold("Batas waktu")}: ${ctx.format.convertMsToDuration(this.timeout)}`;
         }
     },
@@ -257,8 +229,6 @@ const options = {
         answerKey: "jawaban",
         questionKey: "deskripsi",
         imageKey: "img",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000
     },
     tebakhewan: {
@@ -266,8 +236,6 @@ const options = {
         apiEndpoint: "/api/games/tebakhewan",
         answerKey: "jawaban",
         questionKey: "soal",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000
     },
     tebakheroml: {
@@ -277,13 +245,10 @@ const options = {
         answerKey: "name",
         questionKey: null,
         audioKey: "audio",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000,
         formatQuestion(ctx) {
             return `✦ — Dengarkan suara hero Mobile Legends ini!\n` +
                 "\n" +
-                `❖ ${ctx.format.bold("Bonus")}: ${this.coinReward} koin\n` +
                 `❖ ${ctx.format.bold("Batas waktu")}: ${ctx.format.convertMsToDuration(this.timeout)}`;
         }
     },
@@ -294,13 +259,10 @@ const options = {
         answerKey: "jawaban",
         questionKey: null,
         imageKey: "gambar",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000,
         formatQuestion(ctx) {
             return `✦ — Siapa member JKT48 ini?\n` +
                 "\n" +
-                `❖ ${ctx.format.bold("Bonus")}: ${this.coinReward} koin\n` +
                 `❖ ${ctx.format.bold("Batas waktu")}: ${ctx.format.convertMsToDuration(this.timeout)}`;
         }
     },
@@ -309,8 +271,6 @@ const options = {
         apiEndpoint: "/api/games/tebakkalimat",
         answerKey: "jawaban",
         questionKey: "soal",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000
     },
     tebakkarakterff: {
@@ -320,13 +280,10 @@ const options = {
         answerKey: "name",
         questionKey: null,
         imageKey: "gambar",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000,
         formatQuestion(ctx) {
             return `✦ — Siapa karakter Free Fire ini?\n` +
                 "\n" +
-                `❖ ${ctx.format.bold("Bonus")}: ${this.coinReward} koin\n` +
                 `❖ ${ctx.format.bold("Batas waktu")}: ${ctx.format.convertMsToDuration(this.timeout)}`;
         }
     },
@@ -336,13 +293,10 @@ const options = {
         answerKey: "name",
         questionKey: null,
         imageKey: "img",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000,
         formatQuestion(ctx) {
             return `✦ — Kartun apa ini?\n` +
                 "\n" +
-                `❖ ${ctx.format.bold("Bonus")}: ${this.coinReward} koin\n` +
                 `❖ ${ctx.format.bold("Batas waktu")}: ${ctx.format.convertMsToDuration(this.timeout)}`;
         }
     },
@@ -351,8 +305,6 @@ const options = {
         apiEndpoint: "/api/games/tebakkata",
         answerKey: "jawaban",
         questionKey: "soal",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000
     },
     tebakkimia: {
@@ -360,13 +312,10 @@ const options = {
         apiEndpoint: "/api/games/tebakkimia",
         answerKey: "unsur",
         questionKey: null,
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000,
         formatQuestion(ctx, data) {
             return `✦ — Lambang ${data.lambang} adalah unsur apa?\n` +
                 "\n" +
-                `❖ ${ctx.format.bold("Bonus")}: ${this.coinReward} koin\n` +
                 `❖ ${ctx.format.bold("Batas waktu")}: ${ctx.format.convertMsToDuration(this.timeout)}`;
         }
     },
@@ -376,13 +325,10 @@ const options = {
         answerKey: "judul",
         questionKey: null,
         audioKey: "lagu",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000,
         formatQuestion(ctx) {
             return `✦ — Lagu apa ini?\n` +
                 "\n" +
-                `❖ ${ctx.format.bold("Bonus")}: ${this.coinReward} koin\n` +
                 `❖ ${ctx.format.bold("Batas waktu")}: ${ctx.format.convertMsToDuration(this.timeout)}`;
         }
     },
@@ -391,8 +337,6 @@ const options = {
         apiEndpoint: "/api/games/tebaklirik",
         answerKey: "jawaban",
         questionKey: "soal",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000
     },
     tebaklogo: {
@@ -401,13 +345,10 @@ const options = {
         answerKey: "jawaban",
         questionKey: null,
         imageKey: "image",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000,
         formatQuestion(ctx) {
             return `✦ — Logo apa ini?\n` +
                 "\n" +
-                `❖ ${ctx.format.bold("Bonus")}: ${this.coinReward} koin\n` +
                 `❖ ${ctx.format.bold("Batas waktu")}: ${ctx.format.convertMsToDuration(this.timeout)}`;
         }
     },
@@ -416,8 +357,6 @@ const options = {
         apiEndpoint: "/api/games/tebaktebakan",
         answerKey: "jawaban",
         questionKey: "soal",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000
     },
     tebakwarna: {
@@ -426,13 +365,10 @@ const options = {
         answerKey: "correct",
         questionKey: null,
         imageKey: "image",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000,
         formatQuestion(ctx) {
             return `✦ — Angka berapa yang terlihat?\n` +
                 "\n" +
-                `❖ ${ctx.format.bold("Bonus")}: ${this.coinReward} koin\n` +
                 `❖ ${ctx.format.bold("Batas waktu")}: ${ctx.format.convertMsToDuration(this.timeout)}`;
         }
     },
@@ -441,8 +377,6 @@ const options = {
         apiEndpoint: "/api/games/tekateki",
         answerKey: "jawaban",
         questionKey: "soal",
-        coinReward: 5,
-        hintCost: 3,
         timeout: 60000
     }
 };

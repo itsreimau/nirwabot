@@ -27,7 +27,6 @@ module.exports = {
             const result = ctx.helper.getRandomElement((await ctx.request.get(apiUrl)).data.data.soal);
 
             const game = {
-                coin: 5,
                 timeout: 60000,
                 answerKey: result.jawaban_benar,
                 answer: result.semua_jawaban.find(ans => Object.keys(ans)[0] === result.jawaban_benar)[result.jawaban_benar].toLowerCase(),
@@ -42,7 +41,6 @@ module.exports = {
                     }).join("\n")}\n` +
                     "\n" +
                     `❖ ${ctx.format.bold("Mapel")}: ${mapel[input]}\n` +
-                    `❖ ${ctx.format.bold("Bonus")}: ${game.coin} koin\n` +
                     `❖ ${ctx.format.bold("Waktu")}: ${ctx.format.convertMsToDuration(game.timeout)}\n` +
                     `❖ ${ctx.format.bold("Jawab")}: Ketik A/B/C/...`,
                 buttons: [{
@@ -90,28 +88,21 @@ module.exports = {
                 if (participantAnswer === game.answerKey) {
                     sessions.delete(ctx.id);
                     collector.stop();
-                    participantDb.coin += game.coin;
-                    participantDb.winGame += 1;
+                    participantDb.score += 1;
                     participantDb.save();
                     await collCtx.reply({
-                        text: ctx.format.info(`Benar! +${game.coin} koin`),
+                        text: ctx.format.info("Benar! +1 skor"),
                         buttons: playAgain
                     });
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     sessions.delete(ctx.id);
                     collector.stop();
-                    participantDb.coin -= game.coin;
-                    participantDb.winGame -= 1;
-                    participantDb.save();
                     await collCtx.reply({
                         text: ctx.format.info(`Menyerah! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
                         buttons: playAgain
                     });
                 } else {
                     game.wrongAnswered.push(collCtx.sender.jid);
-                    participantDb.coin -= game.coin;
-                    participantDb.winGame -= 1;
-                    participantDb.save();
                     await collCtx.reply(ctx.format.info("Salah!"));
                 }
             });
@@ -119,10 +110,6 @@ module.exports = {
             collector.on("end", async () => {
                 if (sessions.has(ctx.id)) {
                     sessions.delete(ctx.id);
-                    const userDb = ctx.db.user;
-                    userDb.coin -= game.coin;
-                    userDb.winGame -= 1;
-                    userDb.save();
                     await ctx.reply({
                         text: ctx.format.info(`Waktu habis! Jawaban: ${game.answer} (${game.answerKey.toUpperCase()})`),
                         buttons: playAgain

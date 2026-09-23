@@ -16,7 +16,7 @@ module.exports = {
 
         try {
             const waitMsg = await ctx.reply(ctx.format.info(config.msg.wait));
-            const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !g.announce && !g.isCommunity && !g.isCommunityAnnounce).map(g => g.id);
+            const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !g.announce && !g.isCommunity && !g.isCommunityAnnounce && !g.restrict).map(g => g.id);
             const {
                 delays
             } = ctx.helper.calculateDelays(groupJids.length);
@@ -26,7 +26,7 @@ module.exports = {
                     await ctx.helper.delay(delays[i]);
                 } catch {}
             }
-            await ctx.edit(waitMsg.key, ctx.format.info(`Label diubah ke ${ctx.format.inlineCode(input)} di ${groupJids.length} grup.`));
+            await ctx.edit(ctx.format.info(`Label diubah ke ${ctx.format.inlineCode(input)} di ${groupJids.length} grup.`), waitMsg.key);
         } catch (error) {
             await ctx.helper.handleError(ctx, error, false);
         }

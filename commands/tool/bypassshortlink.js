@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["bypasslink"],
     category: "tool",
     permissions: {
-        coin: 10,
+        ticket: true,
         premium: true
     },
     code: async (ctx) => {

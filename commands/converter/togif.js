@@ -2,7 +2,7 @@ module.exports = {
     name: "togif",
     category: "converter",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         if (!ctx.isMedia(["sticker"], ["quoted"])) return await ctx.reply(ctx.format.generateInstruction(["reply"], ["sticker"]));

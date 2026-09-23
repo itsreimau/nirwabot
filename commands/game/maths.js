@@ -1,16 +1,16 @@
 const sessions = new Map();
 
 const levelBonus = {
-    noob: 10,
-    easy: 25,
-    medium: 50,
-    hard: 100,
-    extreme: 250,
-    impossible: 500,
-    impossible2: 750,
-    impossible3: 1000,
-    impossible4: 1500,
-    impossible5: 2000
+    noob: 1,
+    easy: 2,
+    medium: 3,
+    hard: 5,
+    extreme: 10,
+    impossible: 15,
+    impossible2: 20,
+    impossible3: 25,
+    impossible4: 30,
+    impossible5: 50
 };
 const levels = {
     noob: "Noob",
@@ -39,7 +39,7 @@ module.exports = {
             const result = (await ctx.request.get(apiUrl)).data.data;
 
             const game = {
-                coin: levelBonus[input] || 100,
+                score: levelBonus[input] || 1,
                 timeout: result.time,
                 answer: String(result.result)
             };
@@ -48,7 +48,6 @@ module.exports = {
                 text: `✦ — ${result.str}\n` +
                     "\n" +
                     `❖ ${ctx.format.bold("Level")}: ${levels[result.mode]}\n` +
-                    `❖ ${ctx.format.bold("Bonus")}: ${game.coin} koin\n` +
                     `❖ ${ctx.format.bold("Waktu")}: ${ctx.format.convertMsToDuration(game.timeout)}`,
                 buttons: [{
                     text: "Menyerah",
@@ -89,19 +88,15 @@ module.exports = {
                 if (participantAnswer === game.answer) {
                     sessions.delete(ctx.id);
                     collector.stop();
-                    participantDb.coin += game.coin;
-                    participantDb.winGame += 1;
+                    participantDb.score += game.score;
                     participantDb.save();
                     await collCtx.reply({
-                        text: ctx.format.info(`Benar! +${game.coin} koin`),
+                        text: ctx.format.info(`Benar! +${game.score} skor`),
                         buttons: playAgain
                     });
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
                     sessions.delete(ctx.id);
                     collector.stop();
-                    participantDb.coin -= game.coin;
-                    participantDb.winGame -= 1;
-                    participantDb.save();
                     await collCtx.reply({
                         text: ctx.format.info(`Menyerah! Jawaban: ${ctx.format.ucwords(game.answer)}`),
                         buttons: playAgain
@@ -112,10 +107,6 @@ module.exports = {
             collector.on("end", async () => {
                 if (sessions.has(ctx.id)) {
                     sessions.delete(ctx.id);
-                    const userDb = ctx.db.user;
-                    userDb.coin -= game.coin;
-                    userDb.winGame -= 1;
-                    userDb.save();
                     await ctx.reply({
                         text: ctx.format.info(`Waktu habis! Jawaban: ${ctx.format.ucwords(game.answer)}`),
                         buttons: playAgain

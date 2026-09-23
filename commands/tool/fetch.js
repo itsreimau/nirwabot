@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["f", "get"],
     category: "tool",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const url = ctx.args[0] || ctx.helper.extractUrlFromText(ctx.quoted?.body);

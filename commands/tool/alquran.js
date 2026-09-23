@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["quran"],
     category: "tool",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const [surat, ayat] = ctx.args;

@@ -131,16 +131,8 @@ module.exports = (bot) => {
 
         const senderAfk = senderDb.afk || {};
         if (msg.body && (senderAfk?.reason || senderAfk?.timestamp)) {
-            const timeElapsed = Date.now() - senderAfk.timestamp;
-            const hours = Math.floor(timeElapsed / (1000 * 60 * 60));
-            const coins = hours * 1;
-            if (coins > 0) {
-                senderDb.coin += coins;
-                senderDb.save();
-            }
-            const timeago = ctx.format.convertMsToDuration(timeElapsed);
-            const rewardMsg = coins > 0 ? `+${coins} koin` : "";
-            await ctx.reply(ctx.format.info(`Anda kembali setelah AFK ${senderAfk.reason ? `(${ctx.format.inlineCode(senderAfk.reason)})` : ""} selama ${timeago}. ${rewardMsg}`.trim()));
+            const timeago = ctx.format.convertMsToDuration(Date.now() - senderAfk.timestamp);
+            await ctx.reply(ctx.format.info(`Anda kembali setelah AFK${senderAfk.reason ? ` (${ctx.format.inlineCode(senderAfk.reason)})` : ""} selama ${timeago}.`));
             senderDb.afk = {};
             senderDb.save();
         }

@@ -2,7 +2,7 @@ module.exports = {
     name: "play",
     category: "downloader",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const flag = ctx.flag({

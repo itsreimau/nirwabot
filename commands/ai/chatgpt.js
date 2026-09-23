@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["ai", "gpt"],
     category: "ai",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.body;

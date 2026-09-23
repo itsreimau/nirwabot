@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["removebg"],
     category: "tool",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         if (!ctx.isMedia(["image"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));

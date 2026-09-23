@@ -51,8 +51,8 @@ const bot = new Client({
         defaults: {
             users: {
                 pushName: "Unknown",
-                coin: 100,
-                winGame: 0,
+                ticket: 3,
+                score: 0,
                 premium: false,
                 premiumExpiration: null,
                 banned: false,

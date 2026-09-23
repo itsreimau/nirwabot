@@ -3,7 +3,7 @@ module.exports = [{
     aliases: ["yta", "ytaudio", "ytmp3"],
     category: "downloader",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const flag = ctx.flag({
@@ -53,7 +53,7 @@ module.exports = [{
     aliases: ["ytmp4", "ytv", "ytvideo"],
     category: "downloader",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const flag = ctx.flag({

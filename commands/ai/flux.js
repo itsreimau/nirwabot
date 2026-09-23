@@ -2,7 +2,7 @@ module.exports = {
     name: "flux",
     category: "ai",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.body;

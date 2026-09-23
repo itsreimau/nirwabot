@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["bible"],
     category: "tool",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const [passage, number] = ctx.args;

@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["youtube", "youtubes", "yt", "yts", "ytsearch"],
     category: "search",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const input = ctx.text;

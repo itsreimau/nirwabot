@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["up", "tourl"],
     category: "tool",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         if (!ctx.isMedia(["audio", "document", "image", "sticker", "video"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["audio", "document", "image", "sticker", "video"]));

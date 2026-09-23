@@ -1,6 +1,6 @@
 const rewards = {
-    regular: 100,
-    premium: 500
+    regular: 2,
+    premium: 5
 };
 
 module.exports = {
@@ -17,10 +17,10 @@ module.exports = {
         if (remainingTime > 0) return await ctx.reply(ctx.format.info(`Sudah klaim. Tunggu ${ctx.format.convertMsToDuration(remainingTime)}.`));
 
         try {
-            senderDb.coin += reward;
+            senderDb.score += reward;
             senderDb.lastClaim = currentTime;
             senderDb.save();
-            await ctx.reply(ctx.format.info(`Klaim ${reward} koin. Total: ${senderDb.coin}`));
+            await ctx.reply(ctx.format.info(`Klaim ${reward} skor. Total: ${senderDb.score}`));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

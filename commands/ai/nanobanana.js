@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["nano"],
     category: "ai",
     permissions: {
-        coin: 10,
+        ticket: true,
         premium: true
     },
     code: async (ctx) => {

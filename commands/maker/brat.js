@@ -3,7 +3,7 @@ module.exports = [{
     aliases: ["br"],
     category: "maker",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.body;
@@ -36,7 +36,7 @@ module.exports = [{
     aliases: ["brv", "bratvid", "bratvideo"],
     category: "maker",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.body;

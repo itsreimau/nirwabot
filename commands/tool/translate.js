@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["tr"],
     category: "tool",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const langRegex = /^[a-z]{2}(-[a-zA-Z]{2,4})?$/;

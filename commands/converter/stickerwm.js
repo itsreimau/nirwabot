@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["take", "swm", "stikerwm"],
     category: "converter",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         const input = ctx.text;

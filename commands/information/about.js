@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["bot", "infobot"],
     category: "information",
     code: async (ctx) => {
-        const groups = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !g.announce && !g.isCommunity && !g.isCommunityAnnounce);
+        const groups = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !g.announce && !g.isCommunity && !g.isCommunityAnnounce && !g.restrict);
         await ctx.reply(
             `✦ — Halo! Saya ${config.bot.name}, milik ${config.owner.name}. Saya bisa buat stiker, AI, dan lainnya.\n` +
             "\n" +

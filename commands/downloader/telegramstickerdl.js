@@ -25,7 +25,7 @@ module.exports = {
     aliases: ["telegramsticker", "telesticker", "telestickerdl"],
     category: "downloader",
     permissions: {
-        coin: 10,
+        ticket: true,
         premium: true
     },
     code: async (ctx) => {

@@ -3,7 +3,7 @@ module.exports = {
     aliases: ["s", "stiker"],
     category: "converter",
     permissions: {
-        coin: 10
+        ticket: true
     },
     code: async (ctx) => {
         if (!ctx.isMedia(["image", "video"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image", "video"]));
