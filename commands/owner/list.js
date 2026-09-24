@@ -27,7 +27,7 @@ module.exports = [{
         owner: true
     },
     code: async (ctx) => {
-        const groups = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !g.announce && !g.isCommunity && !g.isCommunityAnnounce || !g.restrict);
+        const groups = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !g.announce && !g.isCommunity && !g.isCommunityAnnounce);
         const groupList = Object.values(groups);
         let groupMentions = [];
         const resultText = groupList.map(group =>

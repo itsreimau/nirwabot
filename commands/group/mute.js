@@ -15,7 +15,7 @@ module.exports = [{
             return await ctx.reply(ctx.format.info("Bot di-mute di grup ini."));
         }
         const target = await ctx.target(["quoted", "mentioned"]);
-        const daysAmount = parseInt(ctx.args[target.source === "quoted" ? 0 : 1], 10);
+        const daysAmount = Number(ctx.args[target.source === "quoted" ? 0 : 1]);
         if (!target.id)
             return await ctx.reply({
                 text: `${ctx.format.generateInstruction(["send"], ["text"])}\n` +

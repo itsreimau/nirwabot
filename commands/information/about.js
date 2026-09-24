@@ -5,7 +5,6 @@ module.exports = {
     aliases: ["bot", "infobot"],
     category: "information",
     code: async (ctx) => {
-        const groups = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !g.announce && !g.isCommunity && !g.isCommunityAnnounce && !g.restrict);
         await ctx.reply(
             `✦ — Halo! Saya ${config.bot.name}, milik ${config.owner.name}. Saya bisa buat stiker, AI, dan lainnya.\n` +
             "\n" +
@@ -14,7 +13,7 @@ module.exports = {
             `❖ ${ctx.format.bold("Owner")}: ${config.owner.name}\n` +
             `❖ ${ctx.format.bold("Mode")}: ${ctx.format.ucwords(ctx.db.bot.mode || "public")}\n` +
             `❖ ${ctx.format.bold("Uptime")}: ${ctx.format.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
-            `❖ ${ctx.format.bold("Database")}: ${ctx.db.users.totalEntries} user, ${ctx.db.groups.totalEntries}/${groups.length} grup\n` +
+            `❖ ${ctx.format.bold("Database")}: ${ctx.db.users.totalEntries} user, ${ctx.db.groups.totalEntries} grup\n` +
             `❖ ${ctx.format.bold("Library")}: Baileys (${ctx.helper.getBaileysVersion()})`
         );
     }

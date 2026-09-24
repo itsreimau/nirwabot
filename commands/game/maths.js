@@ -41,7 +41,10 @@ module.exports = {
             const game = {
                 score: levelBonus[input] || 1,
                 timeout: result.time,
-                answer: String(result.result)
+                answer: Number(result.result).toLocaleString("fullwide", {
+                    useGrouping: false,
+                    maximumFractionDigits: 20
+                })
             };
 
             await ctx.reply({

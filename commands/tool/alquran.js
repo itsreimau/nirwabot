@@ -45,7 +45,7 @@ module.exports = {
                         `❖ ${ctx.format.bold("Arti")}: ${result.name_translations.id}`
                     );
                 } else {
-                    const singleAyat = parseInt(ayat, 10);
+                    const singleAyat = Number(ayat);
                     if (isNaN(singleAyat) || singleAyat < 1) return await ctx.reply(ctx.format.info("Ayat harus > 0."));
                     const verse = verses.find(vers => vers.number === singleAyat);
                     if (!verse) return await ctx.reply(ctx.format.info(`Ayat ${singleAyat} tidak ada.`));

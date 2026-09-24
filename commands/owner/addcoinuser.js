@@ -7,7 +7,7 @@ module.exports = {
     },
     code: async (ctx) => {
         const target = await ctx.target();
-        const ticketAmount = parseInt(ctx.args[target.source === "quoted" ? 0 : 1], 10);
+        const ticketAmount = Number(ctx.args[target.source === "quoted" ? 0 : 1]);
         if (!target.id || !ticketAmount)
             return await ctx.reply({
                 text: `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
@@ -21,7 +21,8 @@ module.exports = {
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
         const targetDb = ctx.getDb("users", target.id);
-        const maxTicket = (ctx.sender.isOwner() || senderDb.premium) ? config.system.maxTicketPremium : config.system.maxTicket;
+        const senderDb = ctx.db.user;
+        const maxTicket = targetDb.premium ? config.system.maxTicketPremium : config.system.maxTicket;
         if (targetDb.ticket >= maxTicket) return await ctx.reply(ctx.format.info(`Tiket udah maksimal (${targetDb.ticket}/${maxTicket}). Gak bisa nambah lagi.`));
 
         try {

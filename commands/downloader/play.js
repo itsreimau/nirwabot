@@ -29,7 +29,7 @@ module.exports = {
             );
 
         try {
-            const searchIndex = parseInt(flag.index, 10);
+            const searchIndex = Number(flag.index);
             const source = flag.source;
             let searchResult = "";
             let downloadResult = "";

@@ -8,7 +8,7 @@ module.exports = {
         group: true
     },
     code: async (ctx) => {
-        const input = parseInt(ctx.args[0], 10);
+        const input = Number(ctx.args[0]);
         if (!input)
             return await ctx.reply(
                 `${ctx.format.generateInstruction(["send"], ["text"])}\n` +

@@ -5,7 +5,7 @@ module.exports = {
     aliases: ["coll", "collect"],
     category: "misc",
     code: async (ctx) => {
-        const timeout = parseInt(ctx.args[0], 10) || 60000;
+        const timeout = Number(ctx.args[0]) || 60000;
         if (isNaN(timeout)) return await ctx.reply(ctx.format.info("Timeout harus angka."));
 
         try {

@@ -7,7 +7,7 @@ module.exports = [{
     },
     code: async (ctx) => {
         const target = await ctx.target();
-        const daysAmount = parseInt(ctx.args[target.source === "quoted" ? 0 : 1], 10);
+        const daysAmount = Number(ctx.args[target.source === "quoted" ? 0 : 1]);
         if (!target.id)
             return await ctx.reply({
                 text: `${ctx.format.generateInstruction(["send"], ["text"])}\n` +

@@ -8,7 +8,6 @@ module.exports = {
         const freeMem = os.freemem();
         const usedMem = totalMem - freeMem;
         const cpus = os.cpus();
-        const groups = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !g.announce && !g.isCommunity && !g.isCommunityAnnounce && !g.restrict);
         await ctx.reply(
             `❖ ${ctx.format.bold("OS")}: ${os.type()} (${os.platform()})\n` +
             `❖ ${ctx.format.bold("Arch")}: ${os.arch()}\n` +
@@ -29,7 +28,7 @@ module.exports = {
             `❖ ${ctx.format.bold("PID")}: ${process.pid}\n` +
             "\n" +
             `❖ ${ctx.format.bold("Uptime")}: ${ctx.format.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
-            `❖ ${ctx.format.bold("Database")}: ${ctx.db.users.totalEntries} user, ${ctx.db.groups.totalEntries}/${groups.length} grup\n` +
+            `❖ ${ctx.format.bold("Database")}: ${ctx.db.users.totalEntries} user, ${ctx.db.groups.totalEntries} grup\n` +
             `❖ ${ctx.format.bold("Library")}: Baileys (${ctx.helper.getBaileysVersion()})`
         );
     }

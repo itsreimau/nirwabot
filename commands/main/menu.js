@@ -81,18 +81,17 @@ module.exports = {
                     }]
                 });
             } else {
-                const userDb = ctx.db.user;
+                const senderDb = ctx.db.user;
                 const maxTicket = (ctx.sender.isOwner() || senderDb.premium) ? config.system.maxTicketPremium : config.system.maxTicket;
-                const groups = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !g.announce && !g.isCommunity && !g.isCommunityAnnounce && !g.restrict);
                 const text = `✦ — Halo, @${ctx.getId(ctx.sender.jid)}! Saya ${config.bot.name} milik ${config.owner.name}.\n` +
                     "\n" +
-                    `❖ ${ctx.format.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (userDb.premium ? `Premium (${userDb.premiumExpiration ? `${ctx.format.convertMsToDuration(userDb.premiumExpiration - Date.now(), ["hari", "jam"])} lagi` : "Selamanya"})` : "Freemium")}\n` +
-                    `❖ ${ctx.format.bold("Ticket")}: ${userDb.ticket}/${maxTicket}\n` +
-                    `❖ ${ctx.format.bold("Skor")}: ${userDb.score}\n` +
+                    `❖ ${ctx.format.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (senderDb.premium ? `Premium (${senderDb.premiumExpiration ? `${ctx.format.convertMsToDuration(senderDb.premiumExpiration - Date.now(), ["hari", "jam"])} lagi` : "Selamanya"})` : "Freemium")}\n` +
+                    `❖ ${ctx.format.bold("Ticket")}: ${senderDb.ticket}/${maxTicket}\n` +
+                    `❖ ${ctx.format.bold("Skor")}: ${senderDb.score}\n` +
                     "\n" +
                     `❖ ${ctx.format.bold("Mode")}: ${ctx.format.ucwords(ctx.db.bot.mode || "public")}\n` +
                     `❖ ${ctx.format.bold("Uptime")}: ${ctx.format.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
-                    `❖ ${ctx.format.bold("Database")}: ${ctx.db.users.totalEntries} user, ${ctx.db.groups.totalEntries}/${groups.length} grup\n` +
+                    `❖ ${ctx.format.bold("Database")}: ${ctx.db.users.totalEntries} user, ${ctx.db.groups.totalEntries} grup\n` +
                     `❖ ${ctx.format.bold("Library")}: Baileys (${ctx.helper.getBaileysVersion()})\n` +
                     "\n" +
                     `✧ ${ctx.format.italic("Donasi agar bot tetap online.")}`;

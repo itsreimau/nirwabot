@@ -9,7 +9,7 @@ module.exports = [{
         const target = ctx.isGroup() ? {
             id: ctx.id
         } : await ctx.target(["text_group"]);
-        const daysAmount = parseInt(ctx.args[target.source === "text_group" ? 1 : 0]);
+        const daysAmount = Number(ctx.args[target.source === "text_group" ? 1 : 0]);
         if (!target.id || !daysAmount)
             return await ctx.reply(
                 `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
