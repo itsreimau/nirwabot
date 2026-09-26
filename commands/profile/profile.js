@@ -14,7 +14,7 @@ module.exports = {
         await ctx.reply(
             `❖ ${ctx.format.bold("Nama")}: ${ctx.sender.pushName}\n` +
             `❖ ${ctx.format.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (senderDb.premium ? `Premium (${senderDb.premiumExpiration ? `${ctx.format.convertMsToDuration(senderDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +
-            `❖ ${ctx.format.bold("Peringkat")}: ${rank}`,
+            `❖ ${ctx.format.bold("Peringkat")}: ${rank}\n` +
             `❖ ${ctx.format.bold("Tiket")}: ${ctx.sender.isOwner() ? "Unlimited" : `${senderDb.ticket}/${maxTicket}`}\n` +
             `❖ ${ctx.format.bold("Skor")}: ${senderDb.score}`
         );
