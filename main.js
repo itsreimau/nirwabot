@@ -73,7 +73,8 @@ const bot = new Client({
                 text: {},
                 sewa: false,
                 sewaExpiration: null,
-                spam: []
+                spam: [],
+                lastTopResetMonth: null
             },
             bot: {
                 mode: "public",

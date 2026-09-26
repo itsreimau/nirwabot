@@ -1,6 +1,6 @@
 {
   "name": "nirwabot",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "scripts": {
@@ -32,5 +32,8 @@
     "simpl.db": "^2.13.0",
     "vcard-parser": "^1.0.0",
     "wa-sticker-formatter": "^4.4.4"
+  },
+  "directories": {
+    "lib": "lib"
   }
 }
