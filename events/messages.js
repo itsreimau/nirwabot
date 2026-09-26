@@ -2,8 +2,8 @@ const util = require("node:util");
 const moment = require("moment-timezone");
 
 async function handleWarning(ctx, senderJid, senderId, groupJid, groupDb) {
-    const maxWarnings = groupDb.maxwarnings || 3;
-    const warnings = groupDb.warnings || [];
+    const maxWarnings = groupDb.maxwarnings;
+    const warnings = groupDb.warnings;
     const senderWarning = warnings.find(warning => ctx.helper.areJidsSameUser(warning.id, senderJid));
     let currentWarnings = senderWarning ? senderWarning.count : 0;
     currentWarnings += 1;
@@ -97,7 +97,7 @@ module.exports = (bot) => {
                 }]
             });
 
-        const autodownloadEnabled = senderDb.autodownload || false;
+        const autodownloadEnabled = senderDb.autodownload;
         if (autodownloadEnabled && !isCmd) {
             const urlPatterns = {
                 facebook: /(facebook\.com|fb\.watch|fb\.com)/i,
@@ -129,7 +129,7 @@ module.exports = (bot) => {
             }
         }
 
-        const senderAfk = senderDb.afk || {};
+        const senderAfk = senderDb.afk;
         if (msg.body && (senderAfk?.reason || senderAfk?.timestamp)) {
             const timeago = ctx.format.convertMsToDuration(Date.now() - senderAfk.timestamp);
             await ctx.reply(ctx.format.info(`Anda kembali setelah AFK${senderAfk.reason ? ` (${ctx.format.inlineCode(senderAfk.reason)})` : ""} selama ${timeago}.`));
@@ -147,25 +147,23 @@ module.exports = (bot) => {
             }
 
             if (groupDb.mutebot) return;
-            const muteList = groupDb.mute || [];
+            const muteList = groupDb.mute;
             groupDb.mute = muteList.filter(mute => !mute.expiration || Date.now() >= mute.expiration);
             if (groupDb.mute.length !== muteList.length) groupDb.save();
             if (groupDb.mute.some(mute => mute.id === senderJid)) await ctx.delete(msg.key);
 
-            let members = groupDb.members || [];
-            const existing = members.find(m => ctx.helper.areJidsSameUser(m.id, senderJid));
-            if (existing) {
-                existing.sent = (existing.sent || 0) + 1;
-                if (ctx.sender.pushName) existing.pushName = ctx.sender.pushName;
-            } else {
-                members.push({
-                    id: senderJid,
-                    sent: 1,
-                    pushName: ctx.sender.pushName
-                });
+            const currentMonth = now.format("YYYY-MM");
+            if (groupDb.lastTopResetMonth && groupDb.lastTopResetMonth !== currentMonth) {
+                groupDb.members = groupDb.members.map(m => ({
+                    ...m,
+                    sent: 0
+                }));
+                groupDb.lastTopResetMonth = currentMonth;
+                groupDb.save();
+            } else if (!groupDb.lastTopResetMonth) {
+                groupDb.lastTopResetMonth = currentMonth;
+                groupDb.save();
             }
-            groupDb.members = members;
-            groupDb.save();
 
             if (!isCmd && !isOwner && !isAdmin) {
                 const antiActions = [{
@@ -196,7 +194,7 @@ module.exports = (bot) => {
                 if (groupDb.option?.antilink && msg.body && ctx.helper.isUrl(msg.body)) await handleAntiViolation(ctx, "Jangan kirim link.", senderJid, senderId, groupJid, groupDb);
                 if (groupDb.option?.antispam) {
                     const now = Date.now();
-                    const spamData = groupDb.spam || [];
+                    const spamData = groupDb.spam;
                     const senderSpam = spamData.find(spam => ctx.helper.areJidsSameUser(spam.id, senderJid)) || {
                         id: senderJid,
                         count: 0,

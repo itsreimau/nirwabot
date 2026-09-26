@@ -14,15 +14,15 @@ module.exports = {
             );
 
         try {
-            const apiUrl = ctx.api.createUrl("nexray", "/search/lyrics", {
-                q: input
+            const apiUrl = ctx.api.createUrl("moondrowend", "/api/search/lyrics", {
+                query: input
             });
-            const result = (await ctx.request.get(apiUrl)).data.result;
+            const result = (await ctx.request.get(apiUrl)).data.data;
             await ctx.reply(
                 `✦ — ${result.lyrics.plain_lyrics}\n` +
                 "\n" +
                 `❖ ${ctx.format.bold("Judul")}: ${result.title}\n` +
-                `❖ ${ctx.format.bold("Artis")}: ${result.artists}`
+                `❖ ${ctx.format.bold("Artis")}: ${result.artist}`
             );
         } catch (error) {
             await ctx.helper.handleError(ctx, error, true);

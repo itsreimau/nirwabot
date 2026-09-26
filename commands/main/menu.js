@@ -89,7 +89,7 @@ module.exports = {
                     `❖ ${ctx.format.bold("Ticket")}: ${senderDb.ticket}/${maxTicket}\n` +
                     `❖ ${ctx.format.bold("Skor")}: ${senderDb.score}\n` +
                     "\n" +
-                    `❖ ${ctx.format.bold("Mode")}: ${ctx.format.ucwords(ctx.db.bot.mode || "public")}\n` +
+                    `❖ ${ctx.format.bold("Mode")}: ${ctx.format.ucwords(ctx.db.bot.mode)}\n` +
                     `❖ ${ctx.format.bold("Uptime")}: ${ctx.format.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
                     `❖ ${ctx.format.bold("Database")}: ${ctx.db.users.totalEntries} user, ${ctx.db.groups.totalEntries} grup\n` +
                     `❖ ${ctx.format.bold("Library")}: Baileys (${ctx.helper.getBaileysVersion()})\n` +

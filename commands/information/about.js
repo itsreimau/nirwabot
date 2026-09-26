@@ -11,7 +11,7 @@ module.exports = {
             `❖ ${ctx.format.bold("Bot")}: ${config.bot.name}\n` +
             `❖ ${ctx.format.bold("Versi")}: ${pkg.version}\n` +
             `❖ ${ctx.format.bold("Owner")}: ${config.owner.name}\n` +
-            `❖ ${ctx.format.bold("Mode")}: ${ctx.format.ucwords(ctx.db.bot.mode || "public")}\n` +
+            `❖ ${ctx.format.bold("Mode")}: ${ctx.format.ucwords(ctx.db.bot.mode)}\n` +
             `❖ ${ctx.format.bold("Uptime")}: ${ctx.format.convertMsToDuration(Date.now() - ctx.me.readyAt)}\n` +
             `❖ ${ctx.format.bold("Database")}: ${ctx.db.users.totalEntries} user, ${ctx.db.groups.totalEntries} grup\n` +
             `❖ ${ctx.format.bold("Library")}: Baileys (${ctx.helper.getBaileysVersion()})`

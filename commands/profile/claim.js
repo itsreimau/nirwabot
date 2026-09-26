@@ -11,16 +11,15 @@ module.exports = {
         const senderDb = ctx.db.user;
         const reward = (ctx.sender.isOwner() || senderDb.premium) ? rewards.premium : rewards.regular;
         const currentTime = Date.now();
-        if (!senderDb.lastClaim) senderDb.lastClaim = 0;
-        const lastClaim = senderDb.lastClaim || 0;
+        const lastClaim = senderDb.lastClaim;
         const remainingTime = (24 * 60 * 60 * 1000) - (currentTime - lastClaim);
         if (remainingTime > 0) return await ctx.reply(ctx.format.info(`Sudah klaim. Tunggu ${ctx.format.convertMsToDuration(remainingTime)}.`));
 
         try {
-            senderDb.score += reward;
+            senderDb.ticket += reward;
             senderDb.lastClaim = currentTime;
             senderDb.save();
-            await ctx.reply(ctx.format.info(`Klaim ${reward} skor. Total: ${senderDb.score}`));
+            await ctx.reply(ctx.format.info(`Klaim ${reward} tiket. Total: ${senderDb.ticket}`));
         } catch (error) {
             await ctx.helper.handleError(ctx, error);
         }

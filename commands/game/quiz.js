@@ -115,11 +115,11 @@ class QuizGame {
                     participantDb.score += 1;
                     participantDb.save();
                     await collCtx.reply({
-                        text: ctx.format.info("Benar! 1 skor"),
+                        text: ctx.format.info("Benar! +1 skor"),
                         buttons: playAgain
                     });
                 } else if (participantAnswer === `hint_${ctx.used.command}`) {
-                    if (participantDb.score < 1) return await collCtx.reply(ctx.format.info(config.msg.ticket));
+                    if (participantDb.score < 1) return await collCtx.reply(ctx.format.info("Skor kurang."));
                     participantDb.score -= 1;
                     participantDb.save();
                     const clue = game.answer.replace(/\S/g, (c) => /[aiueo]/.test(c) ? "_" : c);

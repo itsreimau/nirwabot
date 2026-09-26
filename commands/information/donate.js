@@ -4,7 +4,7 @@ module.exports = {
     category: "information",
     code: async (ctx) => {
         try {
-            const botText = ctx.db.bot.text || {};
+            const botText = ctx.db.bot.text;
             const qrisLink = botText?.qris || "https://files.catbox.moe/es2p23.jpeg";
             const customText = botText?.donate;
             const text = customText ? customText.replace(/%tag%/g, `@${ctx.getId(ctx.sender.jid)}`).replace(/%name%/g, config.bot.name).replace(/%prefix%/g, ctx.used.prefix).replace(/%command%/g, ctx.used.command).replace(/%footer%/g, config.msg.footer).replace(/%readmore%/g, "\u200E".repeat(4001)) :

@@ -16,10 +16,12 @@ module.exports = {
 
         try {
             let [top, bottom] = input.split("|").map(inp => inp);
-            [top, bottom] = bottom ? [top || "_", bottom] : ["_", top || "_"];
+            [top, bottom] = bottom ? [top || " ", bottom] : [" ", top || " "];
             const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.media.upload();
-            const result = ctx.api.createUrl("https://api.memegen.link", `/images/custom/${top}/${bottom}.jpg`, {
-                background: uploadUrl
+            const result = ctx.api.createUrl("moondrowend", "/api/maker/smeme", {
+                text_atas: top,
+                text_bawah: bottom,
+                url: uploadUrl
             });
             await ctx.reply({
                 sticker: {

@@ -15,10 +15,9 @@ module.exports = [{
         if (input.length > 1000) return await ctx.reply(ctx.format.info("Maks 1000 karakter."));
 
         try {
-            const apiUrl = ctx.api.createUrl("brat", "/maker/brat", {
+            const result = ctx.api.createUrl("moondrowend", "/api/maker/brat", {
                 text: input
             });
-            const result = (await ctx.request.get(apiUrl)).data.image_url;
             await ctx.reply({
                 sticker: {
                     url: result
@@ -48,10 +47,9 @@ module.exports = [{
         if (input.length > 1000) return await ctx.reply(ctx.format.info("Maks 1000 karakter."));
 
         try {
-            const apiUrl = ctx.api.createUrl("brat", "/maker/bratvid", {
+            const result = ctx.api.createUrl("moondrowend", "/api/maker/bratvid", {
                 text: input
             });
-            const result = (await ctx.request.get(apiUrl)).data.video_url;
             await ctx.reply({
                 sticker: {
                     url: result

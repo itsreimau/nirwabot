@@ -8,7 +8,7 @@ module.exports = {
         const contacts = [];
         const ownerIds = Array.isArray(config.owner.id) ? config.owner.id : [config.owner.id];
         for (const id of ownerIds.filter(Boolean)) {
-            const pnId = Baileys.isPnUser(id)                ? id                : ownerIds.find(i => Baileys.isPnUser(i)) || null;
+            const pnId = Baileys.isPnUser(id) ? id : ownerIds.find(i => Baileys.isPnUser(i)) || null;
             if (!pnId) continue;
             contacts.push({
                 displayName: config.owner.name,

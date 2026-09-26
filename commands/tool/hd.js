@@ -8,7 +8,7 @@ module.exports = [{
         if (!ctx.isMedia(["image"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
         try {
             const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.media.upload();
-            const result = ctx.api.createUrl("nexray", "/tools/v1/upscale", {
+            const result = ctx.api.createUrl("moondrowend", "/api/tools/hd", {
                 url: uploadUrl
             });
             await ctx.reply({

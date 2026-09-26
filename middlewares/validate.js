@@ -54,9 +54,6 @@ module.exports = (bot) => {
                     return restrict("ticket", config.msg.ticket, "🎟️", [{
                         text: "Tukar Skor",
                         id: `${ctx.used.prefix}exchange`
-                    }, {
-                        text: "Cek Profile",
-                        id: `${ctx.used.prefix}profile`
                     }]);
                 }
             }

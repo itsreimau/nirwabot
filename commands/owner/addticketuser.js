@@ -23,7 +23,7 @@ module.exports = {
         const targetDb = ctx.getDb("users", target.id);
         const senderDb = ctx.db.user;
         const maxTicket = targetDb.premium ? config.system.maxTicketPremium : config.system.maxTicket;
-        if (targetDb.ticket >= maxTicket) return await ctx.reply(ctx.format.info(`Tiket udah maksimal (${targetDb.ticket}/${maxTicket}). Gak bisa nambah lagi.`));
+        if (targetDb.ticket >= maxTicket) return await ctx.reply(ctx.format.info(`Tiket udah maksimal (${ctx.sender.isOwner() ? "Unlimited" : `${senderDb.ticket}/${maxTicket}`}). Gak bisa nambah lagi.`));
 
         try {
             const flag = ctx.flag({

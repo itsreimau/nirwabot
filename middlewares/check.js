@@ -22,7 +22,7 @@ module.exports = (bot) => {
         if (isGroup) {
             const groupDb = ctx.db.group;
             if (groupDb.mutebot && !isOwner && !await ctx.group().isSenderAdmin() && !(ctx.used.command === "unmute" && ctx.args[0]?.toLowerCase() === "bot")) return;
-            const muteList = groupDb.mute || [];
+            const muteList = groupDb.mute;
             if (muteList.some(mute => mute.id === senderJid)) return;
         }
 

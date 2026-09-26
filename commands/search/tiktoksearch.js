@@ -14,10 +14,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = ctx.api.createUrl("nexray", "/search/tiktok", {
+            const apiUrl = ctx.api.createUrl("zellrayy", "/search/tiktok", {
                 q: input
             });
-            const result = ctx.helper.getRandomElement((await ctx.request.get(apiUrl)).data.result).data;
+            const result = ctx.helper.getRandomElement((await ctx.request.get(apiUrl)).data.result).play;
             await ctx.reply({
                 video: {
                     url: result

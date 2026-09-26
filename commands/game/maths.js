@@ -7,10 +7,7 @@ const levelBonus = {
     hard: 5,
     extreme: 10,
     impossible: 15,
-    impossible2: 20,
-    impossible3: 25,
-    impossible4: 30,
-    impossible5: 50
+    impossible2: 20
 };
 const levels = {
     noob: "Noob",
@@ -19,10 +16,7 @@ const levels = {
     hard: "Sulit",
     extreme: "Ekstrim",
     impossible: "Mustahil",
-    impossible2: "Mustahil II",
-    impossible3: "Mustahil III",
-    impossible4: "Mustahil IV",
-    impossible5: "Mustahil V"
+    impossible2: "Mustahil II"
 };
 
 module.exports = {
@@ -41,10 +35,7 @@ module.exports = {
             const game = {
                 score: levelBonus[input] || 1,
                 timeout: result.time,
-                answer: Number(result.result).toLocaleString("fullwide", {
-                    useGrouping: false,
-                    maximumFractionDigits: 20
-                })
+                answer: String(result.result)
             };
 
             await ctx.reply({

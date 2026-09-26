@@ -8,7 +8,7 @@ async function WelcomeHandler(bot, welcome, type, isSimulate = false) {
 
     if (!isSimulate && groupDb.mutebot) return;
     if (!isSimulate && !groupDb.option?.welcome) return;
-    if (!isSimulate && !["group", "public"].includes(botDb.mode || "public")) return;
+    if (!isSimulate && !["group", "public"].includes(botDb.mode)) return;
 
     const now = moment().tz(config.system.timeZone);
     const hour = now.hour();

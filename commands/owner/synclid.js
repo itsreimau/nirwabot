@@ -24,7 +24,7 @@ module.exports = {
             config.core.set("owner.id", ownerId);
             config.core.set("owner.co", ownerCo);
             await ctx.reply({
-                text: ctx.format.info("LID isinkronkan. Restart bot untuk menerapkan."),
+                text: ctx.format.info("LID disinkronkan. Restart bot untuk menerapkan."),
                 buttons: [{
                     text: "Restart",
                     id: `${ctx.used.prefix}restart`

@@ -39,7 +39,7 @@ module.exports = {
             return await ctx.reply(listText);
         }
         if (input.toLowerCase() === "status") {
-            const groupOption = ctx.db.group.option || {};
+            const groupOption = ctx.db.group.option;
             const text = validOptions.map(opt => `❖ ${ctx.format.ucwords(opt)}: ${groupOption[opt] ? "Aktif" : "Nonaktif"}`).join("\n");
             return await ctx.reply(text);
         }
