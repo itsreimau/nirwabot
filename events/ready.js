@@ -17,7 +17,7 @@ module.exports = (bot) => {
             botDb.save();
         }
 
-        const groupLink = `https://chat.whatsapp.com/${config.bot?.groupJid ? await b.groupInviteCode(config.bot.groupJid).catch(() => "DilACWwphLt0SBJLNwpY8l") : "DilACWwphLt0SBJLNwpY8l"}`;
+        const groupLink = `https://chat.whatsapp.com/${config.bot?.groupJid ? await b.groupInviteCode(config.bot.groupJid).catch(() => "Gr2HXzc5UKFGLEO4Srpgzb") : "Gr2HXzc5UKFGLEO4Srpgzb"}`;
         if (!config.bot.groupLink || config.bot.groupLink !== groupLink) config.core.set("bot.groupLink", groupLink);
     });
 };
