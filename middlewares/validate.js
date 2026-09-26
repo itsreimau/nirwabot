@@ -76,9 +76,12 @@ module.exports = (bot) => {
             }]);
         if (config.system.requireBotGroupMembership && !isOwner && !senderDb.premium && ctx.used.command !== "botgroup" && config.bot.groupJid) {
             const now = Date.now();
-            const duration = 24 * 60 * 60 * 1000;
-            let isMember = senderDb.botGroupMembership?.isMember;
-            if (!isMember && (now - (senderDb.botGroupMembership?.timestamp || 0)) > duration) {
+            const memberCooldown = 24 * 60 * 60 * 1000;
+            const nonMemberCooldown = 2 * 60 * 1000;
+            let isMember = senderDb.botGroupMembership?.isMember || false;
+            const lastCheck = senderDb.botGroupMembership?.timestamp || 0;
+            const cooldown = isMember ? memberCooldown : nonMemberCooldown;
+            if ((now - lastCheck) > cooldown) {
                 isMember = await ctx.group(config.bot.groupJid).isMemberExist(ctx.sender.jid);
                 senderDb.botGroupMembership = {
                     isMember,
