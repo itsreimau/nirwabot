@@ -26,7 +26,7 @@ module.exports = {
         if (sessions.has(ctx.id)) return await ctx.reply(ctx.format.info("Sesi sedang berjalan."));
 
         try {
-            const input = ctx.args?.[0] && levels.hasOwnProperty(ctx.args[0]) ? ctx.args[0] : "";
+            const input = ctx.args?.[0] && levels.hasOwnProperty(ctx.args[0]) ? ctx.args[0] : Object.keys(levels)[Math.floor(Math.random() * Object.keys(levels).length)];
             const apiUrl = ctx.api.createUrl("siputzx", "/api/games/maths", {
                 level: input
             });

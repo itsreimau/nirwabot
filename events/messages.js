@@ -164,6 +164,20 @@ module.exports = (bot) => {
                 groupDb.lastTopResetMonth = currentMonth;
                 groupDb.save();
             }
+            let members = groupDb.members || [];
+            const existing = members.find(m => ctx.helper.areJidsSameUser(m.id, senderJid));
+            if (existing) {
+                existing.sent = (existing.sent || 0) + 1;
+                if (ctx.sender.pushName) existing.pushName = ctx.sender.pushName;
+            } else {
+                members.push({
+                    id: senderJid,
+                    sent: 1,
+                    pushName: ctx.sender.pushName
+                });
+            }
+            groupDb.members = members;
+            groupDb.save();
 
             if (!isCmd && !isOwner && !isAdmin) {
                 const antiActions = [{
