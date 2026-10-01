@@ -10,10 +10,11 @@ module.exports = [{
     code: async (ctx) => {
         const target = await ctx.target(["text"]);
         if (!target.id)
-            return await ctx.reply(
-                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
-                ctx.format.generateCmdExample(ctx.used, "6281234567891")
-            );
+            return await ctx.reply({
+                text: `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                    `${ctx.format.generateCmdExample(ctx.used, "6281234567891")}`,
+                mentions: ["6281234567891@s.whatsapp.net"]
+            });
         const isOnWhatsApp = await ctx.core.onWhatsApp(target.id);
         if (!isOnWhatsApp?.[0]?.exists) return await ctx.reply(ctx.format.info("Akun tidak ada di WhatsApp."));
 
@@ -21,7 +22,7 @@ module.exports = [{
             await ctx.group().add(target.id);
             await ctx.reply(ctx.format.info("Ditambahkan."));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 }, {
@@ -51,7 +52,7 @@ module.exports = [{
             await ctx.group().kick(target.id);
             await ctx.reply(ctx.format.info("Dikeluarkan."));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 }];

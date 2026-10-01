@@ -14,8 +14,8 @@ class TopHandler {
         let members = groupDb.members;
         const currentMonth = moment().tz(config.system.timeZone).format("YYYY-MM");
         if (groupDb.lastTopResetMonth && groupDb.lastTopResetMonth !== currentMonth) {
-            groupDb.members = members.map(m => ({
-                ...m,
+            groupDb.members = members.map(member => ({
+                ...member,
                 sent: 0
             }));
             groupDb.lastTopResetMonth = currentMonth;
@@ -24,28 +24,25 @@ class TopHandler {
             groupDb.lastTopResetMonth = currentMonth;
             groupDb.save();
         }
-        const dirtyCount = members.length;
-        members = members.filter(m => currentMemberIds.some(id => ctx.helper.areJidsSameUser(id, m.id)));
-        if (members.length !== dirtyCount) {
-            groupDb.members = members;
+        const filtered = members.filter(member => currentMemberIds.some(id => ctx.helper.areJidsSameUser(id, member.id)));
+        if (filtered.length !== members.length) {
+            groupDb.members = filtered;
             groupDb.save();
         }
-        members = members.filter(member => !ctx.helper.areJidsSameUser(member.id, ctx.me.lid));
+        members = filtered.filter(member => !ctx.helper.areJidsSameUser(member.id, ctx.me.lid));
         members.sort((a, b) => this.sortDirection === "asc" ? a.sent - b.sent : b.sent - a.sent);
         const topMembers = members.slice(0, 10);
-        let text = "";
-        let mentions = [];
-        topMembers.forEach((member, id) => {
+        const mentions = [];
+        const text = topMembers.map((member, id) => {
             const isSelf = ctx.helper.areJidsSameUser(member.id, ctx.sender.jid);
             let displayName = member.pushName || ctx.getId(member.id);
             if (isSelf) {
-                const mentionId = ctx.getId(member.id);
-                displayName = `@${mentionId}`;
+                displayName = `@${ctx.getId(member.id)}`;
                 mentions.push(member.id);
             }
-            const prefix = id === 0 ? "❖" : id === 1 ? "❖" : id === 2 ? "❖" : `❖ ${id + 1}.`;
-            text += `${prefix} ${displayName} - ${member.sent} pesan\n`;
-        });
+            const prefix = id < 3 ? "❖" : `❖ ${id + 1}.`;
+            return `${prefix} ${displayName} - ${member.sent} pesan`;
+        }).join("\n");
         await ctx.reply({
             text: text.trim(),
             mentions

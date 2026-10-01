@@ -43,6 +43,7 @@ module.exports = {
                 text: "Main Lagi",
                 id: ctx.used.prefix + ctx.used.command
             }];
+            const remainingText = () => [...game.answers].map(ctx.format.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
 
             collector.on("collect", async (collCtx) => {
                 const participantAnswer = collCtx.msg.body?.toLowerCase();
@@ -69,29 +70,27 @@ module.exports = {
                         });
                     }
                 } else if (participantAnswer === `surrender_${ctx.used.command}`) {
-                    const remaining = [...game.answers].map(ctx.format.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
                     sessions.delete(ctx.id);
                     collector.stop();
                     await collCtx.reply({
-                        text: ctx.format.info(`Menyerah! Belum terjawab: ${remaining}`),
+                        text: ctx.format.info(`Menyerah! Belum terjawab: ${remainingText()}`),
                         buttons: playAgain
                     });
                 }
             });
 
             collector.on("end", async () => {
-                const remaining = [...game.answers].map(ctx.format.ucwords).join(", ").replace(/, ([^,]*)$/, ", dan $1");
                 if (sessions.has(ctx.id)) {
                     sessions.delete(ctx.id);
                     await ctx.reply({
-                        text: ctx.format.info(`Waktu habis! Belum terjawab: ${remaining}`),
+                        text: ctx.format.info(`Waktu habis! Belum terjawab: ${remainingText()}`),
                         buttons: playAgain
                     });
                 }
             });
         } catch (error) {
             sessions.delete(ctx.id);
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 };

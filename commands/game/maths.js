@@ -1,22 +1,34 @@
 const sessions = new Map();
 
-const levelBonus = {
-    noob: 1,
-    easy: 2,
-    medium: 3,
-    hard: 5,
-    extreme: 10,
-    impossible: 15,
-    impossible2: 20
-};
 const levels = {
-    noob: "Noob",
-    easy: "Mudah",
-    medium: "Sedang",
-    hard: "Sulit",
-    extreme: "Ekstrim",
-    impossible: "Mustahil",
-    impossible2: "Mustahil II"
+    noob: {
+        label: "Noob",
+        bonus: 1
+    },
+    easy: {
+        label: "Mudah",
+        bonus: 2
+    },
+    medium: {
+        label: "Sedang",
+        bonus: 3
+    },
+    hard: {
+        label: "Sulit",
+        bonus: 5
+    },
+    extreme: {
+        label: "Ekstrim",
+        bonus: 10
+    },
+    impossible: {
+        label: "Mustahil",
+        bonus: 15
+    },
+    impossible2: {
+        label: "Mustahil II",
+        bonus: 20
+    }
 };
 
 module.exports = {
@@ -26,14 +38,15 @@ module.exports = {
         if (sessions.has(ctx.id)) return await ctx.reply(ctx.format.info("Sesi sedang berjalan."));
 
         try {
-            const input = ctx.args?.[0] && levels.hasOwnProperty(ctx.args[0]) ? ctx.args[0] : Object.keys(levels)[Math.floor(Math.random() * Object.keys(levels).length)];
+            const keys = Object.keys(levels);
+            const input = ctx.args?.[0] && levels[ctx.args[0]] ? ctx.args[0] : keys[Math.floor(Math.random() * keys.length)];
             const apiUrl = ctx.api.createUrl("siputzx", "/api/games/maths", {
                 level: input
             });
             const result = (await ctx.request.get(apiUrl)).data.data;
 
             const game = {
-                score: levelBonus[input] || 1,
+                score: levels[input].bonus,
                 timeout: result.time,
                 answer: String(result.result)
             };
@@ -41,8 +54,8 @@ module.exports = {
             await ctx.reply({
                 text: `✦ — ${result.str}\n` +
                     "\n" +
-                    `❖ ${ctx.format.bold("Level")}: ${levels[result.mode]}\n` +
-                    `❖ ${ctx.format.bold("Waktu")}: ${ctx.format.convertMsToDuration(game.timeout)}`,
+                    `❖ ${ctx.format.bold("Level")}: ${levels[result.mode].label}`
+                `❖ ${ctx.format.bold("Waktu")}: ${ctx.format.convertMsToDuration(game.timeout)}`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`
@@ -67,10 +80,10 @@ module.exports = {
                 sections: [{
                     title: "Pilih Level",
                     highlight_label: "🌕",
-                    rows: Object.keys(levels).map(level => ({
-                        title: levels[level],
-                        description: `Klik untuk memainkan level ${levels[level]}`,
-                        id: `${ctx.used.prefix + ctx.used.command} ${level}`
+                    rows: keys.map(key => ({
+                        title: levels[key].label,
+                        description: `Klik untuk memainkan level ${levels[key].label}`,
+                        id: `${ctx.used.prefix + ctx.used.command} ${key}`
                     }))
                 }]
             }];
@@ -109,7 +122,7 @@ module.exports = {
             });
         } catch (error) {
             sessions.delete(ctx.id);
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 };

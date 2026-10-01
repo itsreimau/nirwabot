@@ -14,7 +14,7 @@ module.exports = {
                 maxStringLength: null
             })));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, false, true);
+            await ctx.helper.reportError(ctx, error, false, true);
         }
     }
 };

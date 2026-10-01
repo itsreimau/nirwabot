@@ -1,3 +1,5 @@
+const validKeys = ["donate", "price", "qris"];
+
 module.exports = {
     name: "osettext",
     aliases: ["osettxt"],
@@ -8,10 +10,7 @@ module.exports = {
     code: async (ctx) => {
         const key = ctx.args[0];
         const text = ctx.text?.startsWith(`${key} `) ? ctx.text.slice(key.length + 1) : ctx.quoted?.body;
-        if (key?.toLowerCase() === "list") {
-            const listText = await ctx.list.get(ctx, "osettext");
-            return await ctx.reply(listText);
-        }
+        if (key?.toLowerCase() === "list") return await ctx.reply(await ctx.list.get(ctx, "osettext"));
         if (!key || !text)
             return await ctx.reply(
                 `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
@@ -23,11 +22,6 @@ module.exports = {
             );
 
         try {
-            const validKeys = [
-                "donate",
-                "price",
-                "qris"
-            ];
             const setKey = key.toLowerCase();
             if (!validKeys.includes(setKey)) return await ctx.reply(ctx.format.info(`Teks ${ctx.format.inlineCode(key)} tidak valid.`));
             const botDb = ctx.db.bot;
@@ -40,7 +34,7 @@ module.exports = {
             botDb.save();
             await ctx.reply(ctx.format.info(`Teks ${ctx.format.inlineCode(key)} disimpan.`));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

@@ -21,7 +21,7 @@ module.exports = {
             botDb.save();
             exec("pm2 restart $(basename $(pwd))");
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

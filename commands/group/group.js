@@ -17,10 +17,7 @@ module.exports = {
                     `Ketik: ${ctx.format.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk daftar`
                 ])
             );
-        if (input.toLowerCase() === "list") {
-            const listText = await ctx.list.get(ctx, "group");
-            return await ctx.reply(listText);
-        }
+        if (input.toLowerCase() === "list") return await ctx.reply(await ctx.list.get(ctx, "group"));
 
         try {
             const actionMap = {
@@ -38,7 +35,7 @@ module.exports = {
             await action();
             await ctx.reply(ctx.format.info("Setelan grup diubah."));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

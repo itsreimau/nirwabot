@@ -26,18 +26,18 @@ module.exports = {
                 num: number
             });
             const result = (await ctx.request.get(apiUrl)).data.bible.book;
-            const resultText = result.chapter.verses.map(vers =>
+            const text = result.chapter.verses.map(vers =>
                 `❖ ${ctx.format.bold("Ayat")}: ${vers.number}\n` +
                 vers.text
             ).join("\n");
             await ctx.reply(
-                `${resultText}\n` +
+                `${text}\n` +
                 "\n" +
                 `❖ ${ctx.format.bold("Nama")}: ${result.name}\n` +
                 `❖ ${ctx.format.bold("Bab")}: ${result.chapter.chap}`
             );
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 };

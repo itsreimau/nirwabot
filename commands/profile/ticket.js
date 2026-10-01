@@ -5,6 +5,6 @@ module.exports = {
     code: async (ctx) => {
         const senderDb = ctx.db.user;
         const maxTicket = (ctx.sender.isOwner() || senderDb.premium) ? config.system.maxTicketPremium : config.system.maxTicket;
-        await ctx.reply(ctx.format.info(`Skor: ${senderDb.score}`));
+        await ctx.reply(ctx.format.info(`Tiket: ${senderDb.ticket}/${maxTicket}`));
     }
 };

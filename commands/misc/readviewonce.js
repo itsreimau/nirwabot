@@ -14,7 +14,7 @@ module.exports = {
                 raw: true
             });
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

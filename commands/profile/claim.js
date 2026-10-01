@@ -21,7 +21,7 @@ module.exports = {
             senderDb.save();
             await ctx.reply(ctx.format.info(`Klaim ${reward} tiket. Total: ${senderDb.ticket}`));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

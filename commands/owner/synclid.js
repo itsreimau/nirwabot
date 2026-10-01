@@ -16,11 +16,10 @@ module.exports = {
                 return result;
             };
             const ownerId = await resolve(config.owner.id || []);
-            const ownerCo = [];
-            for (const co of config.owner.co || []) ownerCo.push({
+            const ownerCo = await Promise.all((config.owner.co || []).map(async (co) => ({
                 ...co,
                 id: await resolve(co.id || [])
-            });
+            })));
             config.core.set("owner.id", ownerId);
             config.core.set("owner.co", ownerCo);
             await ctx.reply({
@@ -31,7 +30,7 @@ module.exports = {
                 }]
             });
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

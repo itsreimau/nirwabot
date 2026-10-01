@@ -24,7 +24,7 @@ module.exports = {
                 author: author || config.sticker.author
             });
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

@@ -19,26 +19,26 @@ module.exports = {
                 url
             });
             const result = (await ctx.request.get(apiUrl)).data.result.data;
+            const caption = `❖ ${ctx.format.bold("URL")}: ${url}`;
             if (!Array.isArray(result)) {
                 await ctx.reply({
                     video: {
                         url: result
                     },
-                    caption: `❖ ${ctx.format.bold("URL")}: ${url}`
+                    caption
                 });
             } else {
-                const album = result.map(res => ({
-                    image: {
-                        url: res
-                    }
-                }));
                 await ctx.reply({
-                    album,
-                    caption: `❖ ${ctx.format.bold("URL")}: ${url}`
+                    album: result.map(res => ({
+                        image: {
+                            url: res
+                        }
+                    })),
+                    caption
                 });
             }
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 };

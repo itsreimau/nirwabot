@@ -26,7 +26,7 @@ module.exports = (bot) => {
             if (muteList.some(mute => mute.id === senderJid)) return;
         }
 
-        if (ctx.used?.prefix !== "force") {
+        if (ctx.used.prefix !== "force") {
             if (isGroup && !ctx.msg.key.fromMe) {
                 console.log(util.styleText("magenta", "[~]"), `Incoming command: ${ctx.used.command}, from group: ${groupName} (${groupJid}), by: ${senderName} (${senderJid})`);
             } else if (isPrivate && !ctx.msg.key.fromMe) {

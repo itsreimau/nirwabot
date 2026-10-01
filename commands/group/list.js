@@ -8,22 +8,14 @@ module.exports = [{
     },
     code: async (ctx) => {
         const muteList = ctx.db.group.mute;
-        let resultText = "";
-        let userMentions = [];
-        for (const mutedUser of muteList) {
-            const userId = ctx.getId(mutedUser.id);
-            userMentions.push(mutedUser.id);
-            if (mutedUser.expiration) {
-                const timeDiff = mutedUser.expiration - Date.now();
-                const daysLeft = ctx.format.convertMsToDuration(timeDiff, ["hari", "jam"]);
-                resultText += `❖ @${userId} (${daysLeft} tersisa)\n`;
-            } else {
-                resultText += `❖ @${userId} (Permanen)\n`;
-            }
-        }
+        const mentions = muteList.map(mute => mute.id);
+        const text = muteList.map(mute => {
+            const info = mute.expiration ? `${ctx.format.convertMsToDuration(mute.expiration - Date.now(), ["hari", "jam"])} tersisa` : "Permanen";
+            return `❖ @${ctx.getId(mute.id)} (${info})`;
+        }).join("\n");
         await ctx.reply({
-            text: resultText.trim() || ctx.format.info(config.msg.notFound),
-            mentions: userMentions
+            text: text.trim() || ctx.format.info(config.msg.notFound),
+            mentions
         });
     }
 }, {
@@ -37,8 +29,8 @@ module.exports = [{
     },
     code: async (ctx) => {
         const pendings = await ctx.group().pendingMembers();
-        const resultText = pendings.map(pending => `❖ ${ctx.getId(pending.id)}`).join("\n");
-        await ctx.reply(resultText.trim() || ctx.format.info(config.msg.notFound));
+        const text = pendings.map(pending => `❖ ${ctx.getId(pending.lid)}`).join("\n");
+        await ctx.reply(text.trim() || ctx.format.info(config.msg.notFound));
     }
 }, {
     name: "listwarning",
@@ -51,16 +43,11 @@ module.exports = [{
     },
     code: async (ctx) => {
         const warnings = ctx.db.group.warnings;
-        let resultText = "";
-        let userMentions = [];
-        for (const warning of warnings) {
-            const userId = ctx.getId(warning.id);
-            userMentions.push(warning.id);
-            resultText += `❖ @${userId} (${warning.count}/${ctx.db.group.maxwarnings})\n`;
-        }
+        const mentions = warnings.map(warning => warning.id);
+        const text = warnings.map(warning => `❖ @${ctx.getId(warning.id)} (${warning.count}/${ctx.db.group.maxwarnings})`).join("\n");
         await ctx.reply({
-            text: resultText.trim() || ctx.format.info(config.msg.notFound),
-            mentions: userMentions
+            text: text.trim() || ctx.format.info(config.msg.notFound),
+            mentions
         });
     }
 }];

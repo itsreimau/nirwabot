@@ -1,12 +1,10 @@
-const chunkArray = (array, chunkSize) => {
-    const chunks = [];
-    for (let i = 0; i < array.length; i += chunkSize) chunks.push(array.slice(i, i + chunkSize));
-    return chunks;
-};
+const chunkArray = (array, size) =>
+    Array.from({
+        length: Math.ceil(array.length / size)
+    }, (_, i) => array.slice(i * size, i * size + size));
 
 const prepareStickerPacks = (stickers, title, name, packId) => {
-    const maxPerPack = 60;
-    const chunks = chunkArray(stickers.filter(sticker => !sticker.is_animated), maxPerPack);
+    const chunks = chunkArray(stickers.filter(sticker => !sticker.is_animated), 60);
     return chunks.map((chunk, index) => ({
         name: title,
         publisher: config.bot.name,
@@ -43,18 +41,16 @@ module.exports = {
             });
             const result = (await ctx.request.get(apiUrl)).data.result;
             const stickerPacks = prepareStickerPacks(result.sticker, result.title, result.name, ctx.msg.key.id);
-            if (stickerPacks.length === 0) return await ctx.reply(config.msg.notFound);
-            for (let i = 0; i < stickerPacks.length; i++) {
-                const stickerPack = stickerPacks[i];
+            if (!stickerPacks.length) return await ctx.reply(config.msg.notFound);
+            for (const stickerPack of stickerPacks)
                 await ctx.reply({
                     stickerPack
                 }, {
                     pack: config.sticker.packname,
                     author: config.sticker.author
                 });
-            }
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

@@ -20,7 +20,7 @@ module.exports = {
             await ctx.groups.acceptInvite(urlCode);
             await ctx.reply(ctx.format.info("Berhasil join grup."));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

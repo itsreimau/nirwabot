@@ -42,7 +42,7 @@ module.exports = {
         } catch (error) {
             senderDb.sessionId.chatgpt = [];
             senderDb.save();
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 };

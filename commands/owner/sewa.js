@@ -1,3 +1,8 @@
+const resolveTarget = async (ctx) =>
+    (ctx.isGroup() ? {
+        id: ctx.id
+    } : await ctx.target(["text_group"]));
+
 module.exports = [{
     name: "addsewagroup",
     aliases: ["addsewa", "addsewagrup", "adg"],
@@ -6,9 +11,7 @@ module.exports = [{
         owner: true
     },
     code: async (ctx) => {
-        const target = ctx.isGroup() ? {
-            id: ctx.id
-        } : await ctx.target(["text_group"]);
+        const target = await resolveTarget(ctx);
         const daysAmount = Number(ctx.args[target.source === "text_group" ? 1 : 0]);
         if (!target.id || !daysAmount)
             return await ctx.reply(
@@ -33,23 +36,19 @@ module.exports = [{
             });
             const group = await ctx.group(target.id);
             const groupOwner = await group.owner();
-            let groupMentions;
-            if (!flag.silent && groupOwner && !config.system.restrict) {
-                groupMentions = [{
-                    groupJid: `${group.id}@g.us`,
-                    groupSubject: await group.name()
-                }];
-            }
             const targetDb = ctx.getDb("groups", target.id);
             targetDb.sewa = true;
-            if (daysAmount && daysAmount > 0) {
-                targetDb.sewaExpiration = Date.now() + (daysAmount * 24 * 60 * 60 * 1000);
+            if (daysAmount > 0) {
+                targetDb.sewaExpiration = Date.now() + daysAmount * 24 * 60 * 60 * 1000;
                 targetDb.save();
                 if (!flag.silent && groupOwner && !config.system.restrict)
                     await ctx.sendMessage(groupOwner, {
-                        text: ctx.format.info(`Bot disewakan ke grup @${groupMentions.groupJid} ${daysAmount} hari.`),
+                        text: ctx.format.info(`Bot disewakan ke grup @${group.id}@g.us ${daysAmount} hari.`),
                         contextInfo: {
-                            groupMentions
+                            groupMentions: [{
+                                groupJid: `${group.id}@g.us`,
+                                groupSubject: await group.name()
+                            }]
                         }
                     });
                 await ctx.reply(ctx.format.info(`Sewa ${daysAmount} hari berhasil.`));
@@ -58,15 +57,18 @@ module.exports = [{
                 targetDb.save();
                 if (!flag.silent && groupOwner && !config.system.restrict)
                     await ctx.sendMessage(groupOwner, {
-                        text: ctx.format.info(`Bot disewakan ke grup @${groupMentions.groupJid} selamanya.`),
+                        text: ctx.format.info(`Bot disewakan ke grup @${group.id}@g.us selamanya.`),
                         contextInfo: {
-                            groupMentions
+                            groupMentions: [{
+                                groupJid: `${group.id}@g.us`,
+                                groupSubject: await group.name()
+                            }]
                         }
                     });
                 await ctx.reply(ctx.format.info("Sewa selamanya berhasil."));
             }
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 }, {
@@ -77,9 +79,7 @@ module.exports = [{
         owner: true
     },
     code: async (ctx) => {
-        const target = ctx.isGroup() ? {
-            id: ctx.id
-        } : await ctx.target(["text_group"]);
+        const target = await resolveTarget(ctx);
         if (!target.id)
             return await ctx.reply(
                 `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
@@ -107,21 +107,19 @@ module.exports = [{
             });
             const group = await ctx.group(target.id);
             const groupOwner = await group.owner();
-            if (!flag.silent && groupOwner && !config.system.restrict) {
-                const groupMentions = [{
-                    groupJid: `${group.id}@g.us`,
-                    groupSubject: await group.name()
-                }];
+            if (!flag.silent && groupOwner && !config.system.restrict)
                 await ctx.sendMessage(groupOwner, {
-                    text: ctx.format.info(`Sewa bot grup @${groupMentions.groupJid} dihentikan owner.`),
+                    text: ctx.format.info(`Sewa bot grup @${group.id}@g.us dihentikan owner.`),
                     contextInfo: {
-                        groupMentions
+                        groupMentions: [{
+                            groupJid: `${group.id}@g.us`,
+                            groupSubject: await group.name()
+                        }]
                     }
                 });
-            }
             await ctx.reply(ctx.format.info("Sewa grup dihapus."));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 }];

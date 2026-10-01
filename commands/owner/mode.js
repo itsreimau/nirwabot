@@ -1,3 +1,5 @@
+const validModes = ["premium", "group", "private", "public", "self"];
+
 module.exports = {
     name: "mode",
     aliases: ["m"],
@@ -15,19 +17,9 @@ module.exports = {
                     `Ketik: ${ctx.format.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk daftar`
                 ])
             );
-        if (input.toLowerCase() === "list") {
-            const listText = await ctx.list.get(ctx, "mode");
-            return await ctx.reply(listText);
-        }
+        if (input.toLowerCase() === "list") return await ctx.reply(await ctx.list.get(ctx, "mode"));
 
         try {
-            const validModes = [
-                "premium",
-                "group",
-                "private",
-                "public",
-                "self"
-            ];
             const mode = input.toLowerCase();
             if (!validModes.includes(mode)) return await ctx.reply(ctx.format.info(`Mode "${input}" tidak valid.`));
             const botDb = ctx.db.bot;
@@ -35,7 +27,7 @@ module.exports = {
             botDb.save();
             await ctx.reply(ctx.format.info(`Mode diubah ke ${input}.`));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

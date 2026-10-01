@@ -1,5 +1,18 @@
 const sessions = new Map();
 
+const mapel = {
+    bindo: "Bahasa Indonesia",
+    tik: "Teknologi Informasi dan Komunikasi",
+    pkn: "Pelajaran Pendidikan Pancasila dan Kewarganegaraan",
+    bing: "Bahasa Inggris",
+    penjas: "Pendidikan Jasmani dan Kesehatan",
+    pai: "Pendidikan Agama Islam",
+    matematika: "Matematika",
+    jawa: "Bahasa Jawa",
+    ips: "Ilmu Pengetahuan Sosial",
+    ipa: "Ilmu Pengetahuan Alam"
+};
+
 module.exports = {
     name: "cerdascermat",
     aliases: ["cc"],
@@ -8,19 +21,8 @@ module.exports = {
         if (sessions.has(ctx.id)) return await ctx.reply(ctx.format.info("Sesi sedang berjalan."));
 
         try {
-            const mapel = {
-                bindo: "Bahasa Indonesia",
-                tik: "Teknologi Informasi dan Komunikasi",
-                pkn: "Pelajaran Pendidikan Pancasila dan Kewarganegaraan",
-                bing: "Bahasa Inggris",
-                penjas: "Pendidikan Jasmani dan Kesehatan",
-                pai: "Pendidikan Agama Islam",
-                matematika: "Matematika",
-                jawa: "Bahasa Jawa",
-                ips: "Ilmu Pengetahuan Sosial",
-                ipa: "Ilmu Pengetahuan Alam"
-            };
-            const input = ctx.args?.[0] && mapel[ctx.args[0]] ? ctx.args[0] : Object.keys(mapel)[Math.floor(Math.random() * Object.keys(mapel).length)];
+            const keys = Object.keys(mapel);
+            const input = ctx.args?.[0] && mapel[ctx.args[0]] ? ctx.args[0] : keys[Math.floor(Math.random() * keys.length)];
             const apiUrl = ctx.api.createUrl("siputzx", "/api/games/cc-sd", {
                 matapelajaran: input
             });
@@ -29,7 +31,7 @@ module.exports = {
             const game = {
                 timeout: 60000,
                 answerKey: result.jawaban_benar,
-                answer: result.semua_jawaban.find(ans => Object.keys(ans)[0] === result.jawaban_benar)[result.jawaban_benar].toLowerCase(),
+                answer: result.semua_jawaban.find(answers => Object.keys(answers)[0] === result.jawaban_benar)[result.jawaban_benar].toLowerCase(),
                 wrongAnswered: []
             };
 
@@ -52,9 +54,9 @@ module.exports = {
             const collector = ctx.MessageCollector({
                 time: game.timeout,
                 filter: (collCtx) => {
-                    if (collCtx.msg.body?.startsWith(`surrender_`)) return true;
+                    if (collCtx.msg.body?.startsWith("surrender_")) return true;
                     const body = collCtx.msg.body?.toLowerCase() || "";
-                    return body.length === 1 && result.semua_jawaban.map(ans => Object.keys(ans)[0].toLowerCase()).includes(body);
+                    return body.length === 1 && result.semua_jawaban.some(answers => Object.keys(answers)[0].toLowerCase() === body);
                 }
             });
             sessions.set(ctx.id, true);
@@ -72,7 +74,7 @@ module.exports = {
                 sections: [{
                     title: "Pilih Mapel",
                     highlight_label: "🌕",
-                    rows: Object.keys(mapel).map(key => ({
+                    rows: keys.map(key => ({
                         title: key.toUpperCase(),
                         description: `Klik untuk memainkan mapel ${mapel[key]}`,
                         id: `${ctx.used.prefix + ctx.used.command} ${key}`
@@ -118,7 +120,7 @@ module.exports = {
             });
         } catch (error) {
             sessions.delete(ctx.id);
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 };

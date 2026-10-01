@@ -7,10 +7,9 @@ module.exports = {
     },
     code: async (ctx) => {
         const langRegex = /^[a-z]{2}(-[a-zA-Z]{2,4})?$/;
-        let langCode = "id";
-        if (langRegex.test(ctx.args[0])) langCode = ctx.args[0];
-        let input = ctx.args.slice(langRegex.test(ctx.args[0]) ? 1 : 0).join(" ");
-        if (!input && ctx.quoted?.body) input = ctx.quoted.body;
+        const hasLang = langRegex.test(ctx.args[0]);
+        const langCode = hasLang ? ctx.args[0] : "id";
+        const input = ctx.args.slice(hasLang ? 1 : 0).join(" ") || ctx.quoted?.body;
         if (!input)
             return await ctx.reply(
                 `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
@@ -32,7 +31,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 };

@@ -1,18 +1,4 @@
-const validOptions = [
-    "antiaudio",
-    "antidocument",
-    "antiimage",
-    "antisticker",
-    "antivideo",
-    "antigcsw",
-    "antilink",
-    "antispam",
-    "antitagsw",
-    "antitoxic",
-    "autokick",
-    "gamerestrict",
-    "welcome"
-];
+const validOptions = ["antiaudio", "antidocument", "antiimage", "antisticker", "antivideo", "antigcsw", "antilink", "antispam", "antitagsw", "antitoxic", "autokick", "gamerestrict", "welcome"];
 
 module.exports = {
     name: "setoption",
@@ -34,10 +20,7 @@ module.exports = {
                     `Ketik: ${ctx.format.inlineCode(`${ctx.used.prefix + ctx.used.command} status`)} untuk status`
                 ])
             );
-        if (input.toLowerCase() === "list") {
-            const listText = await ctx.list.get(ctx, "setoption");
-            return await ctx.reply(listText);
-        }
+        if (input.toLowerCase() === "list") return await ctx.reply(await ctx.list.get(ctx, "setoption"));
         if (input.toLowerCase() === "status") {
             const groupOption = ctx.db.group.option;
             const text = validOptions.map(opt => `❖ ${ctx.format.ucwords(opt)}: ${groupOption[opt] ? "Aktif" : "Nonaktif"}`).join("\n");
@@ -48,13 +31,12 @@ module.exports = {
             const setKey = input.toLowerCase();
             if (!validOptions.includes(setKey)) return await ctx.reply(ctx.format.info(`Opsi ${ctx.format.inlineCode(input)} tidak valid.`));
             const groupDb = ctx.db.group;
-            const currentStatus = groupDb.option?.[setKey] || false;
-            const newStatus = !currentStatus;
+            const newStatus = !groupDb.option[setKey];
             groupDb.option[setKey] = newStatus;
             groupDb.save();
             await ctx.reply(ctx.format.info(`Opsi ${ctx.format.inlineCode(input)} ${newStatus ? "diaktifkan" : "dinonaktifkan"}.`));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

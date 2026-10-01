@@ -21,7 +21,7 @@ module.exports = {
             groupDb.save();
             await ctx.reply(ctx.format.info("Max warnings diubah."));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

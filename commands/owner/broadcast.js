@@ -1,3 +1,14 @@
+const filterGroups = async (ctx, blacklist) => Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !blacklist.includes(group.id) && !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id);
+
+const handleBlacklist = async (ctx, botDb, blacklist) => {
+    const index = blacklist.indexOf(ctx.id);
+    if (index > -1) blacklist.splice(index, 1);
+    else blacklist.push(ctx.id);
+    botDb.blacklistBroadcast = blacklist;
+    botDb.save();
+    return await ctx.reply(ctx.format.info(index > -1 ? "Grup dihapus dari blacklist." : "Grup ditambahkan ke blacklist."));
+};
+
 module.exports = [{
     name: "broadcastgc",
     aliases: ["bc", "bcht", "bcgc", "broadcast"],
@@ -17,24 +28,11 @@ module.exports = [{
                 ])
             );
         const botDb = ctx.db.bot;
-        let blacklist = botDb.blacklistBroadcast;
-        if (ctx.args[0]?.toLowerCase() === "blacklist" && ctx.isGroup()) {
-            const groupIndex = blacklist.indexOf(ctx.id);
-            if (groupIndex > -1) {
-                blacklist.splice(groupIndex, 1);
-                botDb.blacklistBroadcast = blacklist;
-                botDb.save();
-                return await ctx.reply(ctx.format.info("Grup dihapus dari blacklist."));
-            } else {
-                blacklist.push(ctx.id);
-                botDb.blacklistBroadcast = blacklist;
-                botDb.save();
-                return await ctx.reply(ctx.format.info("Grup ditambahkan ke blacklist."));
-            }
-        }
+        const blacklist = botDb.blacklistBroadcast;
+        if (ctx.args[0]?.toLowerCase() === "blacklist" && ctx.isGroup()) return await handleBlacklist(ctx, botDb, blacklist);
 
         try {
-            const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !blacklist.includes(g.id) && !g.announce && !g.isCommunity && !g.isCommunityAnnounce).map(g => g.id);
+            const groupJids = await filterGroups(ctx, blacklist);
             const {
                 delays,
                 duration
@@ -62,7 +60,7 @@ module.exports = [{
             }
             await ctx.edit(ctx.format.info(`Terkirim ke ${groupJids.length} grup.`), waitMsg.key);
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 }, {
@@ -85,36 +83,17 @@ module.exports = [{
                 ])
             );
         const botDb = ctx.db.bot;
-        let blacklist = botDb.blacklistBroadcast;
-        if (ctx.args[0]?.toLowerCase() === "blacklist" && ctx.isGroup()) {
-            const groupIndex = blacklist.indexOf(ctx.id);
-            if (groupIndex > -1) {
-                blacklist.splice(groupIndex, 1);
-                botDb.blacklistBroadcast = blacklist;
-                botDb.save();
-                return await ctx.reply(ctx.format.info("Grup dihapus dari blacklist."));
-            } else {
-                blacklist.push(ctx.id);
-                botDb.blacklistBroadcast = blacklist;
-                botDb.save();
-                return await ctx.reply(ctx.format.info("Grup ditambahkan ke blacklist."));
-            }
-        }
+        const blacklist = botDb.blacklistBroadcast;
+        if (ctx.args[0]?.toLowerCase() === "blacklist" && ctx.isGroup()) return await handleBlacklist(ctx, botDb, blacklist);
 
         try {
-            const groupJids = Object.values(await ctx.core.groupFetchAllParticipating()).filter(g => !blacklist.includes(g.id) && !g.announce && !g.isCommunity && !g.isCommunityAnnounce).map(g => g.id);
-            let content;
-            if (type) {
-                const buffer = await ctx.msg.media.download() || await ctx.quoted.media.download();
-                content = {
-                    [type]: buffer,
-                    caption: input
-                };
-            } else {
-                content = {
-                    text: input
-                };
-            }
+            const groupJids = await filterGroups(ctx, blacklist);
+            const content = type ? {
+                [type]: await ctx.msg.media.download() || await ctx.quoted.media.download(),
+                caption: input
+            } : {
+                text: input
+            };
             const {
                 delays,
                 duration
@@ -135,7 +114,7 @@ module.exports = [{
             }
             await ctx.edit(ctx.format.info(`Terkirim ke ${groupJids.length} grup.`), waitMsg.key);
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 }];

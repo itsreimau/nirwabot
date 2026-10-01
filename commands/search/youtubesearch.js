@@ -29,14 +29,14 @@ module.exports = {
                 q: input
             });
             const result = (await ctx.request.get(apiUrl)).data.result;
-            const resultText = result.map(res =>
+            const text = result.map(res =>
                 `❖ ${ctx.format.bold("Judul")}: ${res.title}\n` +
                 `❖ ${ctx.format.bold("Channel")}: ${res.channel.name}\n` +
                 `❖ ${ctx.format.bold("URL")}: ${res.url}`
             ).join("\n\n");
-            await ctx.reply(resultText.trim() || ctx.format.info(config.msg.notFound));
+            await ctx.reply(text.trim() || ctx.format.info(config.msg.notFound));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 };

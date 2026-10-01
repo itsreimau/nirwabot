@@ -29,7 +29,7 @@ module.exports = {
                 caption: `❖ ${ctx.format.bold("Prompt")}: ${input}`
             });
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 };

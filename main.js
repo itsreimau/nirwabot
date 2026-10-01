@@ -88,6 +88,10 @@ const bot = new Client({
     owner: [...config.owner.id, ...config.owner.co.flatMap(co => co.id)].filter(Boolean)
 });
 
+Object.assign(global, {
+    bot
+});
+
 Events(bot);
 Middlewares(bot);
 

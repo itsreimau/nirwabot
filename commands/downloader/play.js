@@ -30,14 +30,12 @@ module.exports = {
 
         try {
             const searchIndex = Number(flag.index);
-            const source = flag.source;
-            let searchResult = "";
-            let downloadResult = "";
-            if (source === "spotify") {
+            let downloadUrl;
+            if (flag.source === "spotify") {
                 const searchApiUrl = ctx.api.createUrl("zellrayy", "/search/spotify", {
                     q: input
                 });
-                searchResult = (await ctx.request.get(searchApiUrl)).data.result[searchIndex];
+                const searchResult = (await ctx.request.get(searchApiUrl)).data.result[searchIndex];
                 await ctx.reply(
                     `❖ ${ctx.format.bold("Judul")}: ${searchResult.title}\n` +
                     `❖ ${ctx.format.bold("Artis")}: ${searchResult.artist}\n` +
@@ -46,12 +44,12 @@ module.exports = {
                 const downloadApiUrl = ctx.api.createUrl("nexray", "/downloader/spotify", {
                     url: searchResult.spotifyUrl
                 });
-                downloadResult = (await ctx.request.get(downloadApiUrl)).data.result.url;
+                downloadUrl = (await ctx.request.get(downloadApiUrl)).data.result.url;
             } else {
                 const searchApiUrl = ctx.api.createUrl("zellrayy", "/search/youtube", {
                     q: input
                 });
-                searchResult = (await ctx.request.get(searchApiUrl)).data.result[searchIndex];
+                const searchResult = (await ctx.request.get(searchApiUrl)).data.result[searchIndex];
                 await ctx.reply(
                     `❖ ${ctx.format.bold("Judul")}: ${searchResult.title}\n` +
                     `❖ ${ctx.format.bold("Artis")}: ${searchResult.channel.name}\n` +
@@ -61,17 +59,17 @@ module.exports = {
                     url: searchResult.url,
                     quality: "mp3"
                 });
-                downloadResult = (await ctx.request.get(downloadApiUrl)).data.result.url;
+                downloadUrl = (await ctx.request.get(downloadApiUrl)).data.result.url;
             }
             if (config.system.autoTypingOnCmd) await ctx.simulateTyping();
             await ctx.reply({
                 audio: {
-                    url: downloadResult
+                    url: downloadUrl
                 },
                 mimetype: "audio/mpeg"
             });
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 };

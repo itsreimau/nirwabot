@@ -15,7 +15,7 @@ module.exports = {
             senderDb.save();
             await ctx.reply(ctx.format.info(`Tukar ${scorePerTicket} skor > 1 tiket. Tiket: ${senderDb.ticket}/${maxTicket}`));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

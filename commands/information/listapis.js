@@ -4,7 +4,7 @@ module.exports = {
     category: "information",
     code: async (ctx) => {
         const APIs = ctx.api.listUrl();
-        const resultText = Object.values(APIs).map(api => `❖ ${api.baseURL}`).join("\n");
-        await ctx.reply(resultText.trim());
+        const text = Object.values(APIs).map(api => `❖ ${api.baseURL}`).join("\n");
+        await ctx.reply(text.trim());
     }
 };

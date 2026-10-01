@@ -19,7 +19,7 @@ module.exports = {
             await ctx.group().updateDescription(input);
             await ctx.reply(ctx.format.info("Deskripsi grup diubah."));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

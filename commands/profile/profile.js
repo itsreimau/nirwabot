@@ -6,11 +6,11 @@ module.exports = {
         const users = ctx.db.users.getAll();
         const senderDb = ctx.db.user;
         const maxTicket = (ctx.sender.isOwner() || senderDb.premium) ? config.system.maxTicketPremium : config.system.maxTicket;
-        const leaderboardData = users.map(u => ({
-            id: u.id,
-            score: u.score
+        const leaderboardData = users.map(user => ({
+            id: user.id,
+            score: user.score
         })).sort((a, b) => b.score - a.score);
-        const rank = leaderboardData.findIndex(u => ctx.helper.areJidsSameUser(u.id, ctx.sender.jid)) + 1;
+        const rank = leaderboardData.findIndex(user => ctx.helper.areJidsSameUser(user.id, ctx.sender.jid)) + 1;
         await ctx.reply(
             `❖ ${ctx.format.bold("Nama")}: ${ctx.sender.pushName}\n` +
             `❖ ${ctx.format.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (senderDb.premium ? `Premium (${senderDb.premiumExpiration ? `${ctx.format.convertMsToDuration(senderDb.premiumExpiration - Date.now(), ["hari", "jam"])} tersisa` : "Selamanya"})` : "Freemium")}\n` +

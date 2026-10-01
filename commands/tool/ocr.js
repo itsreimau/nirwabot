@@ -14,7 +14,7 @@ module.exports = {
             const result = (await ctx.request.get(apiUrl)).data.data;
             await ctx.reply(result);
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 };

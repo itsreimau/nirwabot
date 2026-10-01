@@ -24,7 +24,7 @@ module.exports = {
                 mentions: [target.id]
             });
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

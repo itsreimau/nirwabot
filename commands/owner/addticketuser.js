@@ -21,9 +21,8 @@ module.exports = {
                 mentions: ["6281234567891@s.whatsapp.net"]
             });
         const targetDb = ctx.getDb("users", target.id);
-        const senderDb = ctx.db.user;
         const maxTicket = targetDb.premium ? config.system.maxTicketPremium : config.system.maxTicket;
-        if (targetDb.ticket >= maxTicket) return await ctx.reply(ctx.format.info(`Tiket udah maksimal (${ctx.sender.isOwner() ? "Unlimited" : `${senderDb.ticket}/${maxTicket}`}). Gak bisa nambah lagi.`));
+        if (targetDb.ticket >= maxTicket) return await ctx.reply(ctx.format.info(`Tiket udah maksimal (${ctx.sender.isOwner() ? "Unlimited" : `${targetDb.ticket}/${maxTicket}`}). Gak bisa nambah lagi.`));
 
         try {
             const flag = ctx.flag({
@@ -38,7 +37,7 @@ module.exports = {
             if (!flag.silent && !config.system.restrict) await ctx.sendMessage(target.id, ctx.format.info(`Anda menerima ${ticketAmount} ticket dari owner.`));
             await ctx.reply(ctx.format.info(`+${ticketAmount} ticket untuk target.`));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

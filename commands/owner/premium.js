@@ -1,3 +1,16 @@
+const buildUsage = async (ctx) =>
+    await ctx.reply({
+        text: `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+            `${ctx.format.generateCmdExample(ctx.used, "@6281234567891 8 -s")}\n` +
+            `${ctx.format.generateNotes([
+                "Balas/quote pesan target."
+            ])}\n` +
+            ctx.format.generatesFlagInfo({
+                "-s": "Diam, tanpa notifikasi"
+            }),
+        mentions: ["6281234567891@s.whatsapp.net"]
+    });
+
 module.exports = [{
     name: "addpremiumuser",
     aliases: ["addpremuser", "addprem", "apu"],
@@ -8,18 +21,7 @@ module.exports = [{
     code: async (ctx) => {
         const target = await ctx.target();
         const daysAmount = Number(ctx.args[target.source === "quoted" ? 0 : 1]);
-        if (!target.id)
-            return await ctx.reply({
-                text: `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
-                    `${ctx.format.generateCmdExample(ctx.used, "@6281234567891 8 -s")}\n` +
-                    `${ctx.format.generateNotes([
-                        "Balas/quote pesan target."
-                    ])}\n` +
-                    ctx.format.generatesFlagInfo({
-                        "-s": "Diam, tanpa notifikasi"
-                    }),
-                mentions: ["6281234567891@s.whatsapp.net"]
-            });
+        if (!target.id) return await buildUsage(ctx);
         if (daysAmount && daysAmount <= 0) return await ctx.reply(ctx.format.info("Durasi premium harus > 0 hari."));
 
         try {
@@ -44,7 +46,7 @@ module.exports = [{
                 await ctx.reply(ctx.format.info("Premium selamanya ditambahkan."));
             }
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 }, {
@@ -56,19 +58,7 @@ module.exports = [{
     },
     code: async (ctx) => {
         const target = await ctx.target();
-        if (!target.id)
-            return await ctx.reply({
-                text: `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
-                    `${ctx.format.generateCmdExample(ctx.used, "@6281234567891 -s")}\n` +
-                    `${ctx.format.generateNotes([
-                        "Balas/quote pesan target."
-                    ])}\n` +
-                    ctx.format.generatesFlagInfo({
-                        "-s": "Diam, tanpa notifikasi"
-                    }),
-                mentions: ["6281234567891@s.whatsapp.net"]
-            });
-
+        if (!target.id) return await buildUsage(ctx);
         try {
             const targetDb = ctx.getDb("users", target.id);
             targetDb.premium = false;
@@ -84,7 +74,7 @@ module.exports = [{
             if (!flag.silent && !config.system.restrict) await ctx.sendMessage(target.id, ctx.format.info("Premium Anda dicabut owner."));
             await ctx.reply(ctx.format.info("Premium dicabut."));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 }];

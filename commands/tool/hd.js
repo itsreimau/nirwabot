@@ -17,7 +17,7 @@ module.exports = [{
                 }
             });
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 }, {
@@ -42,7 +42,7 @@ module.exports = [{
                 }
             });
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 }];

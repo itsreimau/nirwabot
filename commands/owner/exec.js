@@ -11,7 +11,7 @@ module.exports = {
             const output = await util.promisify(exec)(command);
             await ctx.reply(ctx.format.monospace(output.stdout || output.stderr));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, false, true);
+            await ctx.helper.reportError(ctx, error, false, true);
         }
     }
 };

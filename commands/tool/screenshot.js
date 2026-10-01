@@ -25,7 +25,7 @@ module.exports = {
                 caption: `❖ ${ctx.format.bold("URL")}: ${url}`
             });
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 };

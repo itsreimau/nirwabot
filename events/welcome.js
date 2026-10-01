@@ -10,8 +10,7 @@ async function WelcomeHandler(bot, welcome, type, isSimulate = false) {
     if (!isSimulate && !groupDb.option?.welcome) return;
     if (!isSimulate && !["group", "public"].includes(botDb.mode)) return;
 
-    const now = moment().tz(config.system.timeZone);
-    const hour = now.hour();
+    const hour = moment().tz(config.system.timeZone).hour();
     if (!isSimulate && config.system.unavailableAtNight && hour >= 0 && hour < 6) return;
 
     const isWelcome = type === "UserJoin";
@@ -40,5 +39,4 @@ module.exports = (bot) => {
     bot.ev.on("UserJoin", async (welcome) => WelcomeHandler(bot, welcome, "UserJoin"));
     bot.ev.on("UserLeave", async (welcome) => WelcomeHandler(bot, welcome, "UserLeave"));
 };
-
 module.exports.WelcomeHandler = WelcomeHandler;

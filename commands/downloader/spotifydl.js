@@ -44,7 +44,7 @@ module.exports = {
             };
             await ctx.reply(content);
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, true);
+            await ctx.helper.reportError(ctx, error, true);
         }
     }
 };

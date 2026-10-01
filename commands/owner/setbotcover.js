@@ -12,7 +12,7 @@ module.exports = {
             await ctx.core.updateCoverPhoto(buffer);
             await ctx.reply(ctx.format.info("Cover bot diubah."));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

@@ -38,7 +38,7 @@ module.exports = {
             await WelcomeHandler(ctx, welcome, action, true);
             await ctx.reply(ctx.format.info("Simulasi berhasil."));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

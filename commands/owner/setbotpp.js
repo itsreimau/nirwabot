@@ -14,7 +14,7 @@ module.exports = {
             await ctx.core.updateProfilePicture(ctx.me.id, buffer, dimensions);
             await ctx.reply(ctx.format.info("PP bot diubah."));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error);
+            await ctx.helper.reportError(ctx, error);
         }
     }
 };

@@ -8,16 +8,13 @@ module.exports = [{
     code: async (ctx) => {
         const input = ctx.text || ctx.quoted?.body;
         const members = await ctx.group().members();
-        const mentions = members.map(member => ({
-            tag: `@${ctx.getId(member.id)}`,
-            mention: member.id
-        }));
-        const resultText = mentions.map(m => m.tag).join(" ");
+        const mentions = members.map(member => member.id);
+        const text = mentions.map(id => `@${ctx.getId(id)}`).join(" ");
         await ctx.reply({
             text: `${input || `>ᴗ< ${ctx.format.italic("Halo, Dunia!")}`}\n` +
                 `${"\u200E".repeat(4001)}\n` +
-                resultText,
-            mentions: mentions.map(m => m.mention)
+                text,
+            mentions
         });
     }
 }, {

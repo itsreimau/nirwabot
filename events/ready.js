@@ -8,9 +8,8 @@ module.exports = (bot) => {
         const botRestart = botDb.restart;
         if (botRestart?.id && botRestart?.timestamp && botRestart?.readyAt) {
             bot.readyAt = botRestart.readyAt;
-            const timeago = bot.format.convertMsToDuration(Date.now() - botRestart.timestamp);
             await bot.sendMessage(botRestart.id, {
-                text: bot.format.info(`Restart selesai dalam ${timeago}.`),
+                text: bot.format.info(`Restart selesai dalam ${bot.format.convertMsToDuration(Date.now() - botRestart.timestamp)}.`),
                 edit: botRestart.key
             });
             botDb.restart = {};

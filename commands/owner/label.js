@@ -28,7 +28,7 @@ module.exports = {
             }
             await ctx.edit(ctx.format.info(`Label diubah ke ${ctx.format.inlineCode(input)} di ${groupJids.length} grup.`), waitMsg.key);
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, false);
+            await ctx.helper.reportError(ctx, error, false);
         }
     }
 };

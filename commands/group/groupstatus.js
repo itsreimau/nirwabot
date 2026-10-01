@@ -16,18 +16,12 @@ module.exports = {
             );
 
         try {
-            let content;
-            if (type) {
-                const buffer = await ctx.msg.media.download() || await ctx.quoted.media.download();
-                content = {
-                    [type]: buffer,
-                    caption: input
-                };
-            } else {
-                content = {
-                    text: input
-                };
-            }
+            const content = type ? {
+                [type]: await ctx.msg.media.download() || await ctx.quoted.media.download(),
+                caption: input
+            } : {
+                text: input
+            };
             await ctx.reply({
                 ...content,
                 statusAudience: {
@@ -38,7 +32,7 @@ module.exports = {
             });
             await ctx.reply(ctx.format.info("Group status terkirim."));
         } catch (error) {
-            await ctx.helper.handleError(ctx, error, false);
+            await ctx.helper.reportError(ctx, error, false);
         }
     }
 };
