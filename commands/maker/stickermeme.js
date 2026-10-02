@@ -17,7 +17,7 @@ module.exports = {
         try {
             let [top, bottom] = input.split("|").map(inp => inp);
             [top, bottom] = bottom ? [top || " ", bottom] : [" ", top || " "];
-            const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.media.upload();
+            const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.msg.media.upload();
             const result = ctx.api.createUrl("moondrowend", "/api/maker/smeme", {
                 text_atas: top,
                 text_bawah: bottom,

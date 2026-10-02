@@ -7,7 +7,7 @@ module.exports = [{
     code: async (ctx) => {
         if (!ctx.isMedia(["image"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
         try {
-            const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.media.upload();
+            const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.msg.media.upload();
             const result = ctx.api.createUrl("moondrowend", "/api/tools/hd", {
                 url: uploadUrl
             });
@@ -31,7 +31,7 @@ module.exports = [{
     code: async (ctx) => {
         if (!ctx.isMedia(["video"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["video"]));
         try {
-            const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.media.upload();
+            const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.msg.media.upload();
             const apiUrl = ctx.api.createUrl("nexray", "/tools/v1/hdvideo", {
                 url: uploadUrl
             });
