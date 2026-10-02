@@ -56,6 +56,7 @@
     "alwaysOnline": true,
     "autoRead": true,
     "autoTypingOnCmd": true,
+    "antiBot": false,
     "cooldown": 10000,
     "maxListeners": 50,
     "port": 3000,

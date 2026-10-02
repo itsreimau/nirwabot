@@ -4,7 +4,7 @@ module.exports = {
     category: "misc",
     code: async (ctx) => {
         if (!ctx.isMedia(["audio", "image", "video"], ["quoted"])) return await ctx.reply(ctx.format.generateInstruction(["reply"], ["audio", "image", "video"]));
-        const quotedMessage = ctx.quoted.message;
+        const quotedMessage = ctx.quoted.msg.message;
         if (!quotedMessage[ctx.quoted.getMessageType()].viewOnce) return await ctx.reply(ctx.format.generateInstruction(["reply"], ["viewOnce"]));
 
         try {

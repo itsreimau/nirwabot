@@ -45,8 +45,9 @@ module.exports = {
             });
             const result = (await ctx.request.get(apiUrl)).data.data;
 
+            const levelInfo = levels[result.mode];
             const game = {
-                score: levels[input].bonus,
+                score: levelInfo.bonus,
                 timeout: result.time,
                 answer: String(result.result)
             };
@@ -54,8 +55,8 @@ module.exports = {
             await ctx.reply({
                 text: `✦ — ${result.str}\n` +
                     "\n" +
-                    `❖ ${ctx.format.bold("Level")}: ${levels[result.mode].label}`
-                `❖ ${ctx.format.bold("Waktu")}: ${ctx.format.convertMsToDuration(game.timeout)}`,
+                    `❖ ${ctx.format.bold("Level")}: ${levelInfo.label}\n` +
+                    `❖ ${ctx.format.bold("Waktu")}: ${ctx.format.convertMsToDuration(game.timeout)}`,
                 buttons: [{
                     text: "Menyerah",
                     id: `surrender_${ctx.used.command}`

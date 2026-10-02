@@ -118,7 +118,7 @@ class QuizGame {
                     buttons: playAgain
                 });
             } else if (answer === `hint_${ctx.used.command}`) {
-                if (participantDb.score < 1) return collCtx.reply(ctx.format.info("Skor kurang."));
+                if (participantDb.score < 1) return await collCtx.reply(ctx.format.info("Skor kurang."));
                 participantDb.score -= 1;
                 participantDb.save();
                 const clue = game.answer.replace(/\S/g, c => /[aiueo]/.test(c) ? "_" : c);

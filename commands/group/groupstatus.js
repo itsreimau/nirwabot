@@ -17,7 +17,7 @@ module.exports = {
 
         try {
             const content = type ? {
-                [type]: await ctx.msg.media.download() || await ctx.quoted.media.download(),
+                [type]: await ctx.msg.media.download() || await ctx.quoted.msg.media.download(),
                 caption: input
             } : {
                 text: input

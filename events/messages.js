@@ -139,17 +139,17 @@ module.exports = (bot) => {
                 groupDb.save();
             }
 
-            if (/^3EB0[0-9A-F]{9,16}$/i.test(msg.key.id) || ctx.getDevice() === "unknown") {
-                await ctx.reply(ctx.format.info("Bot terdeteksi, grup di-mute."));
-                groupDb.mutebot = true;
-                groupDb.save();
-            }
-
             if (groupDb.mutebot) return;
             const muteList = groupDb.mute;
             groupDb.mute = muteList.filter(mute => !mute.expiration || Date.now() >= mute.expiration);
             if (groupDb.mute.length !== muteList.length) groupDb.save();
             if (groupDb.mute.some(mute => mute.id === senderJid)) await ctx.delete(msg.key);
+
+            if (config.system.antiBot && msg.key.id.startsWith("3EB0")) {
+                await ctx.reply(ctx.format.info("Bot lain terdeteksi, bot ini akan di-mute."));
+                groupDb.mutebot = true;
+                groupDb.save();
+            }
 
             const currentMonth = now.format("YYYY-MM");
             if (groupDb.lastTopResetMonth && groupDb.lastTopResetMonth !== currentMonth) {
