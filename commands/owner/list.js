@@ -69,9 +69,7 @@ module.exports = [{
         }))).join("\n");
         await ctx.reply({
             text: text.trim() || ctx.format.info(config.msg.notFound),
-            contextInfo: {
-                groupMentions
-            }
+            groupMentions
         });
     }
 }];

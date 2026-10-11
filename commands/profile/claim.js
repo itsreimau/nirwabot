@@ -9,6 +9,9 @@ module.exports = {
     category: "profile",
     code: async (ctx) => {
         const senderDb = ctx.db.user;
+        const maxTicket = (ctx.sender.isOwner() || senderDb.premium) ? config.system.maxTicketPremium : config.system.maxTicket;
+        const scorePerTicket = config.system.scorePerTicket;
+        if (senderDb.ticket >= maxTicket) return await ctx.reply(ctx.format.info(`Tiket udah maksimal (${ctx.sender.isOwner() ? "Unlimited" : `${senderDb.ticket}/${maxTicket}`}). Gak bisa nambah lagi.`));
         const reward = (ctx.sender.isOwner() || senderDb.premium) ? rewards.premium : rewards.regular;
         const currentTime = Date.now();
         const lastClaim = senderDb.lastClaim;

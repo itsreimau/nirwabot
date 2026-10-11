@@ -44,12 +44,10 @@ module.exports = [{
                 if (!flag.silent && groupOwner && !config.system.restrict)
                     await ctx.sendMessage(groupOwner, {
                         text: ctx.format.info(`Bot disewakan ke grup @${group.id}@g.us ${daysAmount} hari.`),
-                        contextInfo: {
-                            groupMentions: [{
-                                groupJid: `${group.id}@g.us`,
-                                groupSubject: await group.name()
-                            }]
-                        }
+                        groupMentions: [{
+                            groupJid: `${group.id}@g.us`,
+                            groupSubject: await group.name()
+                        }]
                     });
                 await ctx.reply(ctx.format.info(`Sewa ${daysAmount} hari berhasil.`));
             } else {
@@ -58,12 +56,10 @@ module.exports = [{
                 if (!flag.silent && groupOwner && !config.system.restrict)
                     await ctx.sendMessage(groupOwner, {
                         text: ctx.format.info(`Bot disewakan ke grup @${group.id}@g.us selamanya.`),
-                        contextInfo: {
-                            groupMentions: [{
-                                groupJid: `${group.id}@g.us`,
-                                groupSubject: await group.name()
-                            }]
-                        }
+                        groupMentions: [{
+                            groupJid: `${group.id}@g.us`,
+                            groupSubject: await group.name()
+                        }]
                     });
                 await ctx.reply(ctx.format.info("Sewa selamanya berhasil."));
             }
@@ -110,12 +106,10 @@ module.exports = [{
             if (!flag.silent && groupOwner && !config.system.restrict)
                 await ctx.sendMessage(groupOwner, {
                     text: ctx.format.info(`Sewa bot grup @${group.id}@g.us dihentikan owner.`),
-                    contextInfo: {
-                        groupMentions: [{
-                            groupJid: `${group.id}@g.us`,
-                            groupSubject: await group.name()
-                        }]
-                    }
+                    groupMentions: [{
+                        groupJid: `${group.id}@g.us`,
+                        groupSubject: await group.name()
+                    }]
                 });
             await ctx.reply(ctx.format.info("Sewa grup dihapus."));
         } catch (error) {
