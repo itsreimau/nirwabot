@@ -14,11 +14,11 @@ module.exports = {
             );
 
         try {
-            const apiUrl = ctx.api.createUrl("kangwifi", "/search/pinterest2", {
+            const apiUrl = ctx.api.createUrl("varhad", "/search/pinterest", {
                 query: input,
-                limit: 100
+                limit: Math.floor(Math.random() * 1000) + 1
             });
-            const result = ctx.helper.getRandomElement((await ctx.request.get(apiUrl)).data.results);
+            const result = ctx.helper.getRandomElement((await ctx.request.get(apiUrl)).data.result);
             await ctx.reply({
                 image: {
                     url: result

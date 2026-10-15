@@ -9,10 +9,10 @@ module.exports = {
         if (!ctx.isMedia(["image"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
         try {
             const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.msg.media.upload();
-            const apiUrl = ctx.api.createUrl("kangwifi", "/tools/qrcode", {
+            const apiUrl = ctx.api.createUrl("faaa", "/faa/qr-detect", {
                 url: uploadUrl
             });
-            const result = (await ctx.request.get(apiUrl)).data.result.content;
+            const result = (await ctx.request.get(apiUrl)).data.result;
             await ctx.reply(result);
         } catch (error) {
             await ctx.helper.reportError(ctx, error, true);

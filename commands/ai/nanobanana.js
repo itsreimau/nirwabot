@@ -17,11 +17,10 @@ module.exports = {
 
         try {
             const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.msg.media.upload();
-            const apiUrl = ctx.api.createUrl("lea", "/aitools/img2prompt", {
-                img: uploadUrl,
+            const result = ctx.api.createUrl("faaa", "/faa/nano-banana", {
+                url: uploadUrl,
                 prompt: input
             });
-            const result = (await ctx.request.get(apiUrl)).data.data.image_url;
             await ctx.reply({
                 image: {
                     url: result

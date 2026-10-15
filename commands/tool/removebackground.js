@@ -9,10 +9,9 @@ module.exports = {
         if (!ctx.isMedia(["image"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
         try {
             const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.msg.media.upload();
-            const apiUrl = ctx.api.createUrl("kangwifi", "/tools/removalai", {
+            const result = ctx.api.createUrl("moondrowend", "/api/tools/removebg", {
                 url: uploadUrl
             });
-            const result = (await ctx.request.get(apiUrl)).data.result_url;
             await ctx.reply({
                 image: {
                     url: result

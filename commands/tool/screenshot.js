@@ -15,9 +15,10 @@ module.exports = {
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
         try {
-            const result = ctx.api.createUrl("kangwifi", "/tools/webshot", {
+            const result = ctx.api.createUrl("varhad", "/tools/ssweb", {
                 url
             });
+            const result = (await ctx.request.get(apiUrl)).data.result.thumbnail;
             await ctx.reply({
                 image: {
                     url: result

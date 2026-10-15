@@ -14,10 +14,9 @@ module.exports = {
             );
 
         try {
-            const apiUrl = ctx.api.createUrl("kangwifi", "/tools/qrcode", {
+            const result = ctx.api.createUrl("faaa", "/faa/qr-create", {
                 text: input
             });
-            const result = (await ctx.request.get(apiUrl)).data.result.url;
             await ctx.reply({
                 image: {
                     url: result

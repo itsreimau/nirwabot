@@ -54,7 +54,7 @@ module.exports = (bot) => {
                 return deny("ticket", config.msg.ticket, "🎟️", [{
                     text: "Tukar Skor",
                     id: `${ctx.used.prefix}exchange`
-            }]);
+                }]);
             }
         }
         if (perms.admin && isGroup && !isAdmin && !isOwner) return deny("admin", config.msg.admin, "🛡️");

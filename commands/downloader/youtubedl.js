@@ -61,43 +61,35 @@ module.exports = [{
                 type: "boolean",
                 short: "d",
                 default: false
-            },
-            resolution: {
-                type: "string",
-                short: "r",
-                default: "360"
             }
         });
         const url = flag.input || ctx.helper.extractUrlFromText(ctx.quoted?.body);
         if (!url)
             return await ctx.reply(
                 `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.format.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d -r 720")}\n` +
+                `${ctx.format.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d")}\n` +
                 ctx.format.generatesFlagInfo({
-                    "-d": "Kirim sebagai dokumen",
-                    "-r": "Resolusi: 240, 360, 480, 720, 1080 (default: 360)"
+                    "-d": "Kirim sebagai dokumen"
                 })
             );
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
         try {
-            const quality = ["240", "360", "480", "720", "1080"].includes(flag.resolution) ? flag.resolution : "360";
-            const apiUrl = ctx.api.createUrl("kangwifi", "/downloader/y2meta", {
+            const apiUrl = ctx.api.createUrl("zellrayy", "/download/youtube/v2", {
                 url,
-                format: "mp4",
-                quality
+                format: "mp4"
             });
             const result = (await ctx.request.get(apiUrl)).data.result;
             const content = flag.document ? {
                 document: {
-                    url: result.url
+                    url: result.download
                 },
-                fileName: `${result.videoId}.mp4`,
+                fileName: `${result.title}.mp4`,
                 mimetype: "video/mp4",
                 caption: `❖ ${ctx.format.bold("URL")}: ${url}`
             } : {
                 video: {
-                    url: result.url
+                    url: result.download
                 },
                 caption: `❖ ${ctx.format.bold("URL")}: ${url}`
             };

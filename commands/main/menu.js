@@ -29,7 +29,7 @@ module.exports = {
                     const filtered = allCmds.filter(c => c.category === cat).map(c => ({
                         name: c.name,
                         permissions: c.permissions || {}
-                    })).sort((a, b) => a.name.localeCompare(b.name));
+                    }));
                     if (filtered.length > 0) result[cat] = filtered;
                 });
                 return result;
@@ -86,7 +86,7 @@ module.exports = {
                 const text = `✦ — Halo, @${ctx.getId(ctx.sender.jid)}! Saya ${config.bot.name} milik ${config.owner.name}.\n` +
                     "\n" +
                     `❖ ${ctx.format.bold("Status")}: ${ctx.sender.isOwner() ? "Owner" : (senderDb.premium ? `Premium (${senderDb.premiumExpiration ? `${ctx.format.convertMsToDuration(senderDb.premiumExpiration - Date.now(), ["hari", "jam"])} lagi` : "Selamanya"})` : "Freemium")}\n` +
-                    `❖ ${ctx.format.bold("Ticket")}: ${senderDb.ticket}/${maxTicket}\n` +
+                    `❖ ${ctx.format.bold("Tiket")}: ${senderDb.ticket}/${maxTicket}\n` +
                     `❖ ${ctx.format.bold("Skor")}: ${senderDb.score}\n` +
                     "\n" +
                     `❖ ${ctx.format.bold("Mode")}: ${ctx.format.ucwords(ctx.db.bot.mode)}\n` +
