@@ -1,4 +1,4 @@
-const config = require("../../runtime/config.js");
+const config = require("../../runtime/config");
 
 module.exports = {
     name: "facebookdl",
@@ -17,13 +17,13 @@ module.exports = {
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
         try {
-            const apiUrl = ctx.api.createUrl("nexray", "/downloader/facebook", {
+            const apiUrl = ctx.api.createUrl("delirius", "/download/facebook", {
                 url
             });
-            const result = (await ctx.request.get(apiUrl)).data.result;
+            const result = (await ctx.request.get(apiUrl)).data.list[0].url;
             await ctx.reply({
                 video: {
-                    url: result.video_hd || result.video_sd
+                    url: result
                 },
                 caption: `❖ ${ctx.format.bold("URL")}: ${url}`
             });

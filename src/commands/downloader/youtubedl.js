@@ -1,4 +1,4 @@
-const config = require("../../runtime/config.js");
+const config = require("../../runtime/config");
 
 module.exports = [{
     name: "youtubeaudio",
@@ -27,21 +27,20 @@ module.exports = [{
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
         try {
-            const apiUrl = ctx.api.createUrl("nexray", "/downloader/savetube", {
-                url,
-                quality: "mp3"
+            const apiUrl = ctx.api.createUrl("delirius", "/download/ytmp3", {
+                url
             });
-            const result = (await ctx.request.get(apiUrl)).data.result;
+            const result = (await ctx.request.get(apiUrl)).data.data;
             const content = flag.document ? {
                 document: {
-                    url: result.url
+                    url: result.download
                 },
                 fileName: `${result.title}.mp3`,
                 mimetype: "audio/mpeg",
                 caption: `❖ ${ctx.format.bold("URL")}: ${url}`
             } : {
                 audio: {
-                    url: result.url
+                    url: result.download
                 },
                 mimetype: "audio/mpeg"
             };
@@ -77,11 +76,10 @@ module.exports = [{
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
         try {
-            const apiUrl = ctx.api.createUrl("zellrayy", "/download/youtube/v2", {
-                url,
-                format: "mp4"
+            const apiUrl = ctx.api.createUrl("delirius", "/download/ytmp4", {
+                url
             });
-            const result = (await ctx.request.get(apiUrl)).data.result;
+            const result = (await ctx.request.get(apiUrl)).data.data;
             const content = flag.document ? {
                 document: {
                     url: result.download

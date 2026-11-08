@@ -1,4 +1,4 @@
-const config = require("../../runtime/config.js");
+const config = require("../../runtime/config");
 
 module.exports = [{
     name: "brat",
@@ -17,7 +17,7 @@ module.exports = [{
         if (input.length > 1000) return await ctx.reply(ctx.format.info("Maks 1000 karakter."));
 
         try {
-            const result = ctx.api.createUrl("moondrowend", "/api/maker/brat", {
+            const result = ctx.api.createUrl("delirius", "/canvas/brat", {
                 text: input
             });
             await ctx.reply({
@@ -49,7 +49,7 @@ module.exports = [{
         if (input.length > 1000) return await ctx.reply(ctx.format.info("Maks 1000 karakter."));
 
         try {
-            const result = ctx.api.createUrl("moondrowend", "/api/maker/bratvid", {
+            const result = ctx.api.createUrl("delirius", "/canvas/bratvideo", {
                 text: input
             });
             await ctx.reply({

@@ -1,5 +1,4 @@
-const config = require("../../runtime/config.js");
-const moment = require("moment-timezone");
+const config = require("../../runtime/config");
 
 module.exports = {
     name: "quotlychat",
@@ -20,17 +19,16 @@ module.exports = {
         try {
             const isQuoted = !ctx.text && ctx.quoted;
             const profilePictureUrl = await ctx.core.profilePictureUrl(isQuoted ? ctx.quoted?.sender.jid : ctx.sender.jid).catch(() => "https://placehold.net/avatar.png");
-            const result = (await ctx.request.post("https://qwa.eeq.my.id/api/generate", {
-                sender_name: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
-                sender_number: ctx.getId(ctx.sender.jid),
-                sender_avatar: profilePictureUrl,
-                message: input,
-                time: moment.tz(config.system.timeZone).format("HH:mm")
-            }, {
-                responseType: "arraybuffer"
-            })).data;
+            const result = ctx.api.createUrl("delirius", "/canvas/quotly", {
+                image: profilePictureUrl,
+                username: isQuoted ? ctx.quoted?.pushName : ctx.sender.pushName,
+                text: input,
+                bg: Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0")
+            });
             await ctx.reply({
-                sticker: result
+                sticker: {
+                    url: result
+                }
             }, {
                 pack: config.sticker.packname,
                 author: config.sticker.author

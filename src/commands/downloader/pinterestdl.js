@@ -1,4 +1,4 @@
-const config = require("../../runtime/config.js");
+const config = require("../../runtime/config");
 
 module.exports = {
     name: "pinterestdl",
@@ -17,13 +17,13 @@ module.exports = {
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
         try {
-            const apiUrl = ctx.api.createUrl("nexray", "/downloader/pinterest", {
+            const apiUrl = ctx.api.createUrl("delirius", "/download/pinterestdl", {
                 url
             });
-            const result = (await ctx.request.get(apiUrl)).data.result;
+            const result = (await ctx.request.get(apiUrl)).data.data.download;
             await ctx.reply({
-                [result.image ? "image" : "video"]: {
-                    url: result.image || result.video
+                [result.type]: {
+                    url: result.url
                 },
                 caption: `❖ ${ctx.format.bold("URL")}: ${url}`
             });

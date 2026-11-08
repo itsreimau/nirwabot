@@ -1,4 +1,4 @@
-const config = require("../../runtime/config.js");
+const config = require("../../runtime/config");
 
 module.exports = {
     name: "stickermeme",
@@ -20,10 +20,10 @@ module.exports = {
             let [top, bottom] = input.split("|").map(inp => inp);
             [top, bottom] = bottom ? [top || " ", bottom] : [" ", top || " "];
             const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.msg.media.upload();
-            const result = ctx.api.createUrl("moondrowend", "/api/maker/smeme", {
+            const result = ctx.api.createUrl("nexray", "/maker/smeme", {
                 text_atas: top,
                 text_bawah: bottom,
-                url: uploadUrl
+                background: uploadUrl
             });
             await ctx.reply({
                 sticker: {

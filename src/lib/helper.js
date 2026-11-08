@@ -1,5 +1,5 @@
 const Baileys = require("baileys");
-const config = require("../runtime/config.js");
+const config = require("../runtime/config");
 const logger = require("../utils/logger");
 const util = require("node:util");
 const didYouMean = require("didyoumean");

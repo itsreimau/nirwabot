@@ -1,5 +1,5 @@
 const { Cooldown } = require("../lib");
-const config = require("../runtime/config.js");
+const config = require("../runtime/config");
 const moment = require("moment-timezone");
 
 module.exports = (bot) => {

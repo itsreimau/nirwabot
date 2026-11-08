@@ -1,13 +1,10 @@
 // Daftar API gratis: https://aelbei.surge.sh/
 const APIs = {
+    delirius: {
+        baseURL: "https://api.delirius.online"
+    },
     faaa: {
         baseURL: "https://api-faa.my.id"
-    },
-    moondrowend: {
-        baseURL: "https://api-moondrowend.web.id"
-    },
-    nexray: {
-        baseURL: "https://api.nexray.eu.cc"
     },
     omegatech: {
         baseURL: "https://api.omegatech.app"

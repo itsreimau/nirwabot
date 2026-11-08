@@ -1,16 +1,13 @@
 {
   "name": "nirwabot",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "scripts": {
     "test": "node scripts/check.js",
     "setup": "node scripts/setup.js",
     "start": "node index.js",
-    "start:pm2": "pm2 start index.js --name nirwabot",
-    "clean": "node scripts/clean.js",
-    "clean:dry": "node scripts/clean.js --all --dry-run",
-    "clean:all": "node scripts/clean.js --all"
+    "start:pm2": "pm2 start index.js --name nirwabot"
   },
   "keywords": [
     "whatsapp-bot"

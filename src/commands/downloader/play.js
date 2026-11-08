@@ -1,4 +1,4 @@
-const config = require("../../runtime/config.js");
+const config = require("../../runtime/config");
 
 module.exports = {
     name: "play",
@@ -43,10 +43,10 @@ module.exports = {
                     `❖ ${ctx.format.bold("Artis")}: ${searchResult.artist}\n` +
                     `❖ ${ctx.format.bold("URL")}: ${searchResult.spotifyUrl}`
                 );
-                const downloadApiUrl = ctx.api.createUrl("nexray", "/downloader/spotify", {
+                const downloadApiUrl = ctx.api.createUrl("delirius", "/download/spotify", {
                     url: searchResult.spotifyUrl
                 });
-                downloadUrl = (await ctx.request.get(downloadApiUrl)).data.result.url;
+                downloadUrl = (await ctx.request.get(downloadApiUrl)).data.data.download;
             } else {
                 const searchApiUrl = ctx.api.createUrl("zellrayy", "/search/youtube", {
                     q: input
@@ -57,11 +57,10 @@ module.exports = {
                     `❖ ${ctx.format.bold("Artis")}: ${searchResult.channel.name}\n` +
                     `❖ ${ctx.format.bold("URL")}: ${searchResult.url}`
                 );
-                const downloadApiUrl = ctx.api.createUrl("nexray", "/downloader/savetube", {
-                    url: searchResult.url,
-                    quality: "mp3"
+                const downloadApiUrl = ctx.api.createUrl("delirius", "/download/ytmp3", {
+                    url: searchResult.url
                 });
-                downloadUrl = (await ctx.request.get(downloadApiUrl)).data.result.url;
+                downloadUrl = (await ctx.request.get(downloadApiUrl)).data.data.download;
             }
             if (config.system.autoTypingOnCmd) await ctx.simulateTyping();
             await ctx.reply({

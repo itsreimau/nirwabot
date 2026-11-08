@@ -1,5 +1,5 @@
 const Baileys = require("baileys");
-const config = require("../../runtime/config.js");
+const config = require("../../runtime/config");
 
 module.exports = {
     name: "owner",

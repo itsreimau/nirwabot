@@ -1,4 +1,4 @@
-const config = require("../runtime/config.js");
+const config = require("../runtime/config");
 const moment = require("moment-timezone");
 
 async function WelcomeHandler(bot, welcome, type, isSimulate = false) {

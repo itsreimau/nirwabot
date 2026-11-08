@@ -1,4 +1,4 @@
-const config = require("../../runtime/config.js");
+const config = require("../../runtime/config");
 const { exec } = require("node:child_process");
 
 module.exports = {

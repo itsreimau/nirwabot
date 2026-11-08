@@ -9,7 +9,7 @@ module.exports = {
         if (!ctx.isMedia(["image"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
         try {
             const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.msg.media.upload();
-            const result = ctx.api.createUrl("moondrowend", "/api/tools/removebg", {
+            const result = ctx.api.createUrl("nexray", "/tools/removebg", {
                 url: uploadUrl
             });
             await ctx.reply({

@@ -14,10 +14,10 @@ module.exports = {
             );
 
         try {
-            const apiUrl = ctx.api.createUrl("moondrowend", "/api/search/lyrics", {
-                query: input
+            const apiUrl = ctx.api.createUrl("nexray", "/search/lyrics", {
+                q: input
             });
-            const result = (await ctx.request.get(apiUrl)).data.data;
+            const result = (await ctx.request.get(apiUrl)).data.result;
             await ctx.reply(
                 `✦ — ${result.lyrics.plain_lyrics}\n` +
                 "\n" +

@@ -1,4 +1,4 @@
-const config = require("../../runtime/config.js");
+const config = require("../../runtime/config");
 
 module.exports = {
     name: "tiktokdl",
@@ -17,21 +17,21 @@ module.exports = {
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
         try {
-            const apiUrl = ctx.api.createUrl("nexray", "/downloader/tiktok", {
+            const apiUrl = ctx.api.createUrl("delirius", "/download/tiktok", {
                 url
             });
-            const result = (await ctx.request.get(apiUrl)).data.result.data;
+            const result = (await ctx.request.get(apiUrl)).data.data.meta.media[0];
             const caption = `❖ ${ctx.format.bold("URL")}: ${url}`;
-            if (!Array.isArray(result)) {
+            if (result.type === "video") {
                 await ctx.reply({
                     video: {
-                        url: result
+                        url: result.org
                     },
                     caption
                 });
             } else {
                 await ctx.reply({
-                    album: result.map(res => ({
+                    album: result.images.map(res => ({
                         image: {
                             url: res
                         }

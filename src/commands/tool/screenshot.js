@@ -1,4 +1,4 @@
-const config = require("../../runtime/config.js");
+const config = require("../../runtime/config");
 
 module.exports = {
     name: "screenshot",
@@ -20,7 +20,7 @@ module.exports = {
             const apiUrl = ctx.api.createUrl("varhad", "/tools/ssweb", {
                 url
             });
-            const result = (await ctx.request.get(apiUrl)).data.result.thumbnail;
+            const result = (await ctx.request.get(apiUrl)).data.result.download;
             await ctx.reply({
                 image: {
                     url: result

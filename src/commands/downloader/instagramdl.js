@@ -1,4 +1,4 @@
-const config = require("../../runtime/config.js");
+const config = require("../../runtime/config");
 
 module.exports = {
     name: "instagramdl",
@@ -17,10 +17,10 @@ module.exports = {
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
         try {
-            const apiUrl = ctx.api.createUrl("nexray", "/downloader/instagram", {
+            const apiUrl = ctx.api.createUrl("delirius", "/download/instagram", {
                 url
             });
-            const result = (await ctx.request.get(apiUrl)).data.result;
+            const result = (await ctx.request.get(apiUrl)).data.data;
             const album = result.map(res => ({
                 [res.type]: {
                     url: res.url
