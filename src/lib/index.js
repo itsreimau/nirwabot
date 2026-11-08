@@ -1,14 +1,14 @@
+const { defineCommand, defineCommands } = require("./_factory");
 const Client = require("./client");
-const { CommandHandler } = require("./handler");
 const Config = require("./config");
 const Cooldown = require("./cooldown");
-const { defineCommand, defineCommands } = require("./_factory");
+const { CommandHandler } = require("./handler");
 
 module.exports = {
+    defineCommand,
+    defineCommands,
     Client,
-    CommandHandler,
     Config,
     Cooldown,
-    defineCommand,
-    defineCommands
+    CommandHandler
 };

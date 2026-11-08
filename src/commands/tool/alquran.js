@@ -15,10 +15,7 @@ module.exports = {
                     `Ketik: ${ctx.format.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk daftar`
                 ])
             );
-        if (surat.toLowerCase() === "list") {
-            const listText = await ctx.list.get(ctx, "alquran");
-            return await ctx.reply(listText);
-        }
+        if (surat.toLowerCase() === "list") return await ctx.reply(await ctx.list.get(ctx, "alquran"));
         if (isNaN(surat) || surat < 1 || surat > 114) return await ctx.reply(ctx.format.info("Surah 1–114."));
 
         try {

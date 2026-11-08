@@ -21,11 +21,7 @@ module.exports = {
                 ])
             );
         if (input.toLowerCase() === "list") return await ctx.reply(await ctx.list.get(ctx, "setoption"));
-        if (input.toLowerCase() === "status") {
-            const groupOption = ctx.db.group.option;
-            const text = validOptions.map(opt => `❖ ${ctx.format.ucwords(opt)}: ${groupOption[opt] ? "Aktif" : "Nonaktif"}`).join("\n");
-            return await ctx.reply(text);
-        }
+        if (input.toLowerCase() === "status") return await ctx.reply(validOptions.map(opt => `❖ ${ctx.format.ucwords(opt)}: ${ctx.db.group.option[opt] ? "Aktif" : "Nonaktif"}`).join("\n"));
 
         try {
             const setKey = input.toLowerCase();

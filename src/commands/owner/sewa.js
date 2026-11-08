@@ -1,4 +1,5 @@
 const config = require("../../runtime/config.js");
+
 const resolveTarget = async (ctx) =>
     (ctx.isGroup() ? {
         id: ctx.id

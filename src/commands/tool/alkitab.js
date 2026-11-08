@@ -15,10 +15,7 @@ module.exports = {
                     `Ketik: ${ctx.format.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk daftar`
                 ])
             );
-        if (passage.toLowerCase() === "list") {
-            const listText = await ctx.list.get(ctx, "alkitab");
-            return await ctx.reply(listText);
-        }
+        if (passage.toLowerCase() === "list") return await ctx.reply(ctx.list.get(ctx, "alkitab"));
 
         try {
             const apiUrl = ctx.api.createUrl("https://api-alkitab.vercel.app", "/api/passage", {

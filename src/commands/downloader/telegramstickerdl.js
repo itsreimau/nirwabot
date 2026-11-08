@@ -1,9 +1,9 @@
 const config = require("../../runtime/config.js");
+
 const chunkArray = (array, size) =>
     Array.from({
         length: Math.ceil(array.length / size)
     }, (_, index) => array.slice(index * size, index * size + size));
-
 const prepareStickerPacks = (stickers, title, name, packId) => {
     const chunks = chunkArray(stickers.filter(sticker => !sticker.is_animated), 60);
     return chunks.map((chunk, index) => ({

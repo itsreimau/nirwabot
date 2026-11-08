@@ -1,4 +1,5 @@
 const config = require("../../runtime/config.js");
+
 const buildUsage = async (ctx) =>
     await ctx.reply({
         text: `${ctx.format.generateInstruction(["send"], ["text"])}\n` +

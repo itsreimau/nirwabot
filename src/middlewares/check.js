@@ -1,3 +1,4 @@
+const logger = require("../utils/logger");
 const util = require("node:util");
 
 module.exports = (bot) => {
@@ -28,9 +29,9 @@ module.exports = (bot) => {
 
         if (ctx.used.prefix !== "force") {
             if (isGroup && !ctx.msg.key.fromMe) {
-                console.log(util.styleText("magenta", "[~]"), `Incoming command: ${ctx.used.command}, from group: ${groupName} (${groupJid}), by: ${senderName} (${senderJid})`);
+                logger.trace(`Incoming command: ${ctx.used.command}, from group: ${groupName} (${groupJid}), by: ${senderName} (${senderJid})`);
             } else if (isPrivate && !ctx.msg.key.fromMe) {
-                console.log(util.styleText("magenta", "[~]"), `Incoming command: ${ctx.used.command}, from: ${senderName} (${senderJid})`);
+                logger.trace(`Incoming command: ${ctx.used.command}, from: ${senderName} (${senderJid})`);
             }
         }
 

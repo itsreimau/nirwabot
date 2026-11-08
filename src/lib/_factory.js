@@ -1,8 +1,9 @@
 function defineCommand(command) {
-    if (!command || typeof command !== "object" || typeof command.name !== "string" || typeof command.code !== "function") {
-        throw new TypeError("A command requires a string name and a code function");
-    }
-    return { type: "command", ...command };
+    if (!command || typeof command !== "object" || typeof command.name !== "string" || typeof command.code !== "function") throw new TypeError("A command requires a string name and a code function");
+    return {
+        type: "command",
+        ...command
+    };
 }
 
 function defineCommands(commands) {
@@ -10,4 +11,7 @@ function defineCommands(commands) {
     return commands.map(defineCommand);
 }
 
-module.exports = { defineCommand, defineCommands };
+module.exports = {
+    defineCommand,
+    defineCommands
+};

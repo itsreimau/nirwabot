@@ -1,4 +1,11 @@
 const Baileys = require("baileys");
+const api = require("./api");
+const Ctx = require("./ctx");
+const format = require("./format");
+const { Commands } = require("./handler");
+const helper = require("./helper");
+const list = require("./list");
+const logger = require("../utils/logger");
 const EventEmitter = require("node:events");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -6,12 +13,6 @@ const util = require("node:util");
 const pino = require("pino");
 const qrcode = require("qrcode-terminal");
 const SimplDB = require("simpl.db");
-const api = require("./api");
-const Ctx = require("./ctx");
-const format = require("./format");
-const { Commands } = require("./handler");
-const helper = require("./helper");
-const list = require("./list");
 
 class Client {
     constructor(opts = {}) {
@@ -123,14 +124,14 @@ class Client {
         qr
     }) => {
         if (qr) {
-            console.log(util.styleText("cyan", "[i]"), "Scan the QR code below:");
+            logger.info("Scan the QR code below:");
             qrcode.generate(qr, {
                 small: true
             });
         }
         if (connection === "close") {
             if (lastDisconnect.error?.output?.statusCode !== Baileys.DisconnectReason.loggedOut) {
-                console.warn(util.styleText("yellow", "[!]"), "Reconnecting...");
+                logger.warn("Reconnecting...");
                 await this.launch();
             }
         } else if (connection === "open") {
@@ -343,7 +344,7 @@ class Client {
             if (!this.phoneNumber.length) throw new Error("Invalid phoneNumber");
             await Baileys.delay(3000);
             const code = await this.core.requestPairingCode(this.phoneNumber, this.customPairingCode);
-            console.log(util.styleText("cyan", "[i]"), `Pairing Code: ${code}`);
+            logger.info(`Pairing Code: ${code}`);
         }
 
         if (!fs.existsSync(this.databaseDir))

@@ -1,5 +1,4 @@
 const sessions = new Map();
-
 const levels = {
     noob: {
         label: "Noob",

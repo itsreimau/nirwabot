@@ -130,7 +130,3 @@ Proyek ini dilisensikan di bawah [MIT License](LICENSE).
   <br>
   <sub>✦ nirwabot — Useless WhatsApp Bot ✦</sub>
 </p>
-
-## Project structure
-
-Runtime modules are organized under `src/`. See [ARCHITECTURE.md](ARCHITECTURE.md) for the module map and [MIGRATION.md](MIGRATION.md) for migration details.

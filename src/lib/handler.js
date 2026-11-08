@@ -1,9 +1,10 @@
 const Baileys = require("baileys");
-const util = require("node:util");
-const { globSync } = require("glob");
+const { defineCommand } = require("./_factory");
 const Ctx = require("./ctx");
 const helper = require("./helper");
-const { defineCommand } = require("./_factory");
+const logger = require("../utils/logger");
+const util = require("node:util");
+const { globSync } = require("glob");
 
 async function Commands(self, runMiddlewares) {
     const {
@@ -57,7 +58,7 @@ class CommandHandler {
     }
 
     load(isShowLog = true) {
-        if (isShowLog) console.group(util.styleText("cyan", "[i]"), "Command Handler");
+        if (isShowLog) logger.group("Command Handler");
         const files = globSync("**/*.js", {
             cwd: this._path,
             nodir: true,
@@ -69,13 +70,13 @@ class CommandHandler {
                 const commands = this._normalizeCommands(mod);
                 for (const cmd of commands) {
                     this._registerCommand(cmd);
-                    if (isShowLog) console.log(util.styleText("green", "[+]"), `Loaded ${cmd.type === "hears" ? "Hears" : "Command"} - ${cmd.name}`);
+                    if (isShowLog) logger.success(`Loaded ${cmd.type === "hears" ? "Hears" : "Command"} - ${cmd.name}`);
                 }
             } catch (error) {
-                if (isShowLog) console.warn(util.styleText("yellow", "[!]"), `Failed to load ${file}: ${error.message}`);
+                if (isShowLog) logger.warn(`Failed to load ${file}: ${error.message}`);
             }
         }
-        if (isShowLog) console.groupEnd();
+        if (isShowLog) logger.groupEnd();
     }
 
     _normalizeCommands(mod) {

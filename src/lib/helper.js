@@ -1,8 +1,8 @@
-const config = require("../runtime/config.js");
 const Baileys = require("baileys");
-const didYouMean = require("didyoumean");
-const crypto = require("node:crypto");
+const config = require("../runtime/config.js");
+const logger = require("../utils/logger");
 const util = require("node:util");
+const didYouMean = require("didyoumean");
 
 const checkOwner = (jid, owner, fromMe) => (Baileys.isLidUser(jid) || Baileys.isPnUser(jid)) && (fromMe || owner.some(o => Baileys.areJidsSameUser(o, jid)));
 const extractUrlFromText = (text) => text ? (Baileys.extractUrlFromText(text) || null) : null;
@@ -103,7 +103,7 @@ async function reportError(ctx, error, useAxios = false, silent = false) {
     const groupSubject = isGroup ? await ctx.group(groupJid).name() : null;
     const errorText = util.format(error);
 
-    console.error(util.styleText("red", "[x]"), `Error: ${errorText}`);
+    logger.error(`Error: ${errorText}`);
     if (ctx.sender.isOwner())
         return await ctx.reply(
             `${ctx.format.info("Terjadi kesalahan:")}\n` +
@@ -182,6 +182,5 @@ module.exports = {
     getReportOwners,
     reportError,
     isUrl,
-    parseCommand,
-    randomUUID: crypto.randomUUID
+    parseCommand
 };

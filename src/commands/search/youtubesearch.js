@@ -1,4 +1,5 @@
 const config = require("../../runtime/config.js");
+
 module.exports = {
     name: "youtubesearch",
     aliases: ["youtube", "youtubes", "yt", "yts", "ytsearch"],

@@ -1,4 +1,5 @@
 const config = require("../../runtime/config.js");
+
 const rewards = {
     regular: 2,
     premium: 5

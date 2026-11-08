@@ -1,9 +1,10 @@
 const config = require("../runtime/config.js");
+const logger = require("../utils/logger");
 const util = require("node:util");
 
 module.exports = (bot) => {
     bot.ev.once("ClientReady", async (b) => {
-        console.log(util.styleText("blue", "[>]"), `${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`);
+        logger.ready(`${config.bot.name} by ${config.owner.name}, ready at ${b.user?.id || b.user?.lid}`);
 
         const botDb = bot.getDb("bot");
         const botRestart = botDb.restart;

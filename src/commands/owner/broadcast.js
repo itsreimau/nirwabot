@@ -1,6 +1,6 @@
 const config = require("../../runtime/config.js");
-const filterGroups = async (ctx, blacklist) => Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !blacklist.includes(group.id) && !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id);
 
+const filterGroups = async (ctx, blacklist) => Object.values(await ctx.core.groupFetchAllParticipating()).filter(group => !blacklist.includes(group.id) && !group.announce && !group.isCommunity && !group.isCommunityAnnounce).map(group => group.id);
 const handleBlacklist = async (ctx, botDb, blacklist) => {
     const index = blacklist.indexOf(ctx.id);
     if (index > -1) blacklist.splice(index, 1);

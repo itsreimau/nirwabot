@@ -1,9 +1,10 @@
-const config = require("./runtime/config");
 const { Client, CommandHandler } = require("./lib");
-const path = require("node:path");
-const util = require("node:util");
 const Events = require("./events");
 const Middlewares = require("./middlewares");
+const config = require("./runtime/config");
+const logger = require("./utils/logger");
+const path = require("node:path");
+const util = require("node:util");
 
 const {
     bot: botConfig,
@@ -15,7 +16,7 @@ const directory = {
     command: path.resolve(__dirname, "commands")
 };
 
-console.log("[*] Connecting...");
+logger.debug("Connecting...");
 
 const parsePrefix = function(prefix) {
     if (typeof prefix !== "string") return prefix;
@@ -95,4 +96,4 @@ Middlewares(bot);
 const cmd = new CommandHandler(bot, directory.command);
 cmd.load();
 
-bot.launch().catch(error => console.error(util.styleText("red", "[x]"), `Error: ${util.format(error)}`));
+bot.launch().catch(error => logger.error(`Error: ${util.format(error)}`));

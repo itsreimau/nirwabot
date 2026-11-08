@@ -26,11 +26,8 @@ class Config {
         for (const key in obj) {
             if (!Object.hasOwn(obj, key)) continue;
             const value = obj[key];
-            if (typeof value === "string") {
-                obj[key] = this._resolveTemplate(value, root);
-            } else if (value && typeof value === "object") {
-                this._resolveTemplateStrings(value, root);
-            }
+            if (typeof value === "string") obj[key] = this._resolveTemplate(value, root);
+            else if (value && typeof value === "object") this._resolveTemplateStrings(value, root);
         }
     }
 
@@ -54,11 +51,8 @@ class Config {
     _getNestedValue(obj, path) {
         let current = obj;
         for (const key of path.split("_")) {
-            if (current && typeof current === "object" && key in current) {
-                current = current[key];
-            } else {
-                return null;
-            }
+            if (current && typeof current === "object" && key in current) current = current[key];
+            else return null;
         }
         return current;
     }

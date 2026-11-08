@@ -1,5 +1,5 @@
-const EventEmitter = require("node:events");
 const helper = require("./helper");
+const EventEmitter = require("node:events");
 
 class Collector extends EventEmitter {
     constructor(opts = {}) {

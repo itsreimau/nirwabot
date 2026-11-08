@@ -1,4 +1,5 @@
 const config = require("../../runtime/config.js");
+
 module.exports = {
     name: "price",
     aliases: ["belibot", "harga", "sewa", "sewabot"],

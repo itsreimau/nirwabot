@@ -1,4 +1,5 @@
 const config = require("../runtime/config.js");
+const logger = require("../utils/logger");
 const util = require("node:util");
 const moment = require("moment-timezone");
 
@@ -132,7 +133,7 @@ module.exports = (bot) => {
         }
 
         if (isGroup) {
-            if (!isCmd || isCmd?.didyoumean) console.log(util.styleText("magenta", "[~]"), `Incoming message from group: ${groupName} (${groupJid}), by: ${senderName} (${senderJid})`);
+            if (!isCmd || isCmd?.didyoumean) logger.trace(`Incoming message from group: ${groupName} (${groupJid}), by: ${senderName} (${senderJid})`);
 
             if (groupDb.sewa && Date.now() >= groupDb.sewaExpiration) {
                 groupDb.sewa = false;
@@ -226,6 +227,6 @@ module.exports = (bot) => {
             }
         }
 
-        if (isPrivate && (!isCmd || isCmd?.didyoumean)) console.log(util.styleText("magenta", "[~]"), `Incoming message from: ${senderName} (${senderJid})`);
+        if (isPrivate && (!isCmd || isCmd?.didyoumean)) logger.trace(`Incoming message from: ${senderName} (${senderJid})`);
     });
 };

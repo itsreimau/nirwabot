@@ -1,7 +1,7 @@
 const Baileys = require("baileys");
-const WASF = require("wa-sticker-formatter");
-const vCard = require("vcard-parser");
 const config = require("../runtime/config");
+const vCard = require("vcard-parser");
+const WASF = require("wa-sticker-formatter");
 
 class ClientMedia {
     async _createSendMessage(jid, content, options = {}) {
@@ -9,39 +9,11 @@ class ClientMedia {
             content = {
                 text: content
             };
-        content = await this._processSticker(content, options);
         content = await this._processContacts(content);
+        content = await this._processSticker(content, options);
         content = await this._processStickerPack(content, options);
         if (Baileys.isPnUser(jid) || Baileys.isLidUser(jid)) content.ai = true;
         return await this.core.sendMessage(jid, content, options);
-    }
-
-    async _processSticker(content, options) {
-        if (!content?.sticker) return content;
-        const buffer = Buffer.isBuffer(content.sticker) ? content.sticker : content.sticker?.url;
-        if (!buffer) return content;
-        const {
-            background,
-            pack = config.sticker.packname,
-            author = config.sticker.author,
-            type = WASF.StickerTypes.FULL,
-            categories = ["🌕"],
-            id = Date.now().toString(),
-            quality = 50,
-            ...rest
-        } = options;
-        return {
-            sticker: await new WASF.Sticker(buffer, {
-                pack,
-                author,
-                type,
-                categories,
-                id,
-                quality,
-                background
-            }).build(),
-            ...rest
-        };
     }
 
     async _processContacts(content) {
@@ -83,6 +55,34 @@ class ClientMedia {
                 displayName: content.contacts?.displayName || "nirwabot",
                 contacts: parsed
             }
+        };
+    }
+
+    async _processSticker(content, options) {
+        if (!content?.sticker) return content;
+        const buffer = Buffer.isBuffer(content.sticker) ? content.sticker : content.sticker?.url;
+        if (!buffer) return content;
+        const {
+            background,
+            pack = config.sticker.packname,
+            author = config.sticker.author,
+            type = WASF.StickerTypes.FULL,
+            categories = ["🌕"],
+            id = Date.now().toString(),
+            quality = 50,
+            ...rest
+        } = options;
+        return {
+            sticker: await new WASF.Sticker(buffer, {
+                pack,
+                author,
+                type,
+                categories,
+                id,
+                quality,
+                background
+            }).build(),
+            ...rest
         };
     }
 
