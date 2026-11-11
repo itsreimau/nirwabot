@@ -1,0 +1,9 @@
+const path = require("node:path");
+const Config = require("../lib/config");
+const { validateConfig } = require("../utils/validate-config");
+
+const configPath = path.resolve(__dirname, "../../config.json");
+const config = new Config(configPath);
+validateConfig(config);
+
+module.exports = config;

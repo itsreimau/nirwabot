@@ -55,11 +55,10 @@ cd nirwabot
 npm run setup
 ```
 
-Atau manual:
+Atau, jika dependensi sudah dipasang manual, buat konfigurasi tanpa mengulang instalasi:
 
 ```bash
-npm install
-cp config.example.json config.json
+node scripts/setup.js --skip-install
 ```
 
 ### 3️⃣ Configuration
@@ -92,10 +91,10 @@ Buka dan edit `config.json` sesuai kebutuhan:
 
 ## 🛠️ Creating a New Command
 
-Untuk menambahkan perintah kustom, buat file JavaScript baru di folder `commands/` dengan struktur berikut:
+Untuk menambahkan perintah kustom, buat file JavaScript baru di folder `src/commands/` dengan struktur berikut:
 
 ```javascript
-// commands/example/helloworld.js
+// src/commands/example/helloworld.js
 
 module.exports = {
     name: "helloworld", // Nama perintah (wajib)
@@ -131,3 +130,7 @@ Proyek ini dilisensikan di bawah [MIT License](LICENSE).
   <br>
   <sub>✦ nirwabot — Useless WhatsApp Bot ✦</sub>
 </p>
+
+## Project structure
+
+Runtime modules are organized under `src/`. See [ARCHITECTURE.md](ARCHITECTURE.md) for the module map and [MIGRATION.md](MIGRATION.md) for migration details.

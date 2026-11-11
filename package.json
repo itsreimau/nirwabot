@@ -4,10 +4,10 @@
   "description": "Useless WhatsApp Bot",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "setup": "cp config.example.json config.json && npm install",
+    "test": "node scripts/check.js",
+    "setup": "node scripts/setup.js",
     "start": "node index.js",
-    "start:pm2": "pm2 start index.js --name $(basename $(pwd))"
+    "start:pm2": "pm2 start index.js --name nirwabot"
   },
   "keywords": [
     "whatsapp-bot"
@@ -30,6 +30,10 @@
     "qrcode-terminal": "^0.12.0",
     "simpl.db": "^2.13.0",
     "vcard-parser": "^1.0.0",
-    "wa-sticker-formatter": "^4.4.4"
+    "wa-sticker-formatter": "^4.4.4",
+    "dotenv": "^16.4.7"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
