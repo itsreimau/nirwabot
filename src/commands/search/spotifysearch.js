@@ -1,0 +1,38 @@
+const config = require("../../runtime/config");
+
+module.exports = {
+    name: "spotifysearch",
+    aliases: ["spotify", "spotifys"],
+    category: "search",
+    useAxios: true,
+    permissions: {
+        ticket: true
+    },
+    code: async (ctx) => {
+        const input = ctx.text;
+        if (!input)
+            return await ctx.reply(
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "one last kiss - hikaru utada")
+            );
+        if (ctx.helper.isUrl(input))
+            return await ctx.reply({
+                text: ctx.format.info("Input URL, gunakan tombol download:"),
+                buttons: [{
+                    text: "Download",
+                    id: `${ctx.used.prefix}spotifydl ${input}`
+                }]
+            });
+
+        const apiUrl = ctx.api.createUrl("zellrayy", "/search/spotify", {
+            q: input
+        });
+        const result = (await ctx.request.get(apiUrl)).data.result;
+        const text = result.map(res =>
+            `❖ ${ctx.format.bold("Judul")}: ${res.title}\n` +
+            `❖ ${ctx.format.bold("Artis")}: ${res.artist}\n` +
+            `❖ ${ctx.format.bold("URL")}: ${res.spotifyUrl}`
+        ).join("\n\n");
+        await ctx.reply(text.trim() || ctx.format.info(config.msg.notFound));
+    }
+};

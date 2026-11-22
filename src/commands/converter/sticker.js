@@ -1,0 +1,21 @@
+const config = require("../../runtime/config");
+
+module.exports = {
+    name: "sticker",
+    aliases: ["s", "stiker"],
+    category: "converter",
+    permissions: {
+        ticket: true
+    },
+    code: async (ctx) => {
+        if (!ctx.isMedia(["image", "video"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image", "video"]));
+        const buffer = await ctx.msg.media.download() || await ctx.quoted.msg.media.download();
+        const [packname, author] = ctx.text?.split("|") || [];
+        await ctx.reply({
+            sticker: buffer
+        }, {
+            pack: packname || config.sticker.packname,
+            author: author || config.sticker.author
+        });
+    }
+};

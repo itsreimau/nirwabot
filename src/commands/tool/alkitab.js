@@ -1,0 +1,37 @@
+module.exports = {
+    name: "alkitab",
+    aliases: ["bible"],
+    category: "tool",
+    useAxios: true,
+    permissions: {
+        ticket: true
+    },
+    code: async (ctx) => {
+        const [passage, number] = ctx.args;
+        if (!passage && !number)
+            return await ctx.reply(
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.format.generateCmdExample(ctx.used, "ibr 9:27")}\n` +
+                ctx.format.generateNotes([
+                    `Ketik: ${ctx.format.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk daftar`
+                ])
+            );
+        if (passage?.toLowerCase() === "list") return await ctx.reply(await ctx.list.get(ctx, "alkitab"));
+
+        const apiUrl = ctx.api.createUrl("https://api-alkitab.vercel.app", "/api/passage", {
+            passage,
+            num: number
+        });
+        const result = (await ctx.request.get(apiUrl)).data.bible.book;
+        const text = result.chapter.verses.map(vers =>
+            `❖ ${ctx.format.bold("Ayat")}: ${vers.number}\n` +
+            vers.text
+        ).join("\n");
+        await ctx.reply(
+            `${text}\n` +
+            "\n" +
+            `❖ ${ctx.format.bold("Nama")}: ${result.name}\n` +
+            `❖ ${ctx.format.bold("Bab")}: ${result.chapter.chap}`
+        );
+    }
+};

@@ -1,0 +1,78 @@
+{
+  "bot": {
+    "name": "NIRWABOT",
+    "phoneNumber": "",
+    "thumbnail": "https://picsum.photos/1280/720",
+    "groupJid": ""
+  },
+  "msg": {
+    "admin": "Hanya admin grup.",
+    "banned": "Anda dibanned.",
+    "botAdmin": "Bot harus admin.",
+    "botGroupMembership": "Gabung grup bot dulu.",
+    "cooldown": "Cooldown, tunggu...",
+    "gamerestrict": "Game dibatasi admin.",
+    "group": "Hanya di grup.",
+    "groupSewa": "Grup belum sewa.",
+    "owner": "Hanya owner.",
+    "premium": "Hanya premium.",
+    "private": "Hanya di private chat.",
+    "privatePremiumOnly": "Private chat hanya untuk premium.",
+    "restrict": "Dibatasi.",
+    "ticket": "Tiket kurang. Tukar skor dulu.",
+    "unavailableAtNight": "Bot offline jam 00.00–06.00.",
+    "footer": "Developed by ItsReimau with ♡",
+    "wait": "Tunggu...",
+    "notFound": "Tidak ditemukan.",
+    "error": "Terjadi kesalahan. Coba lagi atau hubungi owner.",
+    "invalidUrl": "URL tidak valid."
+  },
+  "owner": {
+    "name": "Budi",
+    "organization": "PT. Pencari Cinta Sejati",
+    "id": ["62123456789@s.whatsapp.net", "123456789012345@lid"],
+    "report": true,
+    "co": [
+      {
+        "name": "Budi Jr.",
+        "organization": "PT. Pencari Cinta Sejati II",
+        "id": ["62987654321@s.whatsapp.net", "987654321098765@lid"],
+        "report": false
+      },
+      {
+        "name": "Rudi",
+        "organization": "PT. Maju Mundur Cantik",
+        "id": ["6292837465@s.whatsapp.net"],
+        "report": false,
+        "invisible": true
+      }
+    ]
+  },
+  "sticker": {
+    "packname": "",
+    "author": "nirwabot <github.com/itsreimau/nirwabot>"
+  },
+  "system": {
+    "alwaysOnline": true,
+    "autoRead": true,
+    "autoTypingOnCmd": true,
+    "cooldown": 10000,
+    "maxListeners": 50,
+    "port": 3000,
+    "privatePremiumOnly": false,
+    "restrict": false,
+    "requireBotGroupMembership": false,
+    "requireGroupSewa": false,
+    "selfReply": true,
+    "timeZone": "Asia/Jakarta",
+    "unavailableAtNight": false,
+    "useTicket": true,
+    "maxTicket": 5,
+    "maxTicketPremium": 10,
+    "scorePerTicket": 10,
+    "usePairingCode": false,
+    "customPairingCode": "1L0V3Y0U",
+    "useStore": false,
+    "useServer": false
+  }
+}

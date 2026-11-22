@@ -1,0 +1,32 @@
+module.exports = {
+    name: "tiktoksearch",
+    aliases: ["tiktoks", "ttsearch"],
+    category: "search",
+    useAxios: true,
+    permissions: {
+        ticket: true
+    },
+    code: async (ctx) => {
+        const input = ctx.text;
+        if (!input)
+            return await ctx.reply(
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                ctx.format.generateCmdExample(ctx.used, "evangelion")
+            );
+
+        const apiUrl = ctx.api.createUrl("zellrayy", "/search/tiktok", {
+            q: input
+        });
+        const result = ctx.helper.getRandomElement((await ctx.request.get(apiUrl)).data.result).play;
+        await ctx.reply({
+            video: {
+                url: result
+            },
+            caption: `❖ ${ctx.format.bold("Kueri")}: ${input}`,
+            buttons: [{
+                text: "Ambil Lagi",
+                id: `${ctx.used.prefix + ctx.used.command} ${input}`
+            }]
+        });
+    }
+};

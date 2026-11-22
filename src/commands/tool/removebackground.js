@@ -1,0 +1,21 @@
+module.exports = {
+    name: "removebackground",
+    aliases: ["removebg"],
+    category: "tool",
+    useAxios: true,
+    permissions: {
+        ticket: true
+    },
+    code: async (ctx) => {
+        if (!ctx.isMedia(["image"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
+        const uploadUrl = await ctx.msg.media.upload() || await ctx.quoted.msg.media.upload();
+        const result = ctx.api.createUrl("nexray", "/tools/removebg", {
+            url: uploadUrl
+        });
+        await ctx.reply({
+            image: {
+                url: result
+            }
+        });
+    }
+};

@@ -1,0 +1,21 @@
+module.exports = {
+    name: "upload",
+    aliases: ["up", "tourl"],
+    category: "tool",
+    useAxios: true,
+    permissions: {
+        ticket: true
+    },
+    code: async (ctx) => {
+        if (!ctx.isMedia(["audio", "document", "image", "sticker", "video"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["audio", "document", "image", "sticker", "video"]));
+        const result = await ctx.msg.media.upload() || await ctx.quoted.msg.media.upload();
+        await ctx.reply({
+            text: `❖ ${ctx.format.bold("URL")}: ${result}`,
+            footer: ctx.format.info("File kedaluwarsa 3 jam."),
+            nativeFlow: [{
+                text: "Salin URL",
+                copy: result
+            }]
+        });
+    }
+};

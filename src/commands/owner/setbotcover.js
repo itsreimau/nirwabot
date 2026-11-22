@@ -1,0 +1,14 @@
+module.exports = {
+    name: "setbotcover",
+    aliases: ["setcoverbot"],
+    category: "owner",
+    permissions: {
+        owner: true
+    },
+    code: async (ctx) => {
+        if (!ctx.isMedia(["image"])) return await ctx.reply(ctx.format.generateInstruction(["send", "reply"], ["image"]));
+        const buffer = await ctx.msg.media.download() || await ctx.quoted.msg.media.download();
+        await ctx.core.updateCoverPhoto(buffer);
+        await ctx.reply(ctx.format.info("Cover bot diubah."));
+    }
+};
