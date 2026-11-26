@@ -2,7 +2,7 @@ const crypto = require("node:crypto");
 
 module.exports = {
     name: "stickeraudio",
-    aliases: ["staudio", "stickeraud"],
+    aliases: ["saudio", "saud", "stickeraud"],
     category: "converter",
     permissions: {
         ticket: true
@@ -43,7 +43,7 @@ module.exports = {
             const buffer = await ctx.quoted.msg.media.download();
             let newId;
             do newId = crypto.randomBytes(3).toString("hex");
-            while findItem(newId);
+            while (findItem(newId));
             senderDb.stickerAudio.push({
                 id: newId,
                 base64: buffer.toString("base64"),
