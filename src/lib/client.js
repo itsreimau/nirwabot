@@ -12,6 +12,20 @@ const path = require("node:path");
 const util = require("node:util");
 const pino = require("pino");
 const qrcode = require("qrcode-terminal");
+
+let proxyAgent;
+try {
+    const proxyUrl = process.env.FETCH_PROXY || process.env.HTTPS_PROXY;
+    if (proxyUrl) {
+        proxyAgent = new (require("https-proxy-agent").HttpsProxyAgent)(proxyUrl);
+        try {
+            const undici = require("undici");
+            undici.setGlobalDispatcher(new undici.ProxyAgent(proxyUrl));
+        } catch {}
+    }
+} catch {
+    proxyAgent = undefined;
+}
 const SimplDB = require("simpl.db");
 
 class Client {
@@ -129,8 +143,10 @@ class Client {
     }
 
     async _cacheAllGroups() {
-        const groups = await this.core.groupFetchAllParticipating();
-        for (const [id, metadata] of Object.entries(groups)) this.groupCache.set(id, metadata);
+        try {
+            const groups = await this.core.groupFetchAllParticipating();
+            for (const [id, metadata] of Object.entries(groups)) this.groupCache.set(id, metadata);
+        } catch {}
     }
 
     _onConnectionUpdate = async ({
@@ -385,7 +401,10 @@ class Client {
             }),
             emitOwnEvents: this.selfReply,
             cachedGroupMetadata: async (jid) => this.groupCache.get(jid),
-            generateHighQualityLinkPreview: true
+            generateHighQualityLinkPreview: true,
+            ...(proxyAgent && {
+                agent: proxyAgent
+            })
         });
 
         if (this.usePairingCode && !this.core.authState.creds.registered) {

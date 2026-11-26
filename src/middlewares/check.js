@@ -15,10 +15,11 @@ module.exports = (bot) => {
         const botDb = ctx.db.bot;
         const senderDb = ctx.db.user;
 
+        if (isPrivate && !isOwner) return;
+
         if (botDb.mode === "premium" && !isOwner && !senderDb.premium) return;
         if (botDb.mode === "group" && isPrivate && !isOwner && !senderDb.premium) return;
         if (botDb.mode === "private" && isGroup && !isOwner && !senderDb.premium) return;
-        if (botDb.mode === "self" && !isOwner) return;
 
         if (isGroup) {
             const groupDb = ctx.db.group;

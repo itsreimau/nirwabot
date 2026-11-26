@@ -77,13 +77,6 @@ const options = {
         imageKey: "img",
         timeout: 60000
     },
-    tebakhewan: {
-        name: "tebakhewan",
-        apiEndpoint: "/api/games/tebakhewan",
-        answerKey: "jawaban",
-        questionKey: "soal",
-        timeout: 60000
-    },
     tebakheroml: {
         name: "tebakheroml",
         aliases: ["tebakml"],

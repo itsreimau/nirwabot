@@ -1,4 +1,4 @@
-const validModes = ["premium", "group", "private", "public", "self"];
+const validModes = ["premium", "group", "private", "public"];
 
 module.exports = {
     name: "mode",
@@ -12,7 +12,7 @@ module.exports = {
         if (!input)
             return await ctx.reply(
                 `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
-                `${ctx.format.generateCmdExample(ctx.used, "self")}\n` +
+                `${ctx.format.generateCmdExample(ctx.used, "public")}\n` +
                 ctx.format.generateNotes([
                     `Ketik: ${ctx.format.inlineCode(`${ctx.used.prefix + ctx.used.command} list`)} untuk daftar`
                 ])

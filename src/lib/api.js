@@ -7,7 +7,7 @@ const APIs = {
         baseURL: "https://api-faa.my.id"
     },
     nexray: {
-        baseURL: "https://api.nexray.web.id"
+        baseURL: "https://api.nexray.eu.cc"
     },
     omegatech: {
         baseURL: "https://api.omegatech.app"

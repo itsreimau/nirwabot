@@ -27,10 +27,14 @@ module.exports = {
             );
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
-        const apiUrl = ctx.api.createUrl("nexray", "/downloader/spotify", {
+        const apiUrl = ctx.api.createUrl("nexray", "/downloader/aio", {
             url
         });
-        const result = (await ctx.request.get(apiUrl)).data.result;
+        const data = (await ctx.request.get(apiUrl)).data.result;
+        const result = {
+            url: data.medias?.find(item => item.type === "audio")?.url || data.medias?.[0]?.url,
+            title: data.title
+        };
         const content = flag.document ? {
             document: {
                 url: result.url
