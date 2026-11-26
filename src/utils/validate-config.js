@@ -7,7 +7,10 @@ const REQUIRED = {
 function validateConfig(config) {
     const errors = [];
     for (const [section, keys] of Object.entries(REQUIRED)) {
-        if (!config[section] || typeof config[section] !== "object") continue errors.push(`Missing or invalid "${section}" section`);
+        if (!config[section] || typeof config[section] !== "object") {
+            errors.push(`Missing or invalid "${section}" section`)
+            continue;
+        }
         for (const key of keys) {
             const value = config[section][key];
             if (value === undefined || value === null || value === "") errors.push(`Missing "${section}.${key}"`);
