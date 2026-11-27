@@ -44,10 +44,11 @@ module.exports = {
                 `❖ ${ctx.format.bold("Artis")}: ${searchResult.artist}\n` +
                 `❖ ${ctx.format.bold("URL")}: ${searchResult.spotifyUrl}`
             );
-            const downloadApiUrl = ctx.api.createUrl("nexray", "/downloader/spotify", {
+            const downloadApiUrl = ctx.api.createUrl("nexray", "/downloader/aio", {
                 url: searchResult.spotifyUrl
             });
-            downloadUrl = (await ctx.request.get(downloadApiUrl)).data.result.url;
+            const downloadData = (await ctx.request.get(downloadApiUrl)).data.result;
+            downloadUrl = downloadData.medias?.find(item => item.type === "audio")?.url || downloadData.medias?.[0]?.url;
         } else {
             const searchApiUrl = ctx.api.createUrl("zellrayy", "/search/youtube", {
                 q: input

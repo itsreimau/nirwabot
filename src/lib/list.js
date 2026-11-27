@@ -38,8 +38,7 @@ async function get(ctx, type) {
                     "premium (Mode premium, hanya merespons pengguna premium dan owner)",
                     "group (Mode group, hanya merespons dalam grup)",
                     "private (Mode private, hanya merespons dalam obrolan pribadi)",
-                    "public (Mode publik, merespons dalam grup dan obrolan pribadi)",
-                    "self (Mode self, hanya merespons dirinya sendiri dan owner)"
+                    "public (Mode publik, merespons dalam grup dan obrolan pribadi)"
                 ];
                 text = createList(data, (list) => `❖ ${list}`);
                 break;

@@ -62,16 +62,35 @@ module.exports = [{
                 type: "boolean",
                 short: "d",
                 default: false
+            },
+            resolution: {
+                type: "string",
+                short: "r",
+                default: "360"
             }
         });
         const url = flag.input || ctx.helper.extractUrlFromText(ctx.quoted?.body);
-        if (!url) return await buildUsage(ctx);
+        if (!url)
+            return await ctx.reply(
+                `${ctx.format.generateInstruction(["send"], ["text"])}\n` +
+                `${ctx.format.generateCmdExample(ctx.used, "https://www.youtube.com/watch?v=0Uhh62MUEic -d -r 720")}\n` +
+                ctx.format.generatesFlagInfo({
+                    "-d": "Kirim sebagai dokumen",
+                    "-r": "Resolusi video (tersedia: 144, 240, 360, 480, 720, 1080, 1440, 2160 | default: 360)"
+                })
+            );
         if (!ctx.helper.isUrl(url)) return await ctx.reply(ctx.format.info(config.msg.invalidUrl));
 
-        const apiUrl = ctx.api.createUrl("zellrayy", "/download/youtube", {
+        const apiUrl = ctx.api.createUrl("nexray", "/downloader/aio", {
             url
         });
-        const result = (await ctx.request.get(apiUrl)).data.result;
+        const data = (await ctx.request.get(apiUrl)).data.result;
+        const formats = (data.medias || []).filter(item => item.mimeType?.includes("video/mp4") && item.audioQuality);
+        const chosen = formats.find(item => item.qualityLabel === `${flag.resolution}p`) || formats.find(item => item.qualityLabel === "360p") || formats[0];
+        const result = {
+            download: chosen.url,
+            title: data.title
+        };
         const content = flag.document ? {
             document: {
                 url: result.download
